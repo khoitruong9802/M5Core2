@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "m5unified.h": "c",
+        "arduino.h": "c",
+        "hardwareserial.h": "c"
+    }
+}
