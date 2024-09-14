@@ -108,7 +108,7 @@ void scan_network(lv_event_t *e)
         }
         else
         {
-            xTaskCreatePinnedToCore(scan_wifi, "scan_wifi", 8192, NULL, 2, NULL, 1);
+            xTaskCreatePinnedToCore(scan_wifi, "scan_wifi", 8192, NULL, 5, NULL, 0);
         }
         _ui_screen_change(&ui_WifiScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_WifiScreen_screen_init);
     }

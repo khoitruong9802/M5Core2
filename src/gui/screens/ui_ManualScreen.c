@@ -116,5 +116,6 @@ void ui_ManualScreen_screen_init(void)
 
     lv_obj_add_event_cb(ui_Switch1, ui_event_Switch1, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Switch2, ui_event_Switch2, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_ManualScreen, ui_event_ManualScreen, LV_EVENT_ALL, NULL);
 
 }

@@ -1,3 +1,3 @@
 #pragma once
 
-void ui_start();
+void ui_start(void *parameter);

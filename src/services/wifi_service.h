@@ -6,4 +6,5 @@ typedef struct {
 } ListOfWifi;
 
 void wifi_service(void *parameter);
+void connect_wifi(const char *ssid, const char *password);
 void scan_wifi(void *parameter);

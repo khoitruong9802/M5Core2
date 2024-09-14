@@ -1,21 +1,17 @@
-#include <M5Unified.h>
-#include <lvgl.h>
-
 #include "gui/ui_start.h"
 #include "global.h"
 #include "services/rtc_service.h"
 #include "services/wifi_service.h"
 #include "services/bottom_button_service.h"
 
-SemaphoreHandle_t my_mutex;
-void ui_handler(void *parameter);
+SemaphoreHandle_t lvgl_mutex;
 
 void setup()
 {
-  my_mutex = xSemaphoreCreateMutex();
+  lvgl_mutex = xSemaphoreCreateMutex();
 
   // Check for creation errors (optional)
-  if (my_mutex == NULL)
+  if (lvgl_mutex == NULL)
   {
     Serial.println("Can not create mutex");
   }
@@ -33,47 +29,14 @@ void setup()
   cfg.external_rtc = false;     // default=false. use Unit RTC.
   cfg.led_brightness = 64;      // default= 0. system LED brightness (0=off / 255=max) (※ not NeoPixel)
   M5.begin(cfg);
-
   M5.Display.setRotation(1);
 
-  ui_start();
-
-  xTaskCreatePinnedToCore(ui_handler, "ui_handler", 4096, NULL, 2, NULL, tskNO_AFFINITY);
-  xTaskCreatePinnedToCore(rtc_service, "rtc_service", 4096, NULL, 2, NULL, tskNO_AFFINITY);
-  xTaskCreatePinnedToCore(bottom_button_service, "bottom_button_service", 2048, NULL, 2, NULL, tskNO_AFFINITY);
-
-  // xTaskCreate(wifi_service, "wifi_service", 4096, NULL, 1, NULL);
-  // xTaskCreate(scan_wifi, "scan_wifi", 4096, NULL, 1, NULL);
+  xTaskCreatePinnedToCore(ui_start, "ui_start", 4096, NULL, 5, NULL, tskNO_AFFINITY);
+  xTaskCreatePinnedToCore(rtc_service, "rtc_service", 4096, NULL, 5, NULL, tskNO_AFFINITY);
+  xTaskCreatePinnedToCore(bottom_button_service, "bottom_button_service", 2048, NULL, 5, NULL, tskNO_AFFINITY);
 }
 
 void loop()
 {
-}
-
-int count = 0;
-void ui_handler(void *parameter)
-{
-  for (;;)
-  {
-    if (count == 100) {
-      Serial.printf("ui handler run on core: %d\n", xPortGetCoreID());
-      count = 0;
-    }
-    count++; 
-    if (xSemaphoreTake(my_mutex, 0) == pdTRUE)
-    {
-      // Critical section (access shared resource here)
-      lv_timer_handler();
-
-      // Release the mutex after critical section
-      xSemaphoreGive(my_mutex);
-    } else {
-      Serial.println("ui handler can not require semaphore");
-    }
-    delay(10);
-
-    // lv_timer_handler();
-    // delay(5);
-
-  }
+  vTaskDelete(NULL);
 }

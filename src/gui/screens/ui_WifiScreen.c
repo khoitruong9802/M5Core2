@@ -23,5 +23,6 @@ void ui_WifiScreen_screen_init(void)
     lv_obj_set_style_bg_color(ui_Panel26, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_Panel26, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    lv_obj_add_event_cb(ui_WifiScreen, ui_event_WifiScreen, LV_EVENT_ALL, NULL);
 
 }

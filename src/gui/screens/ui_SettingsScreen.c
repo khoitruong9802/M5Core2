@@ -198,5 +198,6 @@ void ui_SettingsScreen_screen_init(void)
 
     lv_obj_add_event_cb(ui_Panel17, ui_event_Panel17, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Panel24, ui_event_Panel24, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_SettingsScreen, ui_event_SettingsScreen, LV_EVENT_ALL, NULL);
 
 }

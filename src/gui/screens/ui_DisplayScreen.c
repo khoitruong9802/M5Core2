@@ -65,8 +65,8 @@ void ui_DisplayScreen_screen_init(void)
     lv_slider_set_range(ui_Slider3, 20, 240);
     lv_slider_set_value(ui_Slider3, 128, LV_ANIM_OFF);
     if(lv_slider_get_mode(ui_Slider3) == LV_SLIDER_MODE_RANGE) lv_slider_set_left_value(ui_Slider3, 0, LV_ANIM_OFF);
-    lv_obj_set_width(ui_Slider3, 180);
-    lv_obj_set_height(ui_Slider3, 15);
+    lv_obj_set_width(ui_Slider3, 189);
+    lv_obj_set_height(ui_Slider3, 24);
     lv_obj_set_align(ui_Slider3, LV_ALIGN_CENTER);
 
     lv_obj_set_style_bg_color(ui_Slider3, lv_color_hex(0xFFFFFF), LV_PART_KNOB | LV_STATE_DEFAULT);
@@ -97,5 +97,6 @@ void ui_DisplayScreen_screen_init(void)
 
 
     lv_obj_add_event_cb(ui_Slider3, ui_event_Slider3, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_DisplayScreen, ui_event_DisplayScreen, LV_EVENT_ALL, NULL);
 
 }

@@ -1,4 +1,5 @@
 #pragma once
-#include <freertos/semphr.h>
+#include <freertos/FreeRTOS.h>
+#include <M5Unified.h>
 
-extern SemaphoreHandle_t my_mutex;
+extern SemaphoreHandle_t lvgl_mutex;
