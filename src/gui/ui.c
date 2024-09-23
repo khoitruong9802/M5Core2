@@ -69,8 +69,10 @@ lv_obj_t * ui_Panel39;
 void ui_event_Button1(lv_event_t * e);
 lv_obj_t * ui_Button1;
 lv_obj_t * ui_Label31;
-
-
+void ui_event_Panel90(lv_event_t * e);
+lv_obj_t * ui_Panel90;
+lv_obj_t * ui_Panel91;
+lv_obj_t * ui_Label90;
 // SCREEN: ui_SettingsScreen
 void ui_SettingsScreen_screen_init(void);
 void ui_event_SettingsScreen(lv_event_t * e);
@@ -174,6 +176,13 @@ lv_obj_t * ui_WifiScreen;
 lv_obj_t * ui_Panel26;
 lv_obj_t * ui____initial_actions0;
 
+
+// SCREEN: ui_OtaScreen
+void ui_OtaScreen_screen_init(void);
+void ui_event_OtaScreen(lv_event_t * e);
+lv_obj_t * ui_OtaScreen;
+lv_obj_t * ui_Panel92;
+
 ///////////////////// TEST LVGL SETTINGS ////////////////////
 #if LV_COLOR_DEPTH != 16
     #error "LV_COLOR_DEPTH should be 16bit to match SquareLine Studio's settings"
@@ -243,6 +252,15 @@ void ui_event_Button2(lv_event_t * e)
         _ui_flag_modify(ui_Panel42, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
     }
 }
+
+void ui_event_Panel90(lv_event_t * e){
+    lv_event_code_t  event_code = lv_event_get_code(e);
+    lv_obj_t * target =  lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_OtaScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_OtaScreen_screen_init);
+    }
+}
+
 void ui_event_Button3(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);

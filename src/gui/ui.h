@@ -83,6 +83,10 @@ extern lv_obj_t * ui_Panel39;
 void ui_event_Button1(lv_event_t * e);
 extern lv_obj_t * ui_Button1;
 extern lv_obj_t * ui_Label31;
+void ui_event_Panel90(lv_event_t * e);
+extern lv_obj_t * ui_Panel90;
+extern lv_obj_t * ui_Panel91;
+extern lv_obj_t * ui_Label90;
 // SCREEN: ui_SettingsScreen
 void ui_SettingsScreen_screen_init(void);
 void ui_event_SettingsScreen(lv_event_t * e);
@@ -103,6 +107,10 @@ extern lv_obj_t * ui_Label13;
 extern lv_obj_t * ui_Panel22;
 extern lv_obj_t * ui_Panel23;
 extern lv_obj_t * ui_Label12;
+//SCREEN: ui_OtaScreen
+void ui_OtaScreen_screen_init(void);
+extern  lv_obj_t * ui_OtaScreen;
+extern  lv_obj_t * ui_Panel92;
 // SCREEN: ui_AboutScreen
 void ui_AboutScreen_screen_init(void);
 extern lv_obj_t * ui_AboutScreen;
@@ -195,7 +203,7 @@ LV_IMG_DECLARE(ui_img_656191529);    // assets/manual-control_icon.png
 LV_IMG_DECLARE(ui_img_scheduler_icon_png);    // assets/scheduler_icon.png
 LV_IMG_DECLARE(ui_img_pump_icon_png);    // assets/pump_icon.png
 LV_IMG_DECLARE(ui_img_brightness_bar_icon_png);    // assets/brightness_bar_icon.png
-
+LV_IMG_DECLARE(ui_img_loop_png);   
 
 
 
