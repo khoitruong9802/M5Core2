@@ -182,6 +182,13 @@ void ui_OtaScreen_screen_init(void);
 void ui_event_OtaScreen(lv_event_t * e);
 lv_obj_t * ui_OtaScreen;
 lv_obj_t * ui_Panel92;
+lv_obj_t * ui_Panel93;
+lv_obj_t * ui_Spinner2;
+lv_obj_t * ui_Button11;
+lv_obj_t * ui_Label90;
+lv_obj_t * ui_Label91;
+lv_obj_t * ui_Panel94;
+
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
 #if LV_COLOR_DEPTH != 16
@@ -394,6 +401,15 @@ void ui_event_WifiScreen(lv_event_t * e)
     }
 }
 
+void ui_event_OtaScreen(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) {
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_AppScreen_screen_init);
+    }
+}
+
 ///////////////////// SCREENS ////////////////////
 
 void ui_init(void)
@@ -411,6 +427,7 @@ void ui_init(void)
     ui_ManualScreen_screen_init();
     ui_DisplayScreen_screen_init();
     ui_WifiScreen_screen_init();
+    ui_OtaScreen_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
     lv_disp_load_scr(ui_MainScreen);
 }

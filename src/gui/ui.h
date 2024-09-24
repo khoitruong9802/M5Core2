@@ -109,8 +109,15 @@ extern lv_obj_t * ui_Panel23;
 extern lv_obj_t * ui_Label12;
 //SCREEN: ui_OtaScreen
 void ui_OtaScreen_screen_init(void);
+void ui_event_OtaScreen(lv_event_t * e);
 extern  lv_obj_t * ui_OtaScreen;
 extern  lv_obj_t * ui_Panel92;
+extern  lv_obj_t * ui_Panel93;
+extern  lv_obj_t * ui_Spinner2;
+extern  lv_obj_t * ui_Button11;
+extern  lv_obj_t * ui_Label90;
+extern  lv_obj_t * ui_Label91;
+extern  lv_obj_t * ui_Panel94;
 // SCREEN: ui_AboutScreen
 void ui_AboutScreen_screen_init(void);
 extern lv_obj_t * ui_AboutScreen;
