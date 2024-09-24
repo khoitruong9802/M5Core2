@@ -3,6 +3,10 @@
         "m5unified.h": "c",
         "arduino.h": "c",
         "hardwareserial.h": "c",
-        "ui.h": "c"
+        "ui.h": "c",
+        "httpclient.h": "c",
+        "ui_helpers.h": "c",
+        "lvgl.h": "c",
+        "ui_events.h": "c"
     }
 }

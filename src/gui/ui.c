@@ -181,9 +181,11 @@ lv_obj_t * ui____initial_actions0;
 void ui_OtaScreen_screen_init(void);
 void ui_event_OtaScreen(lv_event_t * e);
 lv_obj_t * ui_OtaScreen;
+void ui_event_Panel93(lv_event_t * e);
 lv_obj_t * ui_Panel92;
 lv_obj_t * ui_Panel93;
 lv_obj_t * ui_Spinner2;
+void ui_event_Button11(lv_event_t * e);
 lv_obj_t * ui_Button11;
 lv_obj_t * ui_Label90;
 lv_obj_t * ui_Label91;
@@ -410,6 +412,19 @@ void ui_event_OtaScreen(lv_event_t * e){
     }
 }
 
+void ui_event_Button11(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED){
+        _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_AppScreen_screen_init);
+    }
+}
+
+void ui_event_Panel93(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    change_screen_ota(e);
+}
 ///////////////////// SCREENS ////////////////////
 
 void ui_init(void)

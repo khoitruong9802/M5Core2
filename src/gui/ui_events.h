@@ -17,7 +17,8 @@ void button1_off(lv_event_t * e);
 void button2_on(lv_event_t * e);
 void button2_off(lv_event_t * e);
 void change_brightness(lv_event_t * e);
-
+void change_screen_ota(lv_event_t * e);
+void terminate_ota_scan_task();
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

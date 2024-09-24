@@ -21,7 +21,7 @@ void ui_OtaScreen_screen_init(void)
     lv_obj_set_style_bg_color(ui_Panel92, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_Panel92, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Panel93 = lv_obj_create(ui_OtaScreen);
+    ui_Panel93 = lv_obj_create(ui_Panel92);
     lv_obj_set_width(ui_Panel93, 240);
     lv_obj_set_height(ui_Panel93, 180);
     lv_obj_set_align(ui_Panel93, LV_ALIGN_CENTER);
@@ -70,15 +70,7 @@ void ui_OtaScreen_screen_init(void)
     lv_label_set_text(ui_Label90, "Checking new version...");
     lv_obj_set_style_text_font(ui_Label90, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    // ui_Label14 = lv_label_create(ui_Panel92);
-    // lv_obj_set_width(ui_Label14, LV_SIZE_CONTENT);   /// 1
-    // lv_obj_set_height(ui_Label14, LV_SIZE_CONTENT);    /// 1
-    // lv_obj_set_align(ui_Label14, LV_ALIGN_CENTER);
-    // lv_label_set_text(ui_Label14, "Version 1.1");
-    // lv_obj_set_style_text_color(ui_Label14, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    // lv_obj_set_style_text_opa(ui_Label14, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    // lv_obj_set_style_text_font(ui_Label14, &lv_font_montserrat_48, LV_PART_MAIN | LV_STATE_DEFAULT);
-
     lv_obj_add_event_cb(ui_OtaScreen, ui_event_OtaScreen,  LV_EVENT_ALL, NULL);
-
+    lv_obj_add_event_cb(ui_Button11, ui_event_Button11, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Panel93, ui_event_Panel93, LV_EVENT_ALL, NULL);
 }

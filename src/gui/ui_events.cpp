@@ -8,7 +8,7 @@
 #include "../services/mqtt_service.h"
 #include "../services/wifi_service.h"
 #include "../m5helper/brightness.h"
-
+#include "services/ota_service.h"
 
 const char *get_json_device(uint8_t device1_status, uint8_t device2_status) {
     char *result = new char[256];
@@ -112,4 +112,21 @@ void scan_network(lv_event_t *e)
         }
         _ui_screen_change(&ui_WifiScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_WifiScreen_screen_init);
     }
+}
+
+void change_screen_ota(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t *target = lv_event_get_target(e);
+    TaskHandle_t ota_task = xTaskGetHandle("ota_update");
+    if (ota_task == NULL){
+        if (WiFi.status() == WL_CONNECTED){
+            xTaskCreatePinnedToCore(ota_update, "ota_update", 2048, NULL, 5, NULL, tskNO_AFFINITY);
+        }
+    }
+}
+
+
+void terminate_ota_scan_task(){
+    TaskHandle_t otaTaskHandle = xTaskGetHandle("ota_update");
+    vTaskDelete(otaTaskHandle);
 }
