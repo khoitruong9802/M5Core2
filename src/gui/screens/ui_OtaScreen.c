@@ -72,5 +72,4 @@ void ui_OtaScreen_screen_init(void)
 
     lv_obj_add_event_cb(ui_OtaScreen, ui_event_OtaScreen,  LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Button11, ui_event_Button11, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_Panel93, ui_event_Panel93, LV_EVENT_ALL, NULL);
 }

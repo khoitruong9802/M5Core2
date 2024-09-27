@@ -111,7 +111,6 @@ extern lv_obj_t * ui_Label12;
 void ui_OtaScreen_screen_init(void);
 void ui_event_OtaScreen(lv_event_t * e);
 extern  lv_obj_t * ui_OtaScreen;
-void ui_event_Panel93(lv_event_t * e);
 extern  lv_obj_t * ui_Panel92;
 extern  lv_obj_t * ui_Panel93;
 extern  lv_obj_t * ui_Spinner2;

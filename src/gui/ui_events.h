@@ -9,7 +9,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 void change_screen_mqtt(lv_event_t * e);
 void scan_network(lv_event_t * e);
 void button1_on(lv_event_t * e);
@@ -18,7 +17,7 @@ void button2_on(lv_event_t * e);
 void button2_off(lv_event_t * e);
 void change_brightness(lv_event_t * e);
 void change_screen_ota(lv_event_t * e);
-void terminate_ota_scan_task();
+void delete_ota_task();
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

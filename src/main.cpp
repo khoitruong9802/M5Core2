@@ -3,7 +3,7 @@
 #include "services/rtc_service.h"
 #include "services/wifi_service.h"
 #include "services/bottom_button_service.h"
-
+#include "services/ota_service.h"
 
 SemaphoreHandle_t lvgl_mutex;
 

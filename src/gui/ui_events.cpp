@@ -5,10 +5,13 @@
 
 #include "ui.h"
 #include <M5Unified.h>
+#include "global.h"
 #include "../services/mqtt_service.h"
 #include "../services/wifi_service.h"
 #include "../m5helper/brightness.h"
 #include "services/ota_service.h"
+
+
 
 const char *get_json_device(uint8_t device1_status, uint8_t device2_status) {
     char *result = new char[256];
@@ -114,19 +117,26 @@ void scan_network(lv_event_t *e)
     }
 }
 
-void change_screen_ota(lv_event_t * e){
+void change_screen_ota(lv_event_t * e)
+{
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
+    _ui_screen_change(&ui_OtaScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_OtaScreen_screen_init);
     TaskHandle_t ota_task = xTaskGetHandle("ota_update");
-    if (ota_task == NULL){
-        if (WiFi.status() == WL_CONNECTED){
-            xTaskCreatePinnedToCore(ota_update, "ota_update", 2048, NULL, 5, NULL, tskNO_AFFINITY);
+    if (ota_task == NULL)
+    {
+        if (WiFi.status() == WL_CONNECTED)
+        {
+            xTaskCreate(ota_update,"ota_update",8192,NULL,1,&ota_task);
         }
     }
 }
 
-
-void terminate_ota_scan_task(){
-    TaskHandle_t otaTaskHandle = xTaskGetHandle("ota_update");
-    vTaskDelete(otaTaskHandle);
+void delete_ota_task()
+{
+    TaskHandle_t ota_task = xTaskGetHandle("ota_update");
+    if(ota_task != NULL) 
+    {
+        vTaskDelete(ota_task);
+    }
 }
