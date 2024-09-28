@@ -121,6 +121,7 @@ extern  lv_obj_t * ui_Label91;
 extern  lv_obj_t * ui_Panel94;
 // SCREEN: ui_AboutScreen
 void ui_AboutScreen_screen_init(void);
+void ui_event_AboutScreen(lv_event_t * e);
 extern lv_obj_t * ui_AboutScreen;
 extern lv_obj_t * ui_Panel19;
 extern lv_obj_t * ui_Label14;

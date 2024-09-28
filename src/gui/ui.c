@@ -97,6 +97,7 @@ lv_obj_t * ui_Label12;
 
 // SCREEN: ui_AboutScreen
 void ui_AboutScreen_screen_init(void);
+void ui_event_AboutScreen(lv_event_t * e);
 lv_obj_t * ui_AboutScreen;
 lv_obj_t * ui_Panel19;
 lv_obj_t * ui_Label14;
@@ -422,6 +423,17 @@ void ui_event_Button11(lv_event_t * e)
     {
         delete_ota_task();
         _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_AppScreen_screen_init);
+    }
+}
+
+void ui_event_AboutScreen(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) {
+        delete_ota_task();
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_AppScreen_screen_init);
     }
 }
 ///////////////////// SCREENS ////////////////////

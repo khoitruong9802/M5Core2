@@ -7,6 +7,20 @@
 
 SemaphoreHandle_t lvgl_mutex;
 
+// Function to initialize the SD card with retries
+bool initializeSDCard() {
+  for (;;) {
+    if (SD.begin(GPIO_NUM_4, SPI, 40000000)) {  // SD Card CS is on GPIO 4
+      Serial.println("SD card initialized successfully.");
+      return true;
+    }
+    Serial.println("SD card initialization failed");
+    delay(1000); // Wait before retrying
+  }
+  return false; // Return false if all retries failed
+}
+
+
 void setup()
 {
   lvgl_mutex = xSemaphoreCreateMutex();
@@ -16,6 +30,12 @@ void setup()
   {
     Serial.println("Can not create mutex");
   }
+
+  if (!initializeSDCard()) {
+    Serial.println("Failed to initialize SD card after multiple attempts.");
+    return;
+  }
+
 
   m5::M5Unified::config_t cfg = M5.config();
 
