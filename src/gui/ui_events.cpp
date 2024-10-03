@@ -127,7 +127,49 @@ void change_screen_ota(lv_event_t * e)
     {
         if (WiFi.status() == WL_CONNECTED)
         {
-            xTaskCreate(ota_update,"ota_update",8192,NULL,1,&ota_task);
+            String filename = getLatestFirmwareFileName(web_server);
+            for(;;)
+            {
+                if (!SPIFFS.begin(true)) 
+                {  // true to format the file system if mounting fails
+                    Serial.println("SPIFFS Mount Failed");
+                } else 
+                {
+                    Serial.println("SPIFFS Mount Success");
+                    break;
+                }
+            }
+            File file = SPIFFS.open("/firmware_version.txt", "r");
+            if (!file) 
+            {
+                Serial.println("Failed to open version file for checking");
+
+            } else 
+            {
+                Serial.println("File opened successfully");
+                String line = file.readStringUntil('\n');
+                file.close();
+                Serial.println(line);
+                Serial.println(filename);
+                String name_of_old_file;
+                String name_of_new_file;
+                for(int i = 0; i <  filename.length() &&  i < line.length(); i++){
+                    name_of_new_file += filename[i];
+                    name_of_old_file += line[i];
+                }
+                if(name_of_new_file == name_of_old_file)
+                {
+                    //TODO
+                    Serial.println("No change!");
+                } 
+                else
+                {
+                    File file = SPIFFS.open("/firmware_version.txt", "w");
+                    file.println(name_of_new_file);
+                    xTaskCreate(ota_update,"ota_update",8192,NULL,1,&ota_task);
+                }
+            }
+            
         }
     }
 }

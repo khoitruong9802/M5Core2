@@ -1,64 +1,14 @@
 #include "ota_service.h"
 
-const char* serverUrl = "";
-
-
-bool fileExists(const String& filename) {
-    Serial.println(filename);
-    // Attempt to open the file
-    File file = SD.open(filename.c_str(), FILE_READ); // Convert String to const char*
-    if (file) {
-        file.close();  // Close the file if it exists
-        return true;   // File exists
-    }
-    return false;      // File does not exist
-}
-
-void listFilesInDir(const char* dirname, uint8_t levels) {
-  for (;;) {
-    if (SD.begin(GPIO_NUM_4, SPI, 40000000)) {  // SD Card CS is on GPIO 4
-      Serial.println("SD card initialized successfully.");
-      break;
-    }
-    Serial.println("SD card initialization failed");
-    delay(1000); // Wait before retrying
-  }
-  File root = SD.open(dirname);
-
-  if (!root) {
-    Serial.printf("Failed to open directory: %s\n", dirname);
-    return;
-  }
-
-  if (!root.isDirectory()) {
-    Serial.printf("%s is not a directory\n", dirname);
-    root.close();
-    return;
-  }
-
-  File file = root.openNextFile();
-  while (file) {
-    if (file.isDirectory()) {
-      Serial.printf("DIR : %s\n", file.name());
-      if (levels) {
-        // Recursively list contents of this directory
-        listFilesInDir(file.name(), levels - 1);
-      }
-    } else {
-      Serial.printf("  FILE: %s  SIZE: %d bytes\n", file.name(), file.size());
-    }
-    file = root.openNextFile();
-  }
-  root.close();
-}
+const char* web_server = "http://192.168.61.7:4000";
 
 // Function to check for the latest firmware file
-String getLatestFirmwareFileName() 
+String getLatestFirmwareFileName(const char* Url) 
 {
     HTTPClient http;
     String latestFirmwareFileName = "";
 
-    http.begin(String(serverUrl) + "/upload");
+    http.begin(String(Url) + "/upload");
     int httpCode = http.GET();
 
     if (httpCode == HTTP_CODE_OK) 
@@ -106,60 +56,59 @@ String getLatestFirmwareFileName()
     return latestFirmwareFileName;
 }
 
-
 void ota_update(void *parameter)
 {
     Serial.println("Start OTA");
-    String filename = getLatestFirmwareFileName();
+    String filename = getLatestFirmwareFileName(web_server);
     Serial.printf("Start installing: %s\n", filename.c_str());
-    listFilesInDir("/", 5);
-//     String firmwareURL = serverUrl + String("/uploads/") + getLatestFirmwareFileName();
-//     HTTPClient http;
-//     http.begin(firmwareURL);
-//     int httpCode = http.GET();
+
+    String firmwareURL = web_server + String("/uploads/") + filename;
+    HTTPClient http;
+    http.begin(firmwareURL);
+    int httpCode = http.GET();
     
-//     if (httpCode == HTTP_CODE_OK) 
-//     {
-//         int contentLength = http.getSize();
-//         bool canBegin = Update.begin(contentLength);
+    if (httpCode == HTTP_CODE_OK) 
+    {
+        int contentLength = http.getSize();
+        bool canBegin = Update.begin(contentLength);
 
-//         if (canBegin) 
-//         {
-//             Serial.println("Begin OTA update");
-//             WiFiClient* client = http.getStreamPtr();
-//             size_t written = Update.writeStream(*client);
+        if (canBegin) 
+        {
+            Serial.println("Begin OTA update");
+            WiFiClient* client = http.getStreamPtr();
+            size_t written = Update.writeStream(*client);
 
-//             if (written == contentLength) 
-//             {
-//                 Serial.println("OTA update successful!");
-//             } else 
-//             {
-//                 Serial.printf("OTA update failed. Written %d / %d bytes\n", written, contentLength);
-//             }
+            if (written == contentLength) 
+            {
+                Serial.println("OTA update successful!");
+            } else 
+            {
+                Serial.printf("OTA update failed. Written %d / %d bytes\n", written, contentLength);
+            }
 
-//             if (Update.end()) 
-//             {
-//                 if (Update.isFinished()) 
-//                 {
-//                     Serial.println("Update completed. Rebooting...");
-//                     ESP.restart();
-//                 } else 
-//                 {
-//                     Serial.println("Update not finished. Something went wrong.");
-//                 }
-//             } else 
-//             {
-//                 Serial.printf("Update failed. Error #: %d\n", Update.getError());
-//             }
-//         } else 
-//         {
-//             Serial.println("Not enough space to start OTA update");
-//         }
-//     } else 
-//     {
-//         Serial.printf("Failed to download firmware, error code: %d\n", httpCode);
-//     }
+            if (Update.end()) 
+            {
+                if (Update.isFinished()) 
+                {
+                    Serial.println("Update completed. Rebooting...");
+                    ESP.restart();
+                } else 
+                {
+                    Serial.println("Update not finished. Something went wrong.");
+                }
+            } else 
+            {
+                Serial.printf("Update failed. Error #: %d\n", Update.getError());
+            }
+        } else 
+        {
+            Serial.println("Not enough space to start OTA update");
+        }
+    } else 
+    {
+        Serial.printf("Failed to download firmware, error code: %d\n", httpCode);
+    }
 
-//     http.end();
-//     Serial.println("End OTA");
+    http.end();
+    Serial.println("End OTA");
 }
