@@ -149,7 +149,9 @@ void change_screen_ota(lv_event_t * e)
                 Serial.println("File opened successfully");
                 String line = file.readStringUntil('\n');
                 file.close();
+                Serial.println("The original:");
                 Serial.println(line);
+                Serial.println("The new:");
                 Serial.println(filename);
                 String name_of_old_file;
                 String name_of_new_file;
@@ -182,3 +184,4 @@ void delete_ota_task()
         vTaskDelete(ota_task);
     }
 }
+

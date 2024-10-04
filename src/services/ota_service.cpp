@@ -1,6 +1,6 @@
 #include "ota_service.h"
-
-const char* web_server = "http://192.168.61.7:4000";
+#include <lvgl.h>
+const char* web_server = "";
 
 // Function to check for the latest firmware file
 String getLatestFirmwareFileName(const char* Url) 
@@ -111,4 +111,59 @@ void ota_update(void *parameter)
 
     http.end();
     Serial.println("End OTA");
+}
+
+void ota_checking_update(void *paramter)
+{
+
+    bool alert_screen_flag =  false;
+
+    Serial.println("Start OTA checking update");
+    for(;;)
+    {
+        if (!SPIFFS.begin(true)) 
+        {  // true to format the file system if mounting fails
+            Serial.println("SPIFFS Mount Failed");
+        } else 
+        {
+            Serial.println("SPIFFS Mount Success");
+            break;
+        }
+    }
+    File file = SPIFFS.open("/firmware_version.txt", "r");
+    String line = file.readStringUntil('\n');
+    for(;;)
+    {
+        String filename = getLatestFirmwareFileName(web_server);
+        Serial.println("The original:");
+        Serial.println(line);
+        Serial.println("The new:");
+        Serial.println(filename);
+        String name_of_old_file;
+        String name_of_new_file;
+        for(int i = 0; i <  filename.length() &&  i < line.length(); i++){
+            name_of_new_file += filename[i];
+            name_of_old_file += line[i];
+        }
+        if(name_of_new_file == name_of_old_file)
+        {
+            //TODO
+            if(alert_screen_flag == ALERT_SCREEN_ON)
+            {
+                alert_screen_flag = ALERT_SCREEN_OFF;
+            }
+            Serial.println("No change!");
+        } 
+        else 
+        {
+            //TODO
+            if(alert_screen_flag ==  ALERT_SCREEN_OFF)
+            {
+                alert_screen_flag = ALERT_SCREEN_ON;
+                _ui_flag_modify(ui_Panel100, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+            }
+            Serial.println("changed!");
+        }
+        delay(3000);
+    }
 }

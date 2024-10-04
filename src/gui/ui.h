@@ -39,6 +39,16 @@ extern lv_obj_t * ui_Label3;
 extern lv_obj_t * ui_Label4;
 void ui_event_Panel4(lv_event_t * e);
 extern lv_obj_t * ui_Panel4;
+extern lv_obj_t * ui_Panel100;
+extern lv_obj_t * ui_Panel101;
+void ui_event_Button21(lv_event_t * e);
+extern lv_obj_t * ui_Button21;
+void ui_event_Button22(lv_event_t * e);
+extern lv_obj_t * ui_Button22;
+extern lv_obj_t * ui_Label101;
+extern lv_obj_t * ui_Label102;
+extern lv_obj_t * ui_Label103;
+
 // SCREEN: ui_AppScreen
 void ui_AppScreen_screen_init(void);
 void ui_event_AppScreen(lv_event_t * e);
