@@ -176,6 +176,42 @@ void ui_AppScreen_screen_init(void)
     lv_obj_set_style_text_opa(ui_Label7, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Label7, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    ui_Panel90 = lv_obj_create(ui_Panel6);
+    lv_obj_set_width(ui_Panel90, 250);
+    lv_obj_set_height(ui_Panel90, 55);
+    lv_obj_set_x(ui_Panel90, 0);
+    lv_obj_set_y(ui_Panel90, 2);
+    lv_obj_set_align(ui_Panel90, LV_ALIGN_CENTER);
+    lv_obj_set_flex_flow(ui_Panel90, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(ui_Panel90,  LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_Panel90,  LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_Panel90, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_Panel90, 0,  LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_Panel90, lv_color_hex(0x000000),  LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_Panel90, 0,  LV_PART_MAIN |  LV_STATE_DEFAULT); 
+    lv_obj_set_style_bg_color(ui_Panel90,  lv_color_hex(0x353535), LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_bg_opa(ui_Panel90, 255, LV_PART_MAIN | LV_STATE_PRESSED);
+
+    ui_Panel91 = lv_obj_create(ui_Panel90);
+    lv_obj_set_width(ui_Panel91,  50);
+    lv_obj_set_height(ui_Panel91, 50);
+    lv_obj_set_align(ui_Panel91, LV_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_Panel91, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_style_bg_color(ui_Panel91,  lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_Panel91,  0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_src(ui_Panel91,  &ui_img_loop_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_Panel91,   lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_Panel91,  0, LV_PART_MAIN |  LV_STATE_DEFAULT);
+
+    ui_Label90 = lv_label_create(ui_Panel90);
+    lv_obj_set_width(ui_Label90, LV_SIZE_CONTENT);
+    lv_obj_set_height(ui_Label90, LV_SIZE_CONTENT);
+    lv_obj_set_align(ui_Label90, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Label90, "Update");
+    lv_obj_set_style_text_color(ui_Label90, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_Label90, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_Label90,  &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
+
     ui_Panel13 = lv_obj_create(ui_Panel6);
     lv_obj_set_width(ui_Panel13, 250);
     lv_obj_set_height(ui_Panel13, 55);
@@ -354,6 +390,8 @@ void ui_AppScreen_screen_init(void)
     lv_obj_add_event_cb(ui_Panel11, ui_event_Panel11, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Panel13, ui_event_Panel13, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Panel6, ui_event_Panel6, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Panel90,  ui_event_Panel90, LV_EVENT_ALL, NULL);
+
     lv_obj_add_event_cb(ui_Button2, ui_event_Button2, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Button3, ui_event_Button3, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Button1, ui_event_Button1, LV_EVENT_ALL, NULL);

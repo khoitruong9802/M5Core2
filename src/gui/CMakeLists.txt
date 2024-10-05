@@ -7,6 +7,7 @@ SET(SOURCES screens/ui_MainScreen.c
     screens/ui_ManualScreen.c
     screens/ui_DisplayScreen.c
     screens/ui_WifiScreen.c
+    screens/ui_OtaScreen.c
     ui.c
     components/ui_comp_hook.c
     ui_helpers.c
@@ -24,6 +25,7 @@ SET(SOURCES screens/ui_MainScreen.c
     images/ui_img_about_icon_png.c
     images/ui_img_wifisetting_icon_png.c
     images/ui_img_bluetooth_icon_png.c
+    images/ui_img_loop_png.c
     images/ui_img_display_icon_png.c
     images/ui_img_language_icon_png.c
     images/ui_img_sensor_icon_png.c

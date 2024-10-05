@@ -5,9 +5,12 @@
 
 #include "ui.h"
 #include <M5Unified.h>
+#include "global.h"
 #include "../services/mqtt_service.h"
 #include "../services/wifi_service.h"
 #include "../m5helper/brightness.h"
+#include "services/ota_service.h"
+
 
 
 const char *get_json_device(uint8_t device1_status, uint8_t device2_status) {
@@ -112,4 +115,94 @@ void scan_network(lv_event_t *e)
         }
         _ui_screen_change(&ui_WifiScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_WifiScreen_screen_init);
     }
+}
+
+void change_screen_ota(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t *target = lv_event_get_target(e);
+    _ui_screen_change(&ui_OtaScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_OtaScreen_screen_init);
+    TaskHandle_t ota_task = xTaskGetHandle("ota_update");
+    if (ota_task == NULL)
+    {
+        if (WiFi.status() == WL_CONNECTED)
+        {
+            String filename = getLatestFirmwareFileName(web_server);
+            for(;;)
+            {
+                if (!SPIFFS.begin(true)) 
+                {  // true to format the file system if mounting fails
+                    Serial.println("SPIFFS Mount Failed");
+                } else 
+                {
+                    Serial.println("SPIFFS Mount Success");
+                    break;
+                }
+            }
+            File file = SPIFFS.open("/firmware_version.txt", "r");
+            if (!file) 
+            {
+                Serial.println("Failed to open version file for checking");
+
+            } else 
+            {
+                Serial.println("File opened successfully");
+                String line = file.readStringUntil('\n');
+                file.close();
+                Serial.println("The original:");
+                Serial.println(line);
+                Serial.println("The new:");
+                Serial.println(filename);
+                String name_of_old_file;
+                String name_of_new_file;
+                for(int i = 0; i <  filename.length() &&  i < line.length(); i++){
+                    name_of_new_file += filename[i];
+                    name_of_old_file += line[i];
+                }
+                if(name_of_new_file != name_of_old_file || name_of_old_file == NULL)
+                {
+                    _ui_flag_modify(ui_Panel102, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+                } 
+                else
+                {
+                    _ui_flag_modify(ui_Panel104, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+                    Serial.println("No change!");
+                }
+            }
+            
+        }
+    }
+}
+
+void handle_out_ota_page()
+{
+    TaskHandle_t ota_task = xTaskGetHandle("ota_update");
+    if(ota_task != NULL) 
+    {
+        vTaskDelete(ota_task);
+    }
+    // Handle UI of OTA Page
+    if (!lv_obj_has_flag(ui_Panel104, LV_OBJ_FLAG_HIDDEN))
+    {
+        _ui_flag_modify(ui_Panel104, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+    }
+    if (!lv_obj_has_flag(ui_Panel102, LV_OBJ_FLAG_HIDDEN))
+    {
+        _ui_flag_modify(ui_Panel102, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+    }
+    if(!lv_obj_has_flag(ui_Panel93, LV_OBJ_FLAG_HIDDEN))
+    {
+        _ui_flag_modify(ui_Panel93, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+    }
+}
+
+void handle_start_ota()
+{
+    _ui_flag_modify(ui_Panel93, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    if (!lv_obj_has_flag(ui_Panel102, LV_OBJ_FLAG_HIDDEN))
+    {
+        _ui_flag_modify(ui_Panel102, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+    }
+    TaskHandle_t ota_task = xTaskGetHandle("ota_update");
+    xTaskCreate(ota_update,"ota_update",8192,NULL,1,&ota_task);
 }

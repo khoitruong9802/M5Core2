@@ -131,6 +131,66 @@ void ui_MainScreen_screen_init(void)
     lv_obj_set_style_shadow_width(ui_Panel4, 20, LV_PART_MAIN | LV_STATE_PRESSED);
     lv_obj_set_style_shadow_spread(ui_Panel4, 5, LV_PART_MAIN | LV_STATE_PRESSED);
 
+    ui_Panel100 = lv_obj_create(ui_Panel2);
+    lv_obj_set_width(ui_Panel100, 240);
+    lv_obj_set_height(ui_Panel100, 180);
+    lv_obj_set_align(ui_Panel100, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Panel100, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_clear_flag(ui_Panel100, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_Panel101 = lv_obj_create(ui_Panel100);
+    lv_obj_set_width(ui_Panel101, 240);
+    lv_obj_set_height(ui_Panel101, 35);
+    lv_obj_set_x(ui_Panel101, 0);
+    lv_obj_set_y(ui_Panel101, -71);
+    lv_obj_set_align(ui_Panel101, LV_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_Panel101, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_Panel101, lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_Panel101, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_Panel101, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_Panel101, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_Button21 = lv_btn_create(ui_Panel101);
+    lv_obj_set_width(ui_Button21, 40);
+    lv_obj_set_height(ui_Button21, 35);
+    lv_obj_set_x(ui_Button21, 97);
+    lv_obj_set_y(ui_Button21, 0);
+    lv_obj_set_align(ui_Button21, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Button21, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_Button21, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_Label101 = lv_label_create(ui_Button21);
+    lv_obj_set_width(ui_Label101, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Label101, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_Label101, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Label101, "X");
+    lv_obj_set_style_text_font(ui_Label101, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_Label102 = lv_label_create(ui_Panel100);
+    lv_obj_set_width(ui_Label102, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Label102, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_Label102, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Label102, "The new version is available. \nPlease check on Update App.");
+    lv_obj_set_style_text_font(ui_Label102, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_Button22 = lv_btn_create(ui_Panel100);
+    lv_obj_set_width(ui_Button22, 100);
+    lv_obj_set_height(ui_Button22, 50);
+    lv_obj_set_x(ui_Button22, 0);
+    lv_obj_set_y(ui_Button22, 58);
+    lv_obj_set_align(ui_Button22, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Button22, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_Button22, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_Label103 = lv_label_create(ui_Button22);
+    lv_obj_set_width(ui_Label103, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Label103, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_Label103, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Label103, "OK");
+
     lv_obj_add_event_cb(ui_Panel4, ui_event_Panel4, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Button21,  ui_event_Button21, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Button22,  ui_event_Button22, LV_EVENT_ALL, NULL);
+
 
 }
