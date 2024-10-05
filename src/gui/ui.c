@@ -199,6 +199,27 @@ lv_obj_t * ui_Label90;
 lv_obj_t * ui_Label91;
 lv_obj_t * ui_Panel94;
 
+lv_obj_t * ui_Panel102;
+lv_obj_t * ui_Panel103;
+lv_obj_t * ui_Panel104;
+lv_obj_t * ui_Panel105;
+void ui_event_Button23(lv_event_t * e);
+lv_obj_t * ui_Button23;
+void ui_event_Button24(lv_event_t * e);
+lv_obj_t * ui_Button24;
+void ui_event_Button25(lv_event_t * e);
+lv_obj_t * ui_Button25;
+void ui_event_Button26(lv_event_t * e);
+lv_obj_t * ui_Button26;
+void ui_event_Button27(lv_event_t * e);
+lv_obj_t * ui_Button27;
+lv_obj_t * ui_Label104;
+lv_obj_t * ui_Label105;
+lv_obj_t * ui_Label106;
+lv_obj_t * ui_Label107;
+lv_obj_t * ui_Label108;
+lv_obj_t * ui_Label109;
+lv_obj_t * ui_Label110;
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
 #if LV_COLOR_DEPTH != 16
@@ -416,8 +437,9 @@ void ui_event_OtaScreen(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) {
-        delete_ota_task();
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT && lv_obj_has_flag(ui_Panel93, LV_OBJ_FLAG_HIDDEN)) 
+    {
+        handle_out_ota_page();
         lv_indev_wait_release(lv_indev_get_act());
         _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_AppScreen_screen_init);
     }
@@ -429,7 +451,8 @@ void ui_event_Button11(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED)
     {
-        delete_ota_task();
+        handle_out_ota_page();
+        lv_indev_wait_release(lv_indev_get_act());
         _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_AppScreen_screen_init);
     }
 }
@@ -438,9 +461,8 @@ void ui_event_AboutScreen(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) {
-        delete_ota_task();
-        lv_indev_wait_release(lv_indev_get_act());
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) 
+    {
         _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_AppScreen_screen_init);
     }
 }
@@ -463,6 +485,67 @@ void ui_event_Button22(lv_event_t * e)
     if(event_code == LV_EVENT_CLICKED)
     {
         lv_obj_add_flag(ui_Panel100, LV_OBJ_FLAG_HIDDEN);
+    }
+}
+
+void ui_event_Button23(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED)
+    {
+        handle_out_ota_page();
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_AppScreen_screen_init);        
+    }
+}
+
+void ui_event_Button24(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED)
+    {
+        handle_start_ota();
+    }
+}
+
+void ui_event_Button25(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED)
+    {
+        handle_out_ota_page();
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_AppScreen_screen_init);
+                
+    }
+}
+
+void ui_event_Button26(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED)
+    {
+        handle_out_ota_page();
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_AppScreen_screen_init);
+
+    }
+}
+
+void ui_event_Button27(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED)
+    {
+        handle_out_ota_page();
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_AppScreen_screen_init);
+
     }
 }
 

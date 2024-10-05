@@ -60,6 +60,7 @@ void ota_update(void *parameter)
 {
     Serial.println("Start OTA");
     String filename = getLatestFirmwareFileName(web_server);
+    write_new_ota_version(filename);
     Serial.printf("Start installing: %s\n", filename.c_str());
 
     String firmwareURL = web_server + String("/uploads/") + filename;
@@ -166,4 +167,17 @@ void ota_checking_update(void *paramter)
         }
         delay(3000);
     }
+}
+
+void write_new_ota_version(String new_ota_version)
+{
+    File file = SPIFFS.open("/firmware_version.txt", "w");
+    if (!file) {
+        Serial.println("Failed to open file for writing");
+    } else {
+        file.println(new_ota_version);  // Write the filename to the file
+        file.close();            // Close the file after writing
+        Serial.println("File written and closed successfully");
+    }
+
 }

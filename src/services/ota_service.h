@@ -8,5 +8,7 @@
 String getLatestFirmwareFileName(const char* Url);
 void ota_update(void *parameter);
 void ota_checking_update(void *paramter);
+void write_new_ota_version(String  new_ota_version);
+
 
  

@@ -159,16 +159,14 @@ void change_screen_ota(lv_event_t * e)
                     name_of_new_file += filename[i];
                     name_of_old_file += line[i];
                 }
-                if(name_of_new_file == name_of_old_file)
+                if(name_of_new_file != name_of_old_file || name_of_old_file == NULL)
                 {
-                    //TODO
-                    Serial.println("No change!");
+                    _ui_flag_modify(ui_Panel102, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
                 } 
                 else
                 {
-                    File file = SPIFFS.open("/firmware_version.txt", "w");
-                    file.println(name_of_new_file);
-                    xTaskCreate(ota_update,"ota_update",8192,NULL,1,&ota_task);
+                    _ui_flag_modify(ui_Panel104, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+                    Serial.println("No change!");
                 }
             }
             
@@ -176,12 +174,35 @@ void change_screen_ota(lv_event_t * e)
     }
 }
 
-void delete_ota_task()
+void handle_out_ota_page()
 {
     TaskHandle_t ota_task = xTaskGetHandle("ota_update");
     if(ota_task != NULL) 
     {
         vTaskDelete(ota_task);
     }
+    // Handle UI of OTA Page
+    if (!lv_obj_has_flag(ui_Panel104, LV_OBJ_FLAG_HIDDEN))
+    {
+        _ui_flag_modify(ui_Panel104, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+    }
+    if (!lv_obj_has_flag(ui_Panel102, LV_OBJ_FLAG_HIDDEN))
+    {
+        _ui_flag_modify(ui_Panel102, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+    }
+    if(!lv_obj_has_flag(ui_Panel93, LV_OBJ_FLAG_HIDDEN))
+    {
+        _ui_flag_modify(ui_Panel93, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+    }
 }
 
+void handle_start_ota()
+{
+    _ui_flag_modify(ui_Panel93, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    if (!lv_obj_has_flag(ui_Panel102, LV_OBJ_FLAG_HIDDEN))
+    {
+        _ui_flag_modify(ui_Panel102, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+    }
+    TaskHandle_t ota_task = xTaskGetHandle("ota_update");
+    xTaskCreate(ota_update,"ota_update",8192,NULL,1,&ota_task);
+}

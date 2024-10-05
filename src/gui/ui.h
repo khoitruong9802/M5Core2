@@ -129,6 +129,28 @@ extern  lv_obj_t * ui_Button11;
 extern  lv_obj_t * ui_Label90;
 extern  lv_obj_t * ui_Label91;
 extern  lv_obj_t * ui_Panel94;
+
+extern  lv_obj_t * ui_Panel102;
+extern  lv_obj_t * ui_Panel103;
+extern  lv_obj_t * ui_Panel104;
+extern  lv_obj_t * ui_Panel105;
+void ui_event_Button23(lv_event_t * e);
+extern  lv_obj_t * ui_Button23;
+void ui_event_Button24(lv_event_t * e);
+extern  lv_obj_t * ui_Button24;
+void ui_event_Button25(lv_event_t * e);
+extern  lv_obj_t * ui_Button25;
+void ui_event_Button26(lv_event_t * e);
+extern  lv_obj_t * ui_Button26;
+void ui_event_Button27(lv_event_t * e);
+extern  lv_obj_t * ui_Button27;
+extern  lv_obj_t * ui_Label104;
+extern  lv_obj_t * ui_Label105;
+extern  lv_obj_t * ui_Label106;
+extern  lv_obj_t * ui_Label107;
+extern  lv_obj_t * ui_Label108;
+extern  lv_obj_t * ui_Label109;
+extern  lv_obj_t * ui_Label110;
 // SCREEN: ui_AboutScreen
 void ui_AboutScreen_screen_init(void);
 void ui_event_AboutScreen(lv_event_t * e);
