@@ -56,7 +56,6 @@ void rtc_update_handler(lv_event_t *e) {
   lv_event_code_t event_code = lv_event_get_code(e);
   lv_obj_t *target = lv_event_get_target(e);
   char *data = (char *)e->param;
-  Serial.printf("data = %s, pointer = %p, pointer to = %p\n", data, &data, data);
   if (event_code == MY_LV_EVENT_RTC_UPDATE_LABEL) {
     _ui_label_set_property(target, _UI_LABEL_PROPERTY_TEXT, data);
   }
@@ -78,7 +77,7 @@ static void click_wifi_handler(lv_event_t *e) {
   lv_obj_t *obj = lv_event_get_target(e);
   if (code == LV_EVENT_CLICKED) {
     Serial.printf("Clicked: %s", lv_list_get_btn_text(custom_ui_ListOfWifi, obj));
-    lv_label_set_text_fmt(wifi_name_label, "%s password:", lv_list_get_btn_text(custom_ui_ListOfWifi, obj));
+    lv_label_set_text(wifi_name_label, lv_list_get_btn_text(custom_ui_ListOfWifi, obj));
     _ui_flag_modify(enter_password_panel, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
   }
 }

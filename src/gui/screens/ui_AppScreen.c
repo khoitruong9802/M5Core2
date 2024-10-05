@@ -212,20 +212,20 @@ void ui_AppScreen_screen_init(void)
     lv_obj_set_style_text_opa(ui_Label10, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Label10, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Panel42 = lv_obj_create(ui_AppScreen);
-    lv_obj_set_width(ui_Panel42, 240);
-    lv_obj_set_height(ui_Panel42, 180);
-    lv_obj_set_align(ui_Panel42, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_Panel42, LV_OBJ_FLAG_HIDDEN);     /// Flags
-    lv_obj_clear_flag(ui_Panel42, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_Panel40 = lv_obj_create(ui_AppScreen);
+    lv_obj_set_width(ui_Panel40, 240);
+    lv_obj_set_height(ui_Panel40, 180);
+    lv_obj_set_align(ui_Panel40, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Panel40, LV_OBJ_FLAG_HIDDEN);     /// Flags
+    lv_obj_clear_flag(ui_Panel40, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_Spinner1 = lv_spinner_create(ui_Panel42, 1000, 90);
+    ui_Spinner1 = lv_spinner_create(ui_Panel40, 1000, 90);
     lv_obj_set_width(ui_Spinner1, 80);
     lv_obj_set_height(ui_Spinner1, 80);
     lv_obj_set_align(ui_Spinner1, LV_ALIGN_CENTER);
     lv_obj_clear_flag(ui_Spinner1, LV_OBJ_FLAG_CLICKABLE);      /// Flags
 
-    ui_Panel41 = lv_obj_create(ui_Panel42);
+    ui_Panel41 = lv_obj_create(ui_Panel40);
     lv_obj_set_width(ui_Panel41, 240);
     lv_obj_set_height(ui_Panel41, 35);
     lv_obj_set_x(ui_Panel41, 0);
@@ -253,7 +253,7 @@ void ui_AppScreen_screen_init(void)
     lv_label_set_text(ui_Label35, "X");
     lv_obj_set_style_text_font(ui_Label35, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Label34 = lv_label_create(ui_Panel42);
+    ui_Label34 = lv_label_create(ui_Panel40);
     lv_obj_set_width(ui_Label34, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Label34, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_x(ui_Label34, 0);
@@ -262,14 +262,14 @@ void ui_AppScreen_screen_init(void)
     lv_label_set_text(ui_Label34, "Connecting.......");
     lv_obj_set_style_text_font(ui_Label34, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Panel40 = lv_obj_create(ui_AppScreen);
-    lv_obj_set_width(ui_Panel40, 240);
-    lv_obj_set_height(ui_Panel40, 140);
-    lv_obj_set_align(ui_Panel40, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_Panel40, LV_OBJ_FLAG_HIDDEN);     /// Flags
-    lv_obj_clear_flag(ui_Panel40, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_Panel42 = lv_obj_create(ui_AppScreen);
+    lv_obj_set_width(ui_Panel42, 240);
+    lv_obj_set_height(ui_Panel42, 140);
+    lv_obj_set_align(ui_Panel42, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Panel42, LV_OBJ_FLAG_HIDDEN);     /// Flags
+    lv_obj_clear_flag(ui_Panel42, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_Label36 = lv_label_create(ui_Panel40);
+    ui_Label36 = lv_label_create(ui_Panel42);
     lv_obj_set_width(ui_Label36, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Label36, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_x(ui_Label36, 0);
@@ -278,7 +278,7 @@ void ui_AppScreen_screen_init(void)
     lv_label_set_text(ui_Label36, "Connection to mqtt\nbroker failed!!\nPlease try again");
     lv_obj_set_style_text_font(ui_Label36, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Panel49 = lv_obj_create(ui_Panel40);
+    ui_Panel49 = lv_obj_create(ui_Panel42);
     lv_obj_set_width(ui_Panel49, 240);
     lv_obj_set_height(ui_Panel49, 35);
     lv_obj_set_x(ui_Panel49, 1);

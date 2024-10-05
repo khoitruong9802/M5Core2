@@ -50,14 +50,14 @@ void ui_event_Panel13(lv_event_t * e);
 lv_obj_t * ui_Panel13;
 lv_obj_t * ui_Panel14;
 lv_obj_t * ui_Label10;
-lv_obj_t * ui_Panel42;
+lv_obj_t * ui_Panel40;
 lv_obj_t * ui_Spinner1;
 lv_obj_t * ui_Panel41;
 void ui_event_Button2(lv_event_t * e);
 lv_obj_t * ui_Button2;
 lv_obj_t * ui_Label35;
 lv_obj_t * ui_Label34;
-lv_obj_t * ui_Panel40;
+lv_obj_t * ui_Panel42;
 lv_obj_t * ui_Label36;
 lv_obj_t * ui_Panel49;
 void ui_event_Button3(lv_event_t * e);
@@ -240,7 +240,7 @@ void ui_event_Button2(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        _ui_flag_modify(ui_Panel42, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_Panel40, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
     }
 }
 void ui_event_Button3(lv_event_t * e)
@@ -248,7 +248,7 @@ void ui_event_Button3(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        _ui_flag_modify(ui_Panel40, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_Panel42, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
     }
 }
 void ui_event_Button1(lv_event_t * e)
