@@ -9,10 +9,10 @@
 // MQTT broker details
 const char *mqtt_server = "io.adafruit.com";
 const int mqtt_port = 1883;
-const char *mqtt_user = "";
-const char *mqtt_password = "";
+const char *mqtt_user = "khoitruong9802";
+const char *mqtt_password = "khoitruong9802";
 
-const char *topic_devices = "khoitruong9802/feeds/devices";
+const char *topic_devices  = "khoitruong9802/feeds/devices";
 const char *topic_nutnhan1 = "khoitruong9802/feeds/nutnhan1";
 const char *topic_nutnhan2 = "khoitruong9802/feeds/nutnhan2";
 const char *topic_cambien1 = "khoitruong9802/feeds/cambien1";

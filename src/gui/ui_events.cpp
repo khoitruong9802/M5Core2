@@ -171,6 +171,12 @@ void change_screen_ota(lv_event_t * e)
             }
             
         }
+        else
+        {
+            // remove flag of ui_Panel106 to show  the panel with the message about wifi has no connect
+            _ui_flag_modify(ui_Panel106, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+
+        }
     }
 }
 
@@ -193,6 +199,10 @@ void handle_out_ota_page()
     if(!lv_obj_has_flag(ui_Panel93, LV_OBJ_FLAG_HIDDEN))
     {
         _ui_flag_modify(ui_Panel93, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+    }
+    if(!lv_obj_has_flag(ui_Panel106, LV_OBJ_FLAG_HIDDEN))
+    {
+        _ui_flag_modify(ui_Panel106, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
     }
 }
 

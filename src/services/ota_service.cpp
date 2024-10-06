@@ -1,51 +1,51 @@
 #include "ota_service.h"
 #include <lvgl.h>
-const char* web_server = "";
+const char* web_server = "http://192.168.61.7:4000";
 
 // Function to check for the latest firmware file
 String getLatestFirmwareFileName(const char* Url) 
 {
     HTTPClient http;
     String latestFirmwareFileName = "";
-
+    
     http.begin(String(Url) + "/upload");
     int httpCode = http.GET();
 
-    if (httpCode == HTTP_CODE_OK) 
-    {
-        String payload = http.getString();
-
-        // Find all occurrences of firmware file links in the HTML payload
-        int startIndex = 0;
-        String latestTimestamp = "";
-
-        while ((startIndex = payload.indexOf("<a href=\"/uploads/", startIndex)) != -1) 
+        if (httpCode == HTTP_CODE_OK) 
         {
-            startIndex += 18; // Move to the start of the file name
-            int endIndex = payload.indexOf("\">", startIndex); // Find the end of the file link
+    String payload = http.getString();
 
-            if (endIndex != -1) 
+    // Find all occurrences of firmware file links in the HTML payload
+    int startIndex = 0;
+    String latestTimestamp = "";
+
+    while ((startIndex = payload.indexOf("<a href=\"/uploads/", startIndex)) != -1) 
+    {
+        startIndex += 18; // Move to the start of the file name
+        int endIndex = payload.indexOf("\">", startIndex); // Find the end of the file link
+
+        if (endIndex != -1) 
+        {
+            // Extract the file name
+            String filePath = payload.substring(startIndex, endIndex);
+            
+            // Extract the timestamp part from the file name
+            String timestamp = filePath.substring(0, filePath.indexOf('_'));
+            
+            // Compare with the current latest timestamp
+            if (latestTimestamp == "" || timestamp > latestTimestamp) 
             {
-                // Extract the file name
-                String filePath = payload.substring(startIndex, endIndex);
-                
-                // Extract the timestamp part from the file name
-                String timestamp = filePath.substring(0, filePath.indexOf('_'));
-                
-                // Compare with the current latest timestamp
-                if (latestTimestamp == "" || timestamp > latestTimestamp) 
-                {
-                    latestTimestamp = timestamp;
-                    latestFirmwareFileName = filePath;  // Update the latest firmware file name
-                }
-                
-                startIndex = endIndex; // Move to the next link
-            } 
-            else 
-            {
-                break; // Break if no more links found
+                latestTimestamp = timestamp;
+                latestFirmwareFileName = filePath;  // Update the latest firmware file name
             }
+            
+            startIndex = endIndex; // Move to the next link
+        } 
+        else 
+        {
+            break; // Break if no more links found
         }
+    }
     } 
     else 
     {
