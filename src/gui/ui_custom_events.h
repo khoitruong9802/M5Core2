@@ -17,3 +17,4 @@ void mqtt_update_handler(lv_event_t * e);
 void rtc_update_handler(lv_event_t * e);
 void wifi_update_handler(lv_event_t * e);
 void scan_wifi_handler(lv_event_t * e);
+void click_wifi_handler(lv_event_t *e);

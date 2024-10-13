@@ -72,7 +72,7 @@ void wifi_update_handler(lv_event_t *e) {
   }
 }
 
-static void click_wifi_handler(lv_event_t *e) {
+void click_wifi_handler(lv_event_t *e) {
   lv_event_code_t code = lv_event_get_code(e);
   lv_obj_t *obj = lv_event_get_target(e);
   if (code == LV_EVENT_CLICKED) {

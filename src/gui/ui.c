@@ -549,6 +549,7 @@ void ui_event_Button27(lv_event_t * e)
     }
 }
 
+
 ///////////////////// SCREENS ////////////////////
 
 void ui_init(void)
