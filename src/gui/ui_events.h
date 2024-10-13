@@ -19,6 +19,8 @@ void change_brightness(lv_event_t * e);
 void change_screen_ota(lv_event_t * e);
 void handle_out_ota_page();
 void handle_start_ota();
+void deleteWifiScreen();
+extern uint32_t MY_LV_EVENT_SCAN_WIFI;
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

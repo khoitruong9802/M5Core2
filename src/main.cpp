@@ -37,7 +37,6 @@ void setup()
   xTaskCreatePinnedToCore(ui_start, "ui_start", 4096, NULL, 5, NULL, tskNO_AFFINITY);
   xTaskCreatePinnedToCore(rtc_service, "rtc_service", 4096, NULL, 5, NULL, tskNO_AFFINITY);
   xTaskCreatePinnedToCore(bottom_button_service, "bottom_button_service", 2048, NULL, 5, NULL, tskNO_AFFINITY);
-  // xTaskCreatePinnedToCore(ota_checking_update, "ota_checking_update", 2048, NULL, 5, NULL, tskNO_AFFINITY);
 }
 
 void loop()

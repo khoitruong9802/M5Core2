@@ -6,11 +6,16 @@
 #include "ui.h"
 #include <M5Unified.h>
 #include "global.h"
+#include "custom_widget.h"
 #include "../services/mqtt_service.h"
 #include "../services/wifi_service.h"
 #include "../m5helper/brightness.h"
 #include "services/ota_service.h"
+#include "esp_task_wdt.h"
 
+uint32_t MY_LV_EVENT_SCAN_WIFI = lv_event_register_id();
+lv_obj_t * btn;
+lv_obj_t * btn_label;
 
 
 const char *get_json_device(uint8_t device1_status, uint8_t device2_status) {
@@ -97,26 +102,75 @@ void cancel_start_mqtt(lv_event_t *e)
     }
 }
 
-void scan_network(lv_event_t *e)
+static void click_wifi_handler(lv_event_t *e) {
+  lv_event_code_t code = lv_event_get_code(e);
+  lv_obj_t *obj = lv_event_get_target(e);
+  if (code == LV_EVENT_CLICKED) {
+    Serial.printf("Clicked: %s", lv_list_get_btn_text(custom_ui_ListOfWifi, obj));
+    lv_label_set_text(wifi_name_label, lv_list_get_btn_text(custom_ui_ListOfWifi, obj));
+    _ui_flag_modify(enter_password_panel, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+  }
+}
+void deleteWifiScreen()
 {
-    // Your code here
+    // Clean all children of the parent (removes any existing buttons)
+    lv_obj_clean(custom_ui_ListOfWifi);  
+}
+void scan_network(lv_event_t *e) {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
-    if (event_code == LV_EVENT_CLICKED)
-    {
-        TaskHandle_t scan_wifi_task = xTaskGetHandle("scan_wifi");
-        if (scan_wifi_task != NULL)
-        {
-            Serial.println("scan_wifi has created");
+    
+    if (event_code == LV_EVENT_CLICKED) {
+        // Disable the button to prevent multiple clicks
+        lv_obj_add_state(target, LV_STATE_DISABLED);
+
+
+        list_wifi_widget_init();
+        enter_password_widget_init();
+        esp_task_wdt_init(100, true);
+        Serial.printf("scan start on core: %d\n", xPortGetCoreID());
+
+        // Start Wi-Fi scan and get the number of networks found
+        int n = WiFi.scanNetworks();
+        Serial.println("scan done");
+
+        if (n == 0) {
+            Serial.println("no networks found");
+        } else {
+            for (int i = 0; i < 5; ++i) {
+                String wifi_name = WiFi.SSID(i);
+                Serial.println(wifi_name);
+                const char* wifi_name_cstr = wifi_name.c_str();
+
+                btn = lv_btn_create(custom_ui_ListOfWifi);
+                lv_obj_set_width(btn, 100);
+                lv_obj_set_height(btn, 50);
+                lv_obj_set_x(btn, 0);
+                lv_obj_set_y(btn, 58);
+                lv_obj_set_align(btn, LV_ALIGN_CENTER);
+                lv_obj_add_flag(btn, LV_OBJ_FLAG_SCROLL_ON_FOCUS);
+                lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
+
+                btn_label = lv_label_create(btn);
+                lv_obj_set_width(btn_label, LV_SIZE_CONTENT);
+                lv_obj_set_height(btn_label, LV_SIZE_CONTENT);
+                lv_obj_set_align(btn_label, LV_ALIGN_CENTER);
+                lv_label_set_text(btn_label, wifi_name_cstr);
+                lv_obj_add_event_cb(btn, click_wifi_handler, LV_EVENT_CLICKED, NULL);
+                
+                // Yield to prevent WDT from triggering
+                vTaskDelay(10 / portTICK_PERIOD_MS);
+            }
+            Serial.println("Wi-Fi scan complete.");
         }
-        else
-        {
-            xTaskCreatePinnedToCore(scan_wifi, "scan_wifi", 8192, NULL, 5, NULL, 0);
-        }
+
+        lv_obj_clear_state(target, LV_STATE_DISABLED);
         _ui_screen_change(&ui_WifiScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_WifiScreen_screen_init);
+
+        // Reset the watchdog timer (important to prevent WDT)
+        vTaskDelay(10 / portTICK_PERIOD_MS);  // Adjust delay as needed
     }
 }
-
 void change_screen_ota(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);

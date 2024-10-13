@@ -11,7 +11,7 @@ uint32_t MY_LV_EVENT_MQTT_UPDATE_SWITCH = lv_event_register_id();
 uint32_t MY_LV_EVENT_RTC_UPDATE_LABEL = lv_event_register_id();
 uint32_t MY_LV_EVENT_WIFI_OFF = lv_event_register_id();
 uint32_t MY_LV_EVENT_WIFI_ON = lv_event_register_id();
-uint32_t MY_LV_EVENT_SCAN_WIFI = lv_event_register_id();
+// uint32_t MY_LV_EVENT_SCAN_WIFI = lv_event_register_id();
 
 void mqtt_connect_ok_handler(lv_event_t *e) {
   lv_event_code_t event_code = lv_event_get_code(e);

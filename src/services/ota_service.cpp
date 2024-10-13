@@ -1,6 +1,6 @@
 #include "ota_service.h"
 #include <lvgl.h>
-const char* web_server = "http://192.168.61.7:4000";
+const char* web_server = "http://192.168.179.7:4000";
 
 // Function to check for the latest firmware file
 String getLatestFirmwareFileName(const char* Url) 

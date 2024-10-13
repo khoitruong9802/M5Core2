@@ -11,4 +11,4 @@ typedef struct {
 } WifiCredentials;
 
 void wifi_service(void *parameter);
-void scan_wifi(void *parameter);
+void scan_wifi();
