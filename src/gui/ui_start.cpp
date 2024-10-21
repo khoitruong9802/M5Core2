@@ -5,7 +5,7 @@
 #include "ui.h"
 #include "ui_custom_events.h"
 #include "custom_widget.h"
-
+#include "services/wifi_service.h"
 void custom_event_init() {
   lv_obj_add_event_cb(ui_Panel40, mqtt_connect_ok_handler, (lv_event_code_t)MY_LV_EVENT_MQTT_CONNECT_OK, NULL);
   lv_obj_add_event_cb(ui_Label22, mqtt_update_handler, (lv_event_code_t)MY_LV_EVENT_MQTT_UPDATE_LABEL, NULL);
@@ -23,6 +23,7 @@ void custom_event_init() {
 void custom_widget_init() {
   list_wifi_widget_init();
   enter_password_widget_init();
+  init_scan_wifi_list_element();
 }
 
 int count = 0;
