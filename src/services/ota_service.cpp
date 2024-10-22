@@ -49,7 +49,7 @@ String getLatestFirmwareFileName(const char* Url)
     } 
     else 
     {
-        Serial.printf("Failed to get the firmware list, error code: %d\n", httpCode);
+        print(PRINTF,"Failed to get the firmware list, error code: %d\n", httpCode);
     }
 
     http.end();
@@ -58,10 +58,10 @@ String getLatestFirmwareFileName(const char* Url)
 
 void ota_update(void *parameter)
 {
-    Serial.println("Start OTA");
+    print(PRINTLN,"Start OTA");
     String filename = getLatestFirmwareFileName(web_server);
     write_new_ota_version(filename);
-    Serial.printf("Start installing: %s\n", filename.c_str());
+    print(PRINTF,"Start installing: %s\n", filename.c_str());
 
     String firmwareURL = web_server + String("/uploads/") + filename;
     HTTPClient http;
@@ -75,43 +75,43 @@ void ota_update(void *parameter)
 
         if (canBegin) 
         {
-            Serial.println("Begin OTA update");
+            print(PRINTLN,"Begin OTA update");
             WiFiClient* client = http.getStreamPtr();
             size_t written = Update.writeStream(*client);
 
             if (written == contentLength) 
             {
-                Serial.println("OTA update successful!");
+                print(PRINTLN,"OTA update successful!");
             } else 
             {
-                Serial.printf("OTA update failed. Written %d / %d bytes\n", written, contentLength);
+                print(PRINTF,"OTA update failed. Written %d / %d bytes\n", written, contentLength);
             }
 
             if (Update.end()) 
             {
                 if (Update.isFinished()) 
                 {
-                    Serial.println("Update completed. Rebooting...");
+                    print(PRINTLN,"Update completed. Rebooting...");
                     ESP.restart();
                 } else 
                 {
-                    Serial.println("Update not finished. Something went wrong.");
+                    print(PRINTLN,"Update not finished. Something went wrong.");
                 }
             } else 
             {
-                Serial.printf("Update failed. Error #: %d\n", Update.getError());
+                print(PRINTF,"Update failed. Error #: %d\n", Update.getError());
             }
         } else 
         {
-            Serial.println("Not enough space to start OTA update");
+            print(PRINTLN,"Not enough space to start OTA update");
         }
     } else 
     {
-        Serial.printf("Failed to download firmware, error code: %d\n", httpCode);
+        print(PRINTF,"Failed to download firmware, error code: %d\n", httpCode);
     }
 
     http.end();
-    Serial.println("End OTA");
+    print(PRINTLN,"End OTA");
 }
 
 void ota_checking_update(void *paramter)
@@ -119,15 +119,15 @@ void ota_checking_update(void *paramter)
 
     bool alert_screen_flag =  false;
 
-    Serial.println("Start OTA checking update");
+    print(PRINTLN,"Start OTA checking update");
     for(;;)
     {
         if (!SPIFFS.begin(true)) 
         {  // true to format the file system if mounting fails
-            Serial.println("SPIFFS Mount Failed");
+            print(PRINTLN,"SPIFFS Mount Failed");
         } else 
         {
-            Serial.println("SPIFFS Mount Success");
+            print(PRINTLN,"SPIFFS Mount Success");
             break;
         }
     }
@@ -136,10 +136,10 @@ void ota_checking_update(void *paramter)
     for(;;)
     {
         String filename = getLatestFirmwareFileName(web_server);
-        Serial.println("The original:");
-        Serial.println(line);
-        Serial.println("The new:");
-        Serial.println(filename);
+        print(PRINTLN,"The original:");
+        print(PRINTLN,line.c_str());
+        print(PRINTLN,"The new:");
+        print(PRINTLN,filename.c_str());
         String name_of_old_file;
         String name_of_new_file;
         for(int i = 0; i <  filename.length() &&  i < line.length(); i++){
@@ -153,7 +153,7 @@ void ota_checking_update(void *paramter)
             {
                 alert_screen_flag = ALERT_SCREEN_OFF;
             }
-            Serial.println("No change!");
+            print(PRINTLN,"No change!");
         } 
         else 
         {
@@ -163,7 +163,7 @@ void ota_checking_update(void *paramter)
                 alert_screen_flag = ALERT_SCREEN_ON;
                 _ui_flag_modify(ui_Panel100, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
             }
-            Serial.println("changed!");
+            print(PRINTLN,"changed!");
         }
         delay(3000);
     }
@@ -173,11 +173,11 @@ void write_new_ota_version(String new_ota_version)
 {
     File file = SPIFFS.open("/firmware_version.txt", "w");
     if (!file) {
-        Serial.println("Failed to open file for writing");
+        print(PRINTLN,"Failed to open file for writing");
     } else {
         file.println(new_ota_version);  // Write the filename to the file
         file.close();            // Close the file after writing
-        Serial.println("File written and closed successfully");
+        print(PRINTLN,"File written and closed successfully");
     }
 
 }

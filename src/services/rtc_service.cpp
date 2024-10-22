@@ -1,7 +1,7 @@
 #include "rtc_service.h"
 #include <lvgl.h>
 #include "../gui/ui_custom_events.h"
-
+#include "../global.h"
 #define MAX_TIME_SERVER_CONNECT_TIMES 5
 
 #define WIFI_SSID "Mi tom thanh long"
@@ -20,22 +20,22 @@ void update_time_from_server()
   uint8_t connect_times = 0;
   while (WiFi.status() != WL_CONNECTED && connect_times < MAX_TIME_SERVER_CONNECT_TIMES)
   {
-    Serial.println("Connect to wifi to sync time");
+    print(PRINTLN,"Connect to wifi to sync time");
     delay(2000);
   }
 
   if (WiFi.status() == WL_CONNECTED)
   {
     configTzTime(NTP_TIMEZONE, NTP_SERVER1, NTP_SERVER2, NTP_SERVER3);
-    Serial.print("NTP:");
+    print(PRINT,"NTP:");
 
     while (sntp_get_sync_status() != SNTP_SYNC_STATUS_COMPLETED)
     {
-      Serial.print(".");
+      print(PRINT,".");
       delay(1000);
     }
 
-    Serial.println("\r\nNTP Connected.");
+    print(PRINTLN,"\r\nNTP Connected.");
 
     time_t t = time(nullptr) + 1; // Advance one second.
     while (t > time(nullptr))
@@ -49,7 +49,7 @@ void rtc_service(void *parameter)
 {
   if (!M5.Rtc.isEnabled())
   {
-    Serial.println("RTC not found.");
+    print(PRINTLN,"RTC not found.");
     vTaskDelete(NULL);
   }
 
@@ -61,7 +61,7 @@ void rtc_service(void *parameter)
     delay(1000);
 
     auto dt = M5.Rtc.getDateTime();
-    // Serial.printf("RTC:%04d/%s/%02d (%s)  %02d:%02d:%02d\r\n", dt.date.year, mon[dt.date.month], dt.date.date, wd[dt.date.weekDay], dt.time.hours, dt.time.minutes, dt.time.seconds);
+    // print(PRINTF,"RTC:%04d/%s/%02d (%s)  %02d:%02d:%02d\r\n", dt.date.year, mon[dt.date.month], dt.date.date, wd[dt.date.weekDay], dt.time.hours, dt.time.minutes, dt.time.seconds);
 
     char *time1 = new char[6];
     snprintf(time1, 6, "%02d:%02d", dt.time.hours, dt.time.minutes);
@@ -76,7 +76,7 @@ void rtc_service(void *parameter)
     // auto t = time(nullptr);
     // {
     //   auto tm = gmtime(&t); // for UTC.
-    //   Serial.printf("ESP32 UTC  :%04d/%02d/%02d (%s)  %02d:%02d:%02d\r\n",
+    //   print(PRINTF,"ESP32 UTC  :%04d/%02d/%02d (%s)  %02d:%02d:%02d\r\n",
     //                 tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday,
     //                 wd[tm->tm_wday],
     //                 tm->tm_hour, tm->tm_min, tm->tm_sec);
@@ -84,7 +84,7 @@ void rtc_service(void *parameter)
 
     // {
     //   auto tm = localtime(&t); // for local timezone.
-    //   Serial.printf("ESP32 %s:%04d/%02d/%02d (%s)  %02d:%02d:%02d\r\n", NTP_TIMEZONE,
+    //   print(PRINTF,"ESP32 %s:%04d/%02d/%02d (%s)  %02d:%02d:%02d\r\n", NTP_TIMEZONE,
     //                 tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday,
     //                 wd[tm->tm_wday],
     //                 tm->tm_hour, tm->tm_min, tm->tm_sec);

@@ -17,7 +17,7 @@ void setup()
   // Check for creation errors (optional)
   if (lvgl_mutex == NULL)
   {
-    Serial.println("Can not create mutex");
+    print(PRINTLN,"Can not create mutex");
   }
 
   m5::M5Unified::config_t cfg = M5.config();

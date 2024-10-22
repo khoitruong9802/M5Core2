@@ -36,7 +36,7 @@ void ui_start(void *parameter) {
 
   for (;;) {
     if (count == 100) {
-      Serial.printf("ui handler run on core: %d\n", xPortGetCoreID());
+      print(PRINTF,"ui handler run on core: %d\n", xPortGetCoreID());
       count = 0;
     }
     count++;
@@ -47,7 +47,7 @@ void ui_start(void *parameter) {
       // Release the mutex after critical section
       xSemaphoreGive(lvgl_mutex);
     } else {
-      Serial.println("ui handler can not require semaphore");
+      print(PRINTLN,"ui handler can not require semaphore");
     }
     delay(10);
 

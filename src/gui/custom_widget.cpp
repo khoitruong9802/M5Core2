@@ -2,6 +2,7 @@
 #include <M5Unified.h>
 
 #include "../services/wifi_service.h"
+#include "../global.h"
 #include "ui.h"
 
 static void ta_event_cb(lv_event_t *e);
@@ -18,7 +19,7 @@ static void ui_event_esc_btn(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED)
     {
-        Serial.println("Button escape clicked");
+        print(PRINTLN,"Button escape clicked");
         lv_indev_wait_release(lv_indev_get_act());
         _ui_flag_modify(enter_password_panel, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
     }
@@ -101,7 +102,7 @@ static void ta_event_cb(lv_event_t *e) {
   }
 
   else if (code == LV_EVENT_READY) {
-    Serial.printf("username: %s, password: %s", lv_label_get_text(wifi_name_label), lv_textarea_get_text(ta));
+    print(PRINTF,"username: %s, password: %s", lv_label_get_text(wifi_name_label), lv_textarea_get_text(ta));
     WifiCredentials *wifiCredentials = new WifiCredentials;
     wifiCredentials->username = lv_label_get_text(wifi_name_label);
     wifiCredentials->password = lv_textarea_get_text(ta);

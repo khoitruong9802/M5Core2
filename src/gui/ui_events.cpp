@@ -25,7 +25,7 @@ void button2_on(lv_event_t *e)
     client.publish("khoitruong9802/feeds/nutnhan2", "1");
 
     // const char *publish_data = get_json_device(0, 1);
-    // Serial.println(publish_data);
+    // print(PRINTLN,publish_data);
     // client.publish("khoitruong9802/feeds/devices", publish_data);
     // delete[] publish_data;
 }
@@ -72,7 +72,7 @@ void change_screen_mqtt(lv_event_t *e)
             TaskHandle_t mqtt_task = xTaskGetHandle("mqtt_service");
             if (mqtt_task != NULL)
             {
-                Serial.println("Mqtt has created");
+                print(PRINTLN,"Mqtt has created");
                 _ui_screen_change(&ui_MqttScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_MqttScreen_screen_init);
             }
             else
@@ -107,7 +107,7 @@ void scan_network(lv_event_t *e)
         TaskHandle_t scan_wifi_task = xTaskGetHandle("scan_wifi");
         if (scan_wifi_task != NULL)
         {
-            Serial.println("scan_wifi has created");
+            print(PRINTLN,"scan_wifi has created");
         }
         else
         {
@@ -132,27 +132,27 @@ void change_screen_ota(lv_event_t * e)
             {
                 if (!SPIFFS.begin(true)) 
                 {  // true to format the file system if mounting fails
-                    Serial.println("SPIFFS Mount Failed");
+                    print(PRINTLN,"SPIFFS Mount Failed");
                 } else 
                 {
-                    Serial.println("SPIFFS Mount Success");
+                    print(PRINTLN,"SPIFFS Mount Success");
                     break;
                 }
             }
             File file = SPIFFS.open("/firmware_version.txt", "r");
             if (!file) 
             {
-                Serial.println("Failed to open version file for checking");
+                print(PRINTLN,"Failed to open version file for checking");
 
             } else 
             {
-                Serial.println("File opened successfully");
+                print(PRINTLN,"File opened successfully");
                 String line = file.readStringUntil('\n');
                 file.close();
-                Serial.println("The original:");
-                Serial.println(line);
-                Serial.println("The new:");
-                Serial.println(filename);
+                print(PRINTLN,"The original:");
+                print(PRINTLN,line.c_str());
+                print(PRINTLN,"The new:");
+                print(PRINTLN,filename.c_str());
                 String name_of_old_file;
                 String name_of_new_file;
                 for(int i = 0; i <  filename.length() &&  i < line.length(); i++){
@@ -166,7 +166,7 @@ void change_screen_ota(lv_event_t * e)
                 else
                 {
                     _ui_flag_modify(ui_Panel104, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-                    Serial.println("No change!");
+                    print(PRINTLN,"No change!");
                 }
             }
             

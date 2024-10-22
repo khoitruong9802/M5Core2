@@ -17,7 +17,7 @@ void mqtt_connect_ok_handler(lv_event_t *e) {
   lv_event_code_t event_code = lv_event_get_code(e);
   lv_obj_t *target = lv_event_get_target(e);
   uint8_t *data = (uint8_t *)e->param;
-  Serial.printf("data = %d, pointer = %p, pointer to = %p\n", *data, &data, data);
+  print(PRINTF,"data = %d, pointer = %p, pointer to = %p\n", *data, &data, data);
   if (event_code == MY_LV_EVENT_MQTT_CONNECT_OK) {
     if (*data == 0) {
       _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_AppScreen_screen_init);
@@ -40,13 +40,13 @@ void mqtt_update_handler(lv_event_t *e) {
     delete[] data;
   } else if (event_code == MY_LV_EVENT_MQTT_UPDATE_SWITCH) {
     uint8_t *data = (uint8_t *)e->param;
-    Serial.printf("data = %d", *data);
+    print(PRINTF,"data = %d", *data);
     if (*data == 48) {
       _ui_state_modify(target, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
-      Serial.printf("data = 0");
+      print(PRINTF,"data = 0");
     } else if (*data == 49) {
       _ui_state_modify(target, LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
-      Serial.printf("data = 1");
+      print(PRINTF,"data = 1");
     }
     delete data;
   }
@@ -76,7 +76,7 @@ void click_wifi_handler(lv_event_t *e) {
   lv_event_code_t code = lv_event_get_code(e);
   lv_obj_t *obj = lv_event_get_target(e);
   if (code == LV_EVENT_CLICKED) {
-    Serial.printf("Clicked: %s", lv_list_get_btn_text(custom_ui_ListOfWifi, obj));
+    print(PRINTF,"Clicked: %s", lv_list_get_btn_text(custom_ui_ListOfWifi, obj));
     lv_label_set_text(wifi_name_label, lv_list_get_btn_text(custom_ui_ListOfWifi, obj));
     _ui_flag_modify(enter_password_panel, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
   }
@@ -86,13 +86,13 @@ void scan_wifi_handler(lv_event_t *e) {
   lv_event_code_t event_code = lv_event_get_code(e);
   lv_obj_t *target = lv_event_get_target(e);
   ListOfWifi *list_of_wifi = (ListOfWifi *)e->param;
-  Serial.println("in scan wifi handler");
-  // Serial.printf("data = %s, pointer = %p, pointer to = %p\n", data, &data, data);
+  print(PRINTLN,"in scan wifi handler");
+  // print(PRINTF,"data = %s, pointer = %p, pointer to = %p\n", data, &data, data);
   if (list_of_wifi == NULL) {
-    Serial.println("list of wifi is null");
+    print(PRINTLN,"list of wifi is null");
   }
   if (list_of_wifi->name_of_wifi == NULL) {
-    Serial.println("name of wifi is null");
+    print(PRINTLN,"name of wifi is null");
   }
 
   lv_obj_t *btn;
@@ -100,7 +100,7 @@ void scan_wifi_handler(lv_event_t *e) {
   if (event_code == MY_LV_EVENT_SCAN_WIFI) {
     if (xSemaphoreTake(lvgl_mutex, portMAX_DELAY) == pdTRUE) {
       for (int i = 0; i < *list_of_wifi->number_of_wifi; i++) {
-        Serial.printf("%s\n", list_of_wifi->name_of_wifi[i]);
+        print(PRINTF,"%s\n", list_of_wifi->name_of_wifi[i]);
 
         // Critical section (access shared resource here)
         btn = lv_list_add_btn(custom_ui_ListOfWifi, NULL, list_of_wifi->name_of_wifi[i]);
@@ -110,7 +110,7 @@ void scan_wifi_handler(lv_event_t *e) {
       }
       xSemaphoreGive(lvgl_mutex);
     } else {
-      Serial.println("fail to render wifi name");
+      print(PRINTLN,"fail to render wifi name");
     }
   }
 
@@ -123,14 +123,14 @@ void scan_wifi_handler(lv_event_t *e) {
   //     // Free the array of char pointers
   //     delete[] list_of_wifi->name_of_wifi;
   //   } else {
-  //     Serial.println("name of wifi is null");
+  //     print(PRINTLN,"name of wifi is null");
   //   }
   //   // Free the integer
   //   delete list_of_wifi->number_of_wifi;
   //   // Free the ListOfWifi object itself
   //   delete list_of_wifi;
   // } else {
-  //   Serial.println("list of wifi is null");
+  //   print(PRINTLN,"list of wifi is null");
   // }
-  Serial.println("End scan!!!!!!!!!!!!!");
+  print(PRINTLN,"End scan!!!!!!!!!!!!!");
 }

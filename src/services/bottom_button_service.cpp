@@ -12,8 +12,8 @@ void bottom_button_service(void *parameter) {
     delay(20);
 
     if (M5.BtnPWR.wasClicked()) {
-      Serial.println("Btn PWR");
-      // Serial.println(m5brightness);
+      print(PRINTLN,"Btn PWR");
+      // print(PRINTLN,m5brightness);
       if (m5brightness == 0) {
         set_brightness(prev_m5brightness);
       } else {
