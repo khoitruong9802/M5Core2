@@ -3,7 +3,6 @@
 #include <M5Unified.h>
 
 #include "../global.h"
-#include "../gui/ui_custom_events.h"
 #include "../m5helper/brightness.h"
 
 void bottom_button_service(void *parameter) {
@@ -12,7 +11,7 @@ void bottom_button_service(void *parameter) {
     delay(20);
 
     if (M5.BtnPWR.wasClicked()) {
-      print(PRINTLN,"Btn PWR");
+      print(PRINTLN, "Btn PWR");
       // print(PRINTLN,m5brightness);
       if (m5brightness == 0) {
         set_brightness(prev_m5brightness);
