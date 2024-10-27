@@ -12,3 +12,4 @@ typedef struct {
 
 void wifi_service(void *parameter);
 void scan_wifi(void *parameter);
+void init_scan_wifi_list_element();
