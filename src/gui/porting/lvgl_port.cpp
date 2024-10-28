@@ -1,6 +1,7 @@
+#include "lvgl_port.h"
+
 #include <M5Unified.h>
 #include <lvgl.h>
-#include "lvgl_driver.h"
 
 /*Change to your screen resolution*/
 static const uint16_t screenWidth = 320;
@@ -10,8 +11,7 @@ static lv_disp_draw_buf_t draw_buf;
 static lv_color_t buf[screenWidth * screenHeight / 10];
 
 /* Display flushing */
-void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p)
-{
+void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p) {
   uint32_t w = (area->x2 - area->x1 + 1);
   uint32_t h = (area->y2 - area->y1 + 1);
 
@@ -24,22 +24,17 @@ void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color
 }
 
 /*Read the touchpad*/
-void my_touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
-{
-  if (!M5.Display.touch())
-  {
+void my_touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data) {
+  if (!M5.Display.touch()) {
     Serial.println("Touch not found.");
     return;
   }
 
   uint16_t touchX = 0, touchY = 0;
 
-  if (!M5.Display.getTouch(&touchX, &touchY))
-  {
+  if (!M5.Display.getTouch(&touchX, &touchY)) {
     data->state = LV_INDEV_STATE_REL;
-  }
-  else
-  {
+  } else {
     data->state = LV_INDEV_STATE_PR;
 
     /*Set the coordinates*/
@@ -53,8 +48,7 @@ void my_touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
 //   Serial.println(buf);
 // }
 
-void lvgl_driver_init()
-{
+void lvgl_driver_init() {
   lv_disp_draw_buf_init(&draw_buf, buf, NULL, screenWidth * screenHeight / 10);
 
   /*Initialize the display*/
