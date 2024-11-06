@@ -32,6 +32,7 @@ SET(SOURCES screens/ui_MainScreen.c
     images/ui_img_656191529.c
     images/ui_img_scheduler_icon_png.c
     images/ui_img_pump_icon_png.c
-    images/ui_img_brightness_bar_icon_png.c)
+    images/ui_img_brightness_bar_icon_png.c
+    images/ui_img_farm_icon_png.c)
 
 add_library(ui ${SOURCES})

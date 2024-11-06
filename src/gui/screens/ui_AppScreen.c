@@ -127,7 +127,7 @@ void ui_AppScreen_screen_init(void)
     lv_obj_clear_flag(ui_Panel12, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_bg_color(ui_Panel12, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_Panel12, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_img_src(ui_Panel12, &ui_img_mqtt_icon_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_src(ui_Panel12, &ui_img_farm_icon_png, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_color(ui_Panel12, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_Panel12, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -135,7 +135,7 @@ void ui_AppScreen_screen_init(void)
     lv_obj_set_width(ui_Label8, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Label8, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_Label8, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Label8, "MQTT");
+    lv_label_set_text(ui_Label8, "Farmer");
     lv_obj_set_style_text_color(ui_Label8, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_Label8, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Label8, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);

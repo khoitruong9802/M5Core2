@@ -166,3 +166,20 @@ void handle_start_ota() {
   TaskHandle_t ota_task = xTaskGetHandle("ota_update");
   xTaskCreate(ota_update, "ota_update", 8192, NULL, 1, &ota_task);
 }
+
+
+void schedule_screen_init(lv_event_t * e)
+{
+    // Check wifi connection
+    if(WiFi.status() != WL_CONNECTED)
+    {
+        // Pop-up alert table to inform user of wifi connection issue
+         _ui_flag_modify(ui_NotifyWifiIssuesPopUp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+    else
+    {
+        // Initialize the schedule screen
+         _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
+
+    }
+}

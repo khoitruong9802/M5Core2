@@ -221,6 +221,20 @@ lv_obj_t * ui_Label108;
 lv_obj_t * ui_Label109;
 lv_obj_t * ui_Label110;
 
+//  SCREEN: ui_ScheduleScreen
+void ui_ScheduleScreen_screen_init(void);
+void ui_event_ScheduleScreen(lv_event_t * e);
+lv_obj_t *  ui_ScheduleScreen;
+lv_obj_t *  ui_MainScheduleScreen;
+lv_obj_t *  ui_TitleScheduleScreen;
+lv_obj_t *  ui_NotifyWifiIssuesPopUp;
+lv_obj_t *  ui_NotifyWifiIssuesPopUpHeaderPanel;
+void ui_event_NotifyWifiIssuesPopUpHeader_X_Button(lv_event_t * e);
+lv_obj_t *  ui_NotifyWifiIssuesPopUpHeader_X_Button;
+lv_obj_t *  ui_NotifyWifiIssuesPopUpHeader_X_Label;
+lv_obj_t *  ui_NotifyWifiIssuesPopUpMessageLabel;
+
+
 ///////////////////// TEST LVGL SETTINGS ////////////////////
 #if LV_COLOR_DEPTH != 16
     #error "LV_COLOR_DEPTH should be 16bit to match SquareLine Studio's settings"
@@ -271,7 +285,7 @@ void ui_event_Panel11(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        change_screen_mqtt(e);
+        schedule_screen_init(e);
     }
 }
 void ui_event_Panel13(lv_event_t * e)
@@ -549,6 +563,28 @@ void ui_event_Button27(lv_event_t * e)
     }
 }
 
+void ui_event_ScheduleScreen(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT && lv_obj_has_flag(ui_Panel93, LV_OBJ_FLAG_HIDDEN)) 
+    {
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_AppScreen_screen_init);
+    }
+
+}
+
+
+void ui_event_NotifyWifiIssuesPopUpHeader_X_Button(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED)
+    {
+        _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_AppScreen_screen_init);
+    }
+}
 
 ///////////////////// SCREENS ////////////////////
 

@@ -63,6 +63,9 @@
         "streambuf": "cpp",
         "thread": "cpp",
         "cinttypes": "cpp",
-        "typeinfo": "cpp"
-    }
+        "typeinfo": "cpp",
+        "spiffs.h": "c",
+        "stdarg.h": "c"
+    },
+    "window.zoomLevel": -2
 }

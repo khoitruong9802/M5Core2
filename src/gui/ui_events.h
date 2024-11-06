@@ -19,6 +19,7 @@ void change_brightness(lv_event_t * e);
 void change_screen_ota(lv_event_t * e);
 void handle_out_ota_page();
 void handle_start_ota();
+void schedule_screen_init(lv_event_t * e);
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

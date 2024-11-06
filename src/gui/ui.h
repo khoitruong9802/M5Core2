@@ -222,7 +222,18 @@ void ui_event_WifiScreen(lv_event_t * e);
 extern lv_obj_t * ui_WifiScreen;
 extern lv_obj_t * ui_Panel26;
 extern lv_obj_t * ui____initial_actions0;
-
+// SCREEN: ui_ScheduleScreen
+void ui_ScheduleScreen_screen_init(void);
+void ui_event_ScheduleScreen(lv_event_t * e);
+extern lv_obj_t *  ui_ScheduleScreen;
+extern lv_obj_t *  ui_MainScheduleScreen;
+extern lv_obj_t *  ui_TitleScheduleScreen;
+extern lv_obj_t *  ui_NotifyWifiIssuesPopUp;
+extern lv_obj_t *  ui_NotifyWifiIssuesPopUpHeaderPanel;
+extern lv_obj_t *  ui_NotifyWifiIssuesPopUpHeader_X_Button;
+void ui_event_NotifyWifiIssuesPopUpHeader_X_Button(lv_event_t * e);
+extern lv_obj_t *  ui_NotifyWifiIssuesPopUpHeader_X_Label;
+extern lv_obj_t *  ui_NotifyWifiIssuesPopUpMessageLabel;
 
 LV_IMG_DECLARE(ui_img_background_png);    // assets/background.png
 LV_IMG_DECLARE(ui_img_125102533);    // assets/bluetooth-sign_icon.png
@@ -245,6 +256,7 @@ LV_IMG_DECLARE(ui_img_scheduler_icon_png);    // assets/scheduler_icon.png
 LV_IMG_DECLARE(ui_img_pump_icon_png);    // assets/pump_icon.png
 LV_IMG_DECLARE(ui_img_brightness_bar_icon_png);    // assets/brightness_bar_icon.png
 LV_IMG_DECLARE(ui_img_loop_png);   
+LV_IMG_DECLARE(ui_img_farm_icon_png);
 
 
 

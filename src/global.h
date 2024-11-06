@@ -7,6 +7,7 @@
 #include <SPIFFS.h>
 #include <Arduino.h>
 #include <stdarg.h>
+#include <lvgl.h>
 
 extern const char* web_server;
 
