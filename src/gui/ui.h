@@ -228,12 +228,6 @@ void ui_event_ScheduleScreen(lv_event_t * e);
 extern lv_obj_t *  ui_ScheduleScreen;
 extern lv_obj_t *  ui_MainScheduleScreen;
 extern lv_obj_t *  ui_TitleScheduleScreen;
-extern lv_obj_t *  ui_NotifyWifiIssuesPopUp;
-extern lv_obj_t *  ui_NotifyWifiIssuesPopUpHeaderPanel;
-extern lv_obj_t *  ui_NotifyWifiIssuesPopUpHeader_X_Button;
-void ui_event_NotifyWifiIssuesPopUpHeader_X_Button(lv_event_t * e);
-extern lv_obj_t *  ui_NotifyWifiIssuesPopUpHeader_X_Label;
-extern lv_obj_t *  ui_NotifyWifiIssuesPopUpMessageLabel;
 
 LV_IMG_DECLARE(ui_img_background_png);    // assets/background.png
 LV_IMG_DECLARE(ui_img_125102533);    // assets/bluetooth-sign_icon.png

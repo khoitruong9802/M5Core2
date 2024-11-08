@@ -227,12 +227,6 @@ void ui_event_ScheduleScreen(lv_event_t * e);
 lv_obj_t *  ui_ScheduleScreen;
 lv_obj_t *  ui_MainScheduleScreen;
 lv_obj_t *  ui_TitleScheduleScreen;
-lv_obj_t *  ui_NotifyWifiIssuesPopUp;
-lv_obj_t *  ui_NotifyWifiIssuesPopUpHeaderPanel;
-void ui_event_NotifyWifiIssuesPopUpHeader_X_Button(lv_event_t * e);
-lv_obj_t *  ui_NotifyWifiIssuesPopUpHeader_X_Button;
-lv_obj_t *  ui_NotifyWifiIssuesPopUpHeader_X_Label;
-lv_obj_t *  ui_NotifyWifiIssuesPopUpMessageLabel;
 
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
@@ -573,17 +567,6 @@ void ui_event_ScheduleScreen(lv_event_t * e)
         _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_AppScreen_screen_init);
     }
 
-}
-
-
-void ui_event_NotifyWifiIssuesPopUpHeader_X_Button(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_CLICKED)
-    {
-        _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_AppScreen_screen_init);
-    }
 }
 
 ///////////////////// SCREENS ////////////////////

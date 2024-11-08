@@ -8,6 +8,7 @@
 #include "../m5helper/brightness.h"
 #include "../services/mqtt_service.h"
 #include "../services/wifi_service.h"
+#include "../services/schedule_service.h"
 #include "global.h"
 #include "services/ota_service.h"
 #include "ui.h"
@@ -174,12 +175,13 @@ void schedule_screen_init(lv_event_t * e)
     if(WiFi.status() != WL_CONNECTED)
     {
         // Pop-up alert table to inform user of wifi connection issue
-         _ui_flag_modify(ui_NotifyWifiIssuesPopUp, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+         _ui_flag_modify(ui_Panel29, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
     }
     else
     {
         // Initialize the schedule screen
          _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
+         handleScheduleUI();
 
     }
 }

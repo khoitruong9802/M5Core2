@@ -32,52 +32,6 @@ void ui_ScheduleScreen_screen_init(void)
     lv_obj_set_style_text_opa(ui_TitleScheduleScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_TitleScheduleScreen, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_NotifyWifiIssuesPopUp = lv_obj_create(ui_ScheduleScreen);
-    lv_obj_set_width(ui_NotifyWifiIssuesPopUp, 240);
-    lv_obj_set_height(ui_NotifyWifiIssuesPopUp, 140);
-    lv_obj_set_align(ui_NotifyWifiIssuesPopUp, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_NotifyWifiIssuesPopUp, LV_OBJ_FLAG_HIDDEN);     /// Flags to hidden pop-up wifi issues
-    lv_obj_clear_flag(ui_NotifyWifiIssuesPopUp, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-
-    ui_NotifyWifiIssuesPopUpMessageLabel = lv_label_create(ui_NotifyWifiIssuesPopUp);
-    lv_obj_set_width(ui_NotifyWifiIssuesPopUpMessageLabel, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_NotifyWifiIssuesPopUpMessageLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_NotifyWifiIssuesPopUpMessageLabel, 0);
-    lv_obj_set_y(ui_NotifyWifiIssuesPopUpMessageLabel, 16);
-    lv_obj_set_align(ui_NotifyWifiIssuesPopUpMessageLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_NotifyWifiIssuesPopUpMessageLabel, "Please connect to \nwifi to access Farmer!");
-    lv_obj_set_style_text_font(ui_NotifyWifiIssuesPopUpMessageLabel, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_NotifyWifiIssuesPopUpHeaderPanel = lv_obj_create(ui_NotifyWifiIssuesPopUp);
-    lv_obj_set_width(ui_NotifyWifiIssuesPopUpHeaderPanel, 240);
-    lv_obj_set_height(ui_NotifyWifiIssuesPopUpHeaderPanel, 35);
-    lv_obj_set_x(ui_NotifyWifiIssuesPopUpHeaderPanel, 1);
-    lv_obj_set_y(ui_NotifyWifiIssuesPopUpHeaderPanel, -51);
-    lv_obj_set_align(ui_NotifyWifiIssuesPopUpHeaderPanel, LV_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_NotifyWifiIssuesPopUpHeaderPanel, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_NotifyWifiIssuesPopUpHeaderPanel, lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_NotifyWifiIssuesPopUpHeaderPanel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_NotifyWifiIssuesPopUpHeaderPanel, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_NotifyWifiIssuesPopUpHeaderPanel, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_NotifyWifiIssuesPopUpHeader_X_Button = lv_btn_create(ui_NotifyWifiIssuesPopUpHeaderPanel);
-    lv_obj_set_width(ui_NotifyWifiIssuesPopUpHeader_X_Button, 40);
-    lv_obj_set_height(ui_NotifyWifiIssuesPopUpHeader_X_Button, 35);
-    lv_obj_set_x(ui_NotifyWifiIssuesPopUpHeader_X_Button, 97);
-    lv_obj_set_y(ui_NotifyWifiIssuesPopUpHeader_X_Button, 0);
-    lv_obj_set_align(ui_NotifyWifiIssuesPopUpHeader_X_Button, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_NotifyWifiIssuesPopUpHeader_X_Button, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
-    lv_obj_clear_flag(ui_NotifyWifiIssuesPopUpHeader_X_Button, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-
-    ui_NotifyWifiIssuesPopUpHeader_X_Label = lv_label_create(ui_NotifyWifiIssuesPopUpHeader_X_Button);
-    lv_obj_set_width(ui_NotifyWifiIssuesPopUpHeader_X_Label, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_NotifyWifiIssuesPopUpHeader_X_Label, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_NotifyWifiIssuesPopUpHeader_X_Label, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_NotifyWifiIssuesPopUpHeader_X_Label, "X");
-    lv_obj_set_style_text_font(ui_NotifyWifiIssuesPopUpHeader_X_Label, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-
-    lv_obj_add_event_cb(ui_NotifyWifiIssuesPopUpHeader_X_Button, ui_event_NotifyWifiIssuesPopUpHeader_X_Button, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_ScheduleScreen, ui_event_ScheduleScreen, LV_EVENT_ALL, NULL);
     // ui_Panel2 = lv_obj_create(ui_MainScheduleScreen);
     // lv_obj_set_width(ui_Panel2, 320);

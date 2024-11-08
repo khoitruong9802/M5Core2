@@ -8,6 +8,7 @@
 #include <Arduino.h>
 #include <stdarg.h>
 #include <lvgl.h>
+#include <ArduinoJson.h>
 
 extern const char* web_server;
 
