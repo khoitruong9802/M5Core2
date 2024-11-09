@@ -102,10 +102,14 @@ static void ta_event_cb(lv_event_t *e) {
   }
 
   else if (code == LV_EVENT_READY) {
-    print(PRINTF,"username: %s, password: %s", lv_label_get_text(wifi_name_label), lv_textarea_get_text(ta));
     WifiCredentials *wifiCredentials = new WifiCredentials;
-    wifiCredentials->username = lv_label_get_text(wifi_name_label);
-    wifiCredentials->password = lv_textarea_get_text(ta);
+    // Assign the username and password
+    strncpy(wifiCredentials->username, lv_label_get_text(wifi_name_label), sizeof(wifiCredentials->username));
+    wifiCredentials->username[sizeof(wifiCredentials->username) - 1] = '\0'; // Null-terminate just in case
+    strncpy(wifiCredentials->password, lv_textarea_get_text(ta), sizeof(wifiCredentials->password));
+    wifiCredentials->password[sizeof(wifiCredentials->password) - 1] = '\0'; // Null-terminate just in case
+    // Save the credentials to the database
+    print(PRINTF,"username: %s, password: %s\n", wifiCredentials->username, wifiCredentials->password);
     xTaskCreatePinnedToCore(wifi_service, "wifi_service", 2048, (void *)wifiCredentials, 5, NULL, tskNO_AFFINITY);
     lv_textarea_set_text(ta, "");
     _ui_flag_modify(enter_password_panel, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);

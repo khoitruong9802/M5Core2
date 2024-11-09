@@ -4,7 +4,7 @@
 void handleScheduleUI()
 {
     JsonDocument doc;
-    String response = http_get_data("http://192.168.1.3:3000/data");
+    String response = http_get_data("http://192.168.0.106:3000/data");
 
     DeserializationError error = deserializeJson(doc, response);
     if (error) {

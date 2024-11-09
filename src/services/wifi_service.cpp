@@ -8,15 +8,12 @@
 #include "../gui/update/ui_update.h"
 #define WIFI_TIMEOUT 4000  // ms
 
-// WiFi credentials
-const char *ssid = "Mi tom thanh long";
-const char *password = "87654321";
 lv_obj_t *btn[9];
 bool btn_flag = false;
 uint8_t connect_wifi(const char *ssid, const char *password) {
   unsigned long startTime = millis();  // Get the current time
 
-  print(PRINTF, "Connecting to %s", ssid);
+  print(PRINTF, "Connecting to %s with password %s...", ssid, password);
   WiFi.begin(ssid, password);
   while (millis() - startTime < WIFI_TIMEOUT && WiFi.status() != WL_CONNECTED) {
     delay(500);

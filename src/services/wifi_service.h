@@ -6,8 +6,8 @@ typedef struct {
 } ListOfWifi;
 
 typedef struct {
-  const char *username;
-  const char *password;
+    char username[32];
+    char password[32];
 } WifiCredentials;
 
 void wifi_service(void *parameter);
