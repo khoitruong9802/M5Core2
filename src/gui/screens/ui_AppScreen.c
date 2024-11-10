@@ -355,7 +355,7 @@ void ui_AppScreen_screen_init(void)
     lv_obj_set_x(ui_Label33, 0);
     lv_obj_set_y(ui_Label33, 16);
     lv_obj_set_align(ui_Label33, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Label33, "Please connect to \nwifi to use mqtt");
+    lv_label_set_text(ui_Label33, "Please connect to \nwifi to use the app!");
     lv_obj_set_style_text_font(ui_Label33, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Panel39 = lv_obj_create(ui_Panel29);

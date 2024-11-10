@@ -228,6 +228,14 @@ void ui_event_ScheduleScreen(lv_event_t * e);
 extern lv_obj_t *  ui_ScheduleScreen;
 extern lv_obj_t *  ui_MainScheduleScreen;
 extern lv_obj_t *  ui_TitleScheduleScreen;
+extern lv_obj_t *  ui_PanelScheduleItem;
+extern lv_obj_t *  ui_LabelScheduleItem;
+extern lv_obj_t *  ui_PanelScheduleItemIngredient;
+extern lv_obj_t *  ui_LabelScheduleItemIngredient1;
+extern lv_obj_t *  ui_LabelScheduleItemIngredient2;
+extern lv_obj_t *  ui_LabelScheduleItemIngredient3;
+extern lv_obj_t *  ui_LabelScheduleItemTimer;
+extern lv_obj_t *  ui_SwitchScheduleItem;
 
 LV_IMG_DECLARE(ui_img_background_png);    // assets/background.png
 LV_IMG_DECLARE(ui_img_125102533);    // assets/bluetooth-sign_icon.png

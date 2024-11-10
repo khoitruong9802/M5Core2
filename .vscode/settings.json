@@ -65,7 +65,12 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "spiffs.h": "c",
-        "stdarg.h": "c"
+        "stdarg.h": "c",
+        "queue.h": "c",
+        "semphr.h": "c",
+        "lvgl_malloc.h": "c",
+        "esp_heap_caps.h": "c",
+        "esp_log.h": "c"
     },
-    "window.zoomLevel": -2
+    "window.zoomLevel": -1
 }

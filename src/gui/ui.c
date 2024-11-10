@@ -227,7 +227,14 @@ void ui_event_ScheduleScreen(lv_event_t * e);
 lv_obj_t *  ui_ScheduleScreen;
 lv_obj_t *  ui_MainScheduleScreen;
 lv_obj_t *  ui_TitleScheduleScreen;
-
+lv_obj_t *  ui_PanelScheduleItem;
+lv_obj_t *  ui_LabelScheduleItem;
+lv_obj_t *  ui_PanelScheduleItemIngredient;
+lv_obj_t *  ui_LabelScheduleItemIngredient1;
+lv_obj_t *  ui_LabelScheduleItemIngredient2;
+lv_obj_t *  ui_LabelScheduleItemIngredient3;
+lv_obj_t *  ui_LabelScheduleItemTimer;
+lv_obj_t *  ui_SwitchScheduleItem;
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
 #if LV_COLOR_DEPTH != 16

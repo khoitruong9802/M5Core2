@@ -180,8 +180,13 @@ void schedule_screen_init(lv_event_t * e)
     else
     {
         // Initialize the schedule screen
+         _ui_flag_modify(ui_Panel40, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
          _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
-         handleScheduleUI();
+        TaskHandle_t schedule_task = xTaskGetHandle("schedule_task");
+        if(schedule_task == NULL)
+        {
+          xTaskCreate(handleScheduleUI, "schedule_task", 8192, NULL, 1, &schedule_task);
+        }
 
     }
 }

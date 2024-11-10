@@ -36,9 +36,7 @@ void wifi_service(void *parameter) {
 
       ui_update_wifi_status(0);
       uint8_t connect_ok = connect_wifi(wifiCredentials->username, wifiCredentials->password);
-      if (connect_ok == 0) {
-        vTaskDelete(NULL);
-      }
+      vTaskDelete(NULL);
     }
     delay(1000);
   }

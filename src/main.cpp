@@ -5,13 +5,20 @@
 #include "services/bottom_button_service.h"
 #include "services/ota_service.h"
 #include <SPIFFS.h>
+#include "esp_heap_caps.h"
+#include "esp_psram.h"
 
 SemaphoreHandle_t lvgl_mutex;
 
-
+void my_log_cb(const char * buf)
+{
+    Serial.println(buf);
+}
 
 void setup()
 {
+    // lv_log_register_print_cb(my_log_cb);
+
   lvgl_mutex = xSemaphoreCreateMutex();
 
   // Check for creation errors (optional)
