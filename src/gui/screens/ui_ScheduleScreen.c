@@ -16,7 +16,6 @@ void ui_ScheduleScreen_screen_init(void)
     lv_obj_set_align(ui_MainScheduleScreen, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_MainScheduleScreen, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_MainScheduleScreen, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_set_scroll_dir(ui_MainScheduleScreen, LV_DIR_VER);
     lv_obj_set_style_radius(ui_MainScheduleScreen, 12, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_MainScheduleScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_MainScheduleScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -35,7 +34,8 @@ void ui_ScheduleScreen_screen_init(void)
 
     // Create the scrollable container below the title
     ui_ScheduleContainer = lv_obj_create(ui_MainScheduleScreen);
-    lv_obj_set_width(ui_ScheduleContainer, 300);   // Set the width to fit within the main screen
+    lv_obj_clear_flag(ui_ScheduleContainer, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_width(ui_ScheduleContainer, 290);   // Set the width to fit within the main screen
     lv_obj_set_height(ui_ScheduleContainer, LV_SIZE_CONTENT);  // Let the height adapt based on the content
     lv_obj_set_flex_flow(ui_ScheduleContainer, LV_FLEX_FLOW_COLUMN);  // Arrange children vertically
     lv_obj_set_align(ui_ScheduleContainer, LV_ALIGN_TOP_MID);  // Align container in the middle of the main schedule screen
@@ -43,7 +43,6 @@ void ui_ScheduleScreen_screen_init(void)
     lv_obj_set_scroll_snap_y(ui_ScheduleContainer, LV_SCROLL_SNAP_CENTER);  // Snap to the center while scrolling
     lv_obj_set_style_bg_opa(ui_ScheduleContainer, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_all(ui_ScheduleContainer, 5, LV_PART_MAIN | LV_STATE_DEFAULT); // Padding for better spacing
-
     // Remove the frame/border of the container
     lv_obj_set_style_border_width(ui_ScheduleContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);  // Set border width to 0
     lv_obj_set_style_border_opa(ui_ScheduleContainer, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_DEFAULT);  // Set border opacity to transparent

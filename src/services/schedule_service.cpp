@@ -6,7 +6,7 @@
 void renderUi(const char *time, int flow1, int flow2, int flow3) 
 {  
     ui_PanelScheduleItem = lv_obj_create(ui_ScheduleContainer);
-    lv_obj_set_width(ui_PanelScheduleItem, 290);
+    lv_obj_set_width(ui_PanelScheduleItem, 285);
     lv_obj_set_height(ui_PanelScheduleItem, 50);
     lv_obj_set_x(ui_PanelScheduleItem, 0);
     lv_obj_set_y(ui_PanelScheduleItem, -45);
