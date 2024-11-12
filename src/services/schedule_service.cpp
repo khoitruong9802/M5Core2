@@ -5,8 +5,8 @@
 #include "../utils/http.h"
 void renderUi(const char *time, int flow1, int flow2, int flow3) 
 {  
-    ui_PanelScheduleItem = lv_obj_create(ui_MainScheduleScreen);
-    lv_obj_set_width(ui_PanelScheduleItem, 320);
+    ui_PanelScheduleItem = lv_obj_create(ui_ScheduleContainer);
+    lv_obj_set_width(ui_PanelScheduleItem, 290);
     lv_obj_set_height(ui_PanelScheduleItem, 50);
     lv_obj_set_x(ui_PanelScheduleItem, 0);
     lv_obj_set_y(ui_PanelScheduleItem, -45);
@@ -23,7 +23,7 @@ void renderUi(const char *time, int flow1, int flow2, int flow3)
     lv_obj_set_style_text_font(ui_LabelScheduleItem, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_PanelScheduleItemIngredient = lv_obj_create(ui_PanelScheduleItem);
-    lv_obj_set_width(ui_PanelScheduleItemIngredient, 125);
+    lv_obj_set_width(ui_PanelScheduleItemIngredient, 75);
     lv_obj_set_height(ui_PanelScheduleItemIngredient, 50);
     lv_obj_set_x(ui_PanelScheduleItemIngredient, 2);
     lv_obj_set_y(ui_PanelScheduleItemIngredient, 0);
@@ -48,8 +48,8 @@ void renderUi(const char *time, int flow1, int flow2, int flow3)
     lv_label_set_text(ui_LabelScheduleItemIngredient1, str);
     lv_obj_set_style_bg_color(ui_LabelScheduleItemIngredient1, lv_color_hex(0xFECACA), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_LabelScheduleItemIngredient1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui_LabelScheduleItemIngredient1, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui_LabelScheduleItemIngredient1, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_LabelScheduleItemIngredient1, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_LabelScheduleItemIngredient1, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(ui_LabelScheduleItemIngredient1, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_bottom(ui_LabelScheduleItemIngredient1, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -64,8 +64,8 @@ void renderUi(const char *time, int flow1, int flow2, int flow3)
     lv_label_set_text(ui_LabelScheduleItemIngredient2, str);
     lv_obj_set_style_bg_color(ui_LabelScheduleItemIngredient2, lv_color_hex(0xBFDBFE), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_LabelScheduleItemIngredient2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui_LabelScheduleItemIngredient2, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui_LabelScheduleItemIngredient2, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_LabelScheduleItemIngredient2, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_LabelScheduleItemIngredient2, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(ui_LabelScheduleItemIngredient2, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_bottom(ui_LabelScheduleItemIngredient2, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -80,8 +80,8 @@ void renderUi(const char *time, int flow1, int flow2, int flow3)
     lv_label_set_text(ui_LabelScheduleItemIngredient3, str);
     lv_obj_set_style_bg_color(ui_LabelScheduleItemIngredient3, lv_color_hex(0xFEF08A), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_LabelScheduleItemIngredient3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui_LabelScheduleItemIngredient3, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui_LabelScheduleItemIngredient3, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_LabelScheduleItemIngredient3, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_LabelScheduleItemIngredient3, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(ui_LabelScheduleItemIngredient3, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_bottom(ui_LabelScheduleItemIngredient3, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -90,6 +90,8 @@ void renderUi(const char *time, int flow1, int flow2, int flow3)
     lv_obj_set_height(ui_LabelScheduleItemTimer, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_LabelScheduleItemTimer, LV_ALIGN_CENTER);
     lv_label_set_text(ui_LabelScheduleItemTimer, "Every day");
+    lv_obj_set_style_text_font(ui_LabelScheduleItemTimer, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
+
 
     ui_SwitchScheduleItem = lv_switch_create(ui_PanelScheduleItem);
     lv_obj_set_width(ui_SwitchScheduleItem, 50);
@@ -102,10 +104,12 @@ void renderUi(const char *time, int flow1, int flow2, int flow3)
     Serial.println(flow3);
 }
 
+
+
 void handleScheduleUI(void *parameter)
 {
     JsonDocument doc;
-    String response = http_get_data("http://172.28.182.59:3000/data");
+    String response = http_get_data("http://192.168.0.101:3000/data");
 
     DeserializationError error = deserializeJson(doc, response);
     if (error) 
@@ -124,15 +128,14 @@ void handleScheduleUI(void *parameter)
         {
             print(PRINTLN, "mutex is available for schedule UI task. Beginning...");
             // Iterate over each JSON object in the array
-            for (JsonObject obj : jsonArray) {
+            print(PRINTLN, "Start to clean all old LVGL objects");
+            deleteObject();
+            for (JsonObject obj : jsonArray) 
+            {
                 const char *time = obj["start_time"];
                 int flow1 = obj["flows"][0];
                 int flow2 = obj["flows"][1];
                 int flow3 = obj["flows"][2];
-                Serial.println(time);
-                Serial.println(flow1);
-                Serial.println(flow2);
-                Serial.println(flow3);
                 renderUi(time, flow1, flow2, flow3);
             }
             xSemaphoreGive(lvgl_mutex);

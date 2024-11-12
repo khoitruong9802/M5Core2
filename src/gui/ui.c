@@ -227,6 +227,7 @@ void ui_event_ScheduleScreen(lv_event_t * e);
 lv_obj_t *  ui_ScheduleScreen;
 lv_obj_t *  ui_MainScheduleScreen;
 lv_obj_t *  ui_TitleScheduleScreen;
+lv_obj_t *  ui_ScheduleContainer;
 lv_obj_t *  ui_PanelScheduleItem;
 lv_obj_t *  ui_LabelScheduleItem;
 lv_obj_t *  ui_PanelScheduleItemIngredient;
@@ -570,6 +571,7 @@ void ui_event_ScheduleScreen(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT && lv_obj_has_flag(ui_Panel93, LV_OBJ_FLAG_HIDDEN)) 
     {
+        deleteObject();
         lv_indev_wait_release(lv_indev_get_act());
         _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_AppScreen_screen_init);
     }

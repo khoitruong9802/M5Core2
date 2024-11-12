@@ -190,3 +190,16 @@ void schedule_screen_init(lv_event_t * e)
 
     }
 }
+
+void deleteObject()
+{
+    if (lv_obj_is_valid(ui_ScheduleContainer)) 
+    {
+        lv_obj_clean(ui_ScheduleContainer);
+        print(PRINTLN, "All LVGL objects are cleared!");
+    }
+    else
+    {
+        print(PRINTLN, "No LVGL objects to clear!");
+    }
+}

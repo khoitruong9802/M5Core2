@@ -20,6 +20,7 @@ void change_screen_ota(lv_event_t * e);
 void handle_out_ota_page();
 void handle_start_ota();
 void schedule_screen_init(lv_event_t * e);
+void deleteObject();
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif
