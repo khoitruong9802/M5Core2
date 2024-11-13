@@ -26,7 +26,7 @@ void ui_ScheduleScreen_screen_init(void)
     lv_obj_set_x(ui_TitleScheduleScreen, -135);
     lv_obj_set_y(ui_TitleScheduleScreen, -104);
     lv_obj_set_align(ui_TitleScheduleScreen, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_TitleScheduleScreen, "FARM SCHEDULES");
+    lv_label_set_text(ui_TitleScheduleScreen, "FARMER");
     lv_obj_set_style_text_color(ui_TitleScheduleScreen, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_TitleScheduleScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_TitleScheduleScreen, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
