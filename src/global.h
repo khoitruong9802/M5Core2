@@ -14,6 +14,8 @@ extern const char* web_server;
 
 extern SemaphoreHandle_t lvgl_mutex;
 
+extern JsonArray jsonArray;
+
 #define PRINT   1
 #define PRINTLN 2
 #define PRINTF  3

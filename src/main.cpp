@@ -9,7 +9,21 @@
 #include "esp_psram.h"
 
 SemaphoreHandle_t lvgl_mutex;
+void printHeapInfo() {
+    // Get PSRAM and SRAM information
+    size_t free_psram = heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
+    size_t free_sram = heap_caps_get_free_size(MALLOC_CAP_INTERNAL);
 
+    Serial.printf("Free PSRAM: %u bytes\n", free_psram);
+    Serial.printf("Free SRAM: %u bytes\n", free_sram);
+
+    // Print detailed information about the heap
+    multi_heap_info_t heap_info;
+    heap_caps_get_info(&heap_info, MALLOC_CAP_INTERNAL);
+    Serial.printf("Total heap size: %u bytes\n", heap_info.total_free_bytes + heap_info.total_allocated_bytes);
+    Serial.printf("Total allocated heap: %u bytes\n", heap_info.total_allocated_bytes);
+    Serial.printf("Total free heap: %u bytes\n", heap_info.total_free_bytes);
+}
 void my_log_cb(const char * buf)
 {
     Serial.println(buf);
@@ -49,5 +63,7 @@ void setup()
 
 void loop()
 {
-  vTaskDelete(NULL);
+  printHeapInfo();
+  delay(1000);
+  // vTaskDelete(NULL);
 }

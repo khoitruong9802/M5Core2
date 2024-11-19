@@ -196,6 +196,7 @@ void deleteObject()
     if (lv_obj_is_valid(ui_ScheduleContainer)) 
     {
         lv_obj_clean(ui_ScheduleContainer);
+        lv_obj_remove_event_cb(ui_ScheduleContainer, NULL);
         print(PRINTLN, "All LVGL objects are cleared!");
     }
     else
@@ -203,3 +204,88 @@ void deleteObject()
         print(PRINTLN, "No LVGL objects to clear!");
     }
 }
+
+void event_handler(lv_event_t * e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    lv_obj_t * obj = lv_event_get_current_target(e);
+
+    if(code == LV_EVENT_VALUE_CHANGED) {
+        lv_calendar_date_t date;
+        if(lv_calendar_get_pressed_date(obj, &date)) {
+            Serial.printf("Clicked date: %02d.%02d.%d\n", date.day, date.month, date.year);
+        }
+    }
+}
+
+void schedule_service_init(lv_event_t * e) {
+    lv_obj_t  * calendar = lv_calendar_create(lv_scr_act());
+    lv_obj_set_size(calendar, 300, 250);
+    lv_obj_align(calendar, LV_ALIGN_CENTER, 0, 27);
+    lv_obj_add_event_cb(calendar, event_handler, LV_EVENT_ALL, NULL);
+
+    lv_calendar_set_today_date(calendar, 2021, 02, 23);
+    lv_calendar_set_showed_date(calendar, 2021, 02);
+
+    /*Highlight a few days*/
+    static lv_calendar_date_t highlighted_days[3];       /*Only its pointer will be saved so should be static*/
+    highlighted_days[0].year = 2021;
+    highlighted_days[0].month = 02;
+    highlighted_days[0].day = 6;
+
+    highlighted_days[1].year = 2021;
+    highlighted_days[1].month = 02;
+    highlighted_days[1].day = 11;
+
+    highlighted_days[2].year = 2022;
+    highlighted_days[2].month = 02;
+    highlighted_days[2].day = 22;
+
+    lv_calendar_set_highlighted_dates(calendar, highlighted_days, 3);
+
+#if LV_USE_CALENDAR_HEADER_DROPDOWN
+    lv_calendar_header_dropdown_create(calendar);
+#elif LV_USE_CALENDAR_HEADER_ARROW
+    lv_calendar_header_arrow_create(calendar);
+#endif
+    lv_calendar_set_showed_date(calendar, 2021, 10);
+}
+
+void ui_ScheduleItemScreen_screen_init(int schedule_id) 
+{
+    // Create a new screen for the detailed information
+    lv_obj_t *schedule_item_screen = lv_obj_create(NULL);
+    lv_scr_load(schedule_item_screen);
+
+    // Create labels and other elements to show detailed information
+    lv_obj_t *title_label = lv_label_create(schedule_item_screen);
+    lv_label_set_text(title_label, "Schedule Details");
+    lv_obj_align(title_label, LV_ALIGN_TOP_MID, 0, 10);
+
+    // char buffer[100];
+    // snprintf(buffer, sizeof(buffer), "%d",schedule_id);
+
+    // lv_obj_t *detail_label = lv_label_create(schedule_item_screen);
+    // lv_label_set_text(detail_label, buffer);
+    // lv_obj_align(detail_label, LV_ALIGN_CENTER, 0, 20);
+
+    // Add a back button to return to the main screen
+    lv_obj_t *calendar_btn = lv_btn_create(schedule_item_screen);
+    lv_obj_set_size(calendar_btn, 80, 40);
+    lv_obj_align(calendar_btn, LV_ALIGN_CENTER,0, 20);
+    lv_obj_t *calendar_button = lv_label_create(calendar_btn);
+    lv_label_set_text(calendar_button, "Calendar");
+
+    // Add a back button to return to the main screen
+    lv_obj_t *back_btn = lv_btn_create(schedule_item_screen);
+    lv_obj_set_size(back_btn, 80, 40);
+    lv_obj_align(back_btn, LV_ALIGN_BOTTOM_MID, 0, -10);
+    lv_obj_t *btn_label = lv_label_create(back_btn);
+    lv_label_set_text(btn_label, "Back");
+    lv_obj_add_event_cb(calendar_btn, schedule_service_init, LV_EVENT_CLICKED, (void *)schedule_id);
+    lv_obj_add_event_cb(back_btn, [](lv_event_t *e) {
+        // Navigate back to the previous screen (main screen)
+        lv_scr_load(ui_ScheduleScreen); // Assuming ui_ScheduleScreen is your main screen object
+    }, LV_EVENT_CLICKED, NULL);
+}
+

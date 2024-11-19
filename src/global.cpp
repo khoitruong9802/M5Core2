@@ -1,5 +1,7 @@
 #include "global.h"
 
+JsonArray jsonArray;
+
 void print(uint8_t print_mode, const char* msg, ...) {
     if (DEBUG_MODE == 1) {
         va_list args;

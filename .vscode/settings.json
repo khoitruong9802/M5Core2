@@ -70,7 +70,10 @@
         "semphr.h": "c",
         "lvgl_malloc.h": "c",
         "esp_heap_caps.h": "c",
-        "esp_log.h": "c"
+        "esp_log.h": "c",
+        "lv_calendar.h": "c",
+        "lv_calendar_header_arrow.h": "c",
+        "custom_widget.h": "c"
     },
     "window.zoomLevel": -1
 }

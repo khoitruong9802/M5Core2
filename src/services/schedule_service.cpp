@@ -5,7 +5,21 @@
 #include "../utils/http.h"
 
 
-void renderUi(const char *time, int flow1, int flow2, int flow3) 
+static void schedule_item_click_event_handler(lv_event_t * e)
+{
+    lv_obj_t * panel = lv_event_get_target(e);
+    // Get the schedule ID or metadata associated with this panel
+    int schedule_id = (int)lv_event_get_user_data(e);
+
+    // You could use the schedule ID to pull the detailed information from memory, 
+    // for example, fetching from an array or JSON data stored locally.
+
+    // Call a function to display the detailed information screen
+    Serial.println(schedule_id);
+    ui_ScheduleItemScreen_screen_init(schedule_id);
+}
+
+void renderUi(int id, const char *time, int flow1, int flow2, int flow3, const char * schedule_type) 
 {  
     ui_PanelScheduleItem = lv_obj_create(ui_ScheduleContainer);
     lv_obj_set_width(ui_PanelScheduleItem, 285);
@@ -19,14 +33,16 @@ void renderUi(const char *time, int flow1, int flow2, int flow3)
     lv_obj_set_style_bg_color(ui_PanelScheduleItem, lv_color_hex(0xC8C8C8), LV_PART_MAIN | LV_STATE_PRESSED); //Light Gray
     lv_obj_set_style_bg_opa(ui_PanelScheduleItem, 255, LV_PART_MAIN | LV_STATE_PRESSED);
 
-    ui_LabelScheduleItem = lv_label_create(ui_PanelScheduleItem);
+    lv_obj_add_event_cb(ui_PanelScheduleItem, schedule_item_click_event_handler, LV_EVENT_CLICKED, (void *)id);
+
+    lv_obj_t * ui_LabelScheduleItem = lv_label_create(ui_PanelScheduleItem);
     lv_obj_set_width(ui_LabelScheduleItem, 60);   /// 1
     lv_obj_set_height(ui_LabelScheduleItem, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_LabelScheduleItem, LV_ALIGN_CENTER);
     lv_label_set_text(ui_LabelScheduleItem, time);
     lv_obj_set_style_text_font(ui_LabelScheduleItem, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_PanelScheduleItemIngredient = lv_obj_create(ui_PanelScheduleItem);
+    lv_obj_t * ui_PanelScheduleItemIngredient = lv_obj_create(ui_PanelScheduleItem);
     lv_obj_set_width(ui_PanelScheduleItemIngredient, 75);
     lv_obj_set_height(ui_PanelScheduleItemIngredient, 50);
     lv_obj_set_x(ui_PanelScheduleItemIngredient, 2);
@@ -45,7 +61,7 @@ void renderUi(const char *time, int flow1, int flow2, int flow3)
     char buffer[10];           // Ensure buffer is large enough to hold the string representation
     itoa(num, buffer, 10);     // Convert the int to a string (base 10)
     const char *str = buffer;  // Now 'str' is a const char* pointing to the string
-    ui_LabelScheduleItemIngredient1 = lv_label_create(ui_PanelScheduleItemIngredient);
+    lv_obj_t * ui_LabelScheduleItemIngredient1 = lv_label_create(ui_PanelScheduleItemIngredient);
     lv_obj_set_width(ui_LabelScheduleItemIngredient1, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_LabelScheduleItemIngredient1, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_LabelScheduleItemIngredient1, LV_ALIGN_CENTER);
@@ -61,7 +77,7 @@ void renderUi(const char *time, int flow1, int flow2, int flow3)
     itoa(num, buffer, 10);  // Convert the int to a string (base 10)
     str = buffer;           // Now 'str' is a const char* pointing to the string
 
-    ui_LabelScheduleItemIngredient2 = lv_label_create(ui_PanelScheduleItemIngredient);
+    lv_obj_t * ui_LabelScheduleItemIngredient2 = lv_label_create(ui_PanelScheduleItemIngredient);
     lv_obj_set_width(ui_LabelScheduleItemIngredient2, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_LabelScheduleItemIngredient2, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_LabelScheduleItemIngredient2, LV_ALIGN_CENTER);
@@ -77,7 +93,7 @@ void renderUi(const char *time, int flow1, int flow2, int flow3)
     itoa(num, buffer, 10);  // Convert the int to a string (base 10)
     str = buffer;           // Now 'str' is a const char* pointing to the string
 
-    ui_LabelScheduleItemIngredient3 = lv_label_create(ui_PanelScheduleItemIngredient);
+    lv_obj_t * ui_LabelScheduleItemIngredient3 = lv_label_create(ui_PanelScheduleItemIngredient);
     lv_obj_set_width(ui_LabelScheduleItemIngredient3, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_LabelScheduleItemIngredient3, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_LabelScheduleItemIngredient3, LV_ALIGN_CENTER);
@@ -89,15 +105,15 @@ void renderUi(const char *time, int flow1, int flow2, int flow3)
     lv_obj_set_style_pad_top(ui_LabelScheduleItemIngredient3, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_bottom(ui_LabelScheduleItemIngredient3, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_LabelScheduleItemTimer = lv_label_create(ui_PanelScheduleItem);
+    lv_obj_t * ui_LabelScheduleItemTimer = lv_label_create(ui_PanelScheduleItem);
     lv_obj_set_width(ui_LabelScheduleItemTimer, 75);   /// 1
     lv_obj_set_height(ui_LabelScheduleItemTimer, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_LabelScheduleItemTimer, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_LabelScheduleItemTimer, "2023-12-10");
+    lv_label_set_text(ui_LabelScheduleItemTimer, schedule_type);
     lv_obj_set_style_text_font(ui_LabelScheduleItemTimer, &lv_font_montserrat_12, LV_PART_MAIN | LV_STATE_DEFAULT);
 
 
-    ui_SwitchScheduleItem = lv_switch_create(ui_PanelScheduleItem);
+    lv_obj_t * ui_SwitchScheduleItem = lv_switch_create(ui_PanelScheduleItem);
     lv_obj_set_width(ui_SwitchScheduleItem, 50);
     lv_obj_set_height(ui_SwitchScheduleItem, 25);
     lv_obj_set_align(ui_SwitchScheduleItem, LV_ALIGN_CENTER);
@@ -113,7 +129,7 @@ void renderUi(const char *time, int flow1, int flow2, int flow3)
 void handleScheduleUI(void *parameter)
 {
     JsonDocument doc;
-    String response = http_get_data("http://192.168.0.104:3000/data");
+    String response = http_get_data("http://192.168.0.112:3000/data");
 
     DeserializationError error = deserializeJson(doc, response);
     if (error) 
@@ -122,7 +138,7 @@ void handleScheduleUI(void *parameter)
     }
 
     // Access the JSON array
-    JsonArray jsonArray = doc.as<JsonArray>();
+    jsonArray = doc.as<JsonArray>();
 
 
     for(;;)
@@ -136,11 +152,16 @@ void handleScheduleUI(void *parameter)
             deleteObject();
             for (JsonObject obj : jsonArray) 
             {
-                const char *time = obj["start_time"];
+                int id = obj["id"];
+                const char *time = obj["schedule"]["start_time"];
                 int flow1 = obj["flow1"];
                 int flow2 = obj["flow2"];
                 int flow3 = obj["flow3"];
-                renderUi(time, flow1, flow2, flow3);
+                const char * schedule_type = obj["schedule"]["type"];
+                const char * schedule_status = obj["schedule"]["status"];
+                //TO DO
+
+                renderUi(id, time, flow1, flow2, flow3, schedule_type);
             }
             xSemaphoreGive(lvgl_mutex);
             vTaskDelete(NULL);
