@@ -232,8 +232,10 @@ lv_obj_t *  ui_PanelScheduleItem;
 
 
 // SCREEN: ui_scheduleItemScreen
+void ui_ScheduleItemScreen_screen_init(void);
 lv_obj_t * ui_scheduleItemScreen;
-lv_obj_t * ui_ScheduleItemScreen;
+void ui_event_ScheduleItemScreen(lv_event_t * e);
+lv_obj_t * ui_PanelScheduleItemScreen;
 lv_obj_t * ui_PanelHeaderScheduleItem;
 void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e);
 lv_obj_t * ui_ButtonOKHeaderScheduleItem;
@@ -764,9 +766,20 @@ void ui_event_ScheduleScreen(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT && lv_obj_has_flag(ui_Panel93, LV_OBJ_FLAG_HIDDEN)) 
     {
-        deleteObject();
         lv_indev_wait_release(lv_indev_get_act());
         _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_AppScreen_screen_init);
+    }
+
+}
+
+void ui_event_ScheduleItemScreen(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT && lv_obj_has_flag(ui_Panel93, LV_OBJ_FLAG_HIDDEN)) 
+    {
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_ScheduleScreen_screen_init);
     }
 
 }
@@ -974,6 +987,8 @@ void ui_init(void)
     ui_DisplayScreen_screen_init();
     ui_WifiScreen_screen_init();
     ui_OtaScreen_screen_init();
+    ui_ScheduleScreen_screen_init();
+    ui_ScheduleItemScreen_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
     lv_disp_load_scr(ui_MainScreen);
 }

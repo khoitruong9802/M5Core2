@@ -20,10 +20,7 @@ void change_screen_ota(lv_event_t * e);
 void handle_out_ota_page();
 void handle_start_ota();
 void schedule_screen_init(lv_event_t * e);
-void deleteObject();
-void event_handler(lv_event_t * e);
-void schedule_service_init(lv_event_t * e);
-void ui_ScheduleItemScreen_screen_init(int schedule_id);
+void deleteObject(lv_obj_t * obj);
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif
