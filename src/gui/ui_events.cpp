@@ -205,5 +205,10 @@ void deleteObject(lv_obj_t * obj)
     }
 }
 
-
-
+void clean_memory()
+{
+  lv_mem_monitor_t mon;
+  lv_mem_monitor(&mon);
+  Serial.printf("Used: %lu, Free: %lu, Fragmentation: %u%%\n",
+                mon.total_size - mon.free_size, mon.free_size, mon.frag_pct);
+}

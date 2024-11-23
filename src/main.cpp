@@ -13,7 +13,7 @@ void printHeapInfo() {
     // Get PSRAM and SRAM information
     size_t free_psram = heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
     size_t free_sram = heap_caps_get_free_size(MALLOC_CAP_INTERNAL);
-
+    Serial.println("=========================================================");
     Serial.printf("Free PSRAM: %u bytes\n", free_psram);
     Serial.printf("Free SRAM: %u bytes\n", free_sram);
 
@@ -23,6 +23,7 @@ void printHeapInfo() {
     Serial.printf("Total heap size: %u bytes\n", heap_info.total_free_bytes + heap_info.total_allocated_bytes);
     Serial.printf("Total allocated heap: %u bytes\n", heap_info.total_allocated_bytes);
     Serial.printf("Total free heap: %u bytes\n", heap_info.total_free_bytes);
+    Serial.println("=========================================================");
 }
 void my_log_cb(const char * buf)
 {

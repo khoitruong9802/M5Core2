@@ -243,7 +243,7 @@ lv_obj_t * ui_LabelOKHeaderScheduleItem;
 void ui_event_ButtonCancelHeaderScheduleItem(lv_event_t * e);
 lv_obj_t * ui_ButtonCancelHeaderScheduleItem;
 lv_obj_t * ui_LabelCancelHeaderScheduleItem;
-lv_obj_t * ui_PanelScheduleItemScreen;
+lv_obj_t * ui_PanelScheduleItemContainerScreen;
 lv_obj_t * ui_PanelNameContainerScheduleItem;
 lv_obj_t * ui_LabelNameTitleScheduleItem;
 void ui_event_PanelNameScheduleItem(lv_event_t * e);
@@ -319,7 +319,9 @@ lv_obj_t * ui_CheckboxScheduleEndDateScheduleItem;
 void ui_event_PanelScheduleEndDateScheduleItem(lv_event_t * e);
 lv_obj_t * ui_PanelScheduleEndDateScheduleItem;
 lv_obj_t * ui_LabelScheduleEndDateScheduleItem;
-
+lv_obj_t * ui_PanelLoadingScheduleItemScreen;
+lv_obj_t * ui_SpinnerLoadingScheduleItemScreen;
+lv_obj_t * ui_LabelLoadingScheduleItemScreen;
 
 // SCREEN: ui_name
 void ui_name_screen_init(void);
@@ -766,6 +768,7 @@ void ui_event_ScheduleScreen(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT && lv_obj_has_flag(ui_Panel93, LV_OBJ_FLAG_HIDDEN)) 
     {
+        // deleteObject(ui_ScheduleContainer);
         lv_indev_wait_release(lv_indev_get_act());
         _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_AppScreen_screen_init);
     }
@@ -779,7 +782,7 @@ void ui_event_ScheduleItemScreen(lv_event_t * e)
     if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT && lv_obj_has_flag(ui_Panel93, LV_OBJ_FLAG_HIDDEN)) 
     {
         lv_indev_wait_release(lv_indev_get_act());
-        _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_ScheduleScreen_screen_init);
+        _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
     }
 
 }

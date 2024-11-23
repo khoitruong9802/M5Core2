@@ -243,7 +243,7 @@ extern lv_obj_t * ui_LabelOKHeaderScheduleItem;
 void ui_event_ButtonCancelHeaderScheduleItem(lv_event_t * e);
 extern lv_obj_t * ui_ButtonCancelHeaderScheduleItem;
 extern lv_obj_t * ui_LabelCancelHeaderScheduleItem;
-extern lv_obj_t * ui_PanelScheduleItemScreen;
+extern lv_obj_t * ui_PanelScheduleItemContainerScreen;
 extern lv_obj_t * ui_PanelNameContainerScheduleItem;
 extern lv_obj_t * ui_LabelNameTitleScheduleItem;
 void ui_event_PanelNameScheduleItem(lv_event_t * e);
@@ -319,6 +319,10 @@ extern lv_obj_t * ui_CheckboxScheduleEndDateScheduleItem;
 void ui_event_PanelScheduleEndDateScheduleItem(lv_event_t * e);
 extern lv_obj_t * ui_PanelScheduleEndDateScheduleItem;
 extern lv_obj_t * ui_LabelScheduleEndDateScheduleItem;
+extern lv_obj_t * ui_PanelLoadingScheduleItemScreen;
+extern lv_obj_t * ui_SpinnerLoadingScheduleItemScreen;
+extern lv_obj_t * ui_LabelLoadingScheduleItemScreen;
+
 // SCREEN: ui_name
 void ui_name_screen_init(void);
 extern lv_obj_t * ui_name;
