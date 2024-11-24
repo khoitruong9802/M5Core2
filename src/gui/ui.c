@@ -237,10 +237,8 @@ lv_obj_t * ui_scheduleItemScreen;
 void ui_event_ScheduleItemScreen(lv_event_t * e);
 lv_obj_t * ui_PanelScheduleItemScreen;
 lv_obj_t * ui_PanelHeaderScheduleItem;
-void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e);
 lv_obj_t * ui_ButtonOKHeaderScheduleItem;
 lv_obj_t * ui_LabelOKHeaderScheduleItem;
-void ui_event_ButtonCancelHeaderScheduleItem(lv_event_t * e);
 lv_obj_t * ui_ButtonCancelHeaderScheduleItem;
 lv_obj_t * ui_LabelCancelHeaderScheduleItem;
 lv_obj_t * ui_PanelScheduleItemContainerScreen;
@@ -787,22 +785,9 @@ void ui_event_ScheduleItemScreen(lv_event_t * e)
 
 }
 
-void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_scheduleItemScreen_screen_init);
-    }
-}
-void ui_event_ButtonCancelHeaderScheduleItem(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_scheduleItemScreen_screen_init);
-    }
-}
+
+
+
 void ui_event_PanelNameScheduleItem(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);

@@ -24,7 +24,7 @@ void ui_ScheduleItemScreen_screen_init(void)
 
     ui_PanelHeaderScheduleItem = lv_obj_create(ui_PanelScheduleItemScreen);
     lv_obj_set_width(ui_PanelHeaderScheduleItem, 300);
-    lv_obj_set_height(ui_PanelHeaderScheduleItem, 30);
+    lv_obj_set_height(ui_PanelHeaderScheduleItem, 60);
     lv_obj_set_align(ui_PanelHeaderScheduleItem, LV_ALIGN_TOP_MID);
     lv_obj_add_flag(ui_PanelHeaderScheduleItem, LV_OBJ_FLAG_FLOATING);     /// Flags
     lv_obj_clear_flag(ui_PanelHeaderScheduleItem, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
@@ -34,8 +34,8 @@ void ui_ScheduleItemScreen_screen_init(void)
     lv_obj_set_style_border_opa(ui_PanelHeaderScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_ButtonOKHeaderScheduleItem = lv_btn_create(ui_PanelHeaderScheduleItem);
-    lv_obj_set_width(ui_ButtonOKHeaderScheduleItem, 50);
-    lv_obj_set_height(ui_ButtonOKHeaderScheduleItem, 30);
+    lv_obj_set_width(ui_ButtonOKHeaderScheduleItem, 70);
+    lv_obj_set_height(ui_ButtonOKHeaderScheduleItem, 50);
     lv_obj_set_align(ui_ButtonOKHeaderScheduleItem, LV_ALIGN_LEFT_MID);
     lv_obj_add_flag(ui_ButtonOKHeaderScheduleItem, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_ButtonOKHeaderScheduleItem, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
@@ -50,8 +50,8 @@ void ui_ScheduleItemScreen_screen_init(void)
     lv_obj_set_style_text_font(ui_LabelOKHeaderScheduleItem, &lv_font_montserrat_12, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_ButtonCancelHeaderScheduleItem = lv_btn_create(ui_PanelHeaderScheduleItem);
-    lv_obj_set_width(ui_ButtonCancelHeaderScheduleItem, 50);
-    lv_obj_set_height(ui_ButtonCancelHeaderScheduleItem, 30);
+    lv_obj_set_width(ui_ButtonCancelHeaderScheduleItem, 70);
+    lv_obj_set_height(ui_ButtonCancelHeaderScheduleItem, 50);
     lv_obj_set_align(ui_ButtonCancelHeaderScheduleItem, LV_ALIGN_RIGHT_MID);
     lv_obj_add_flag(ui_ButtonCancelHeaderScheduleItem, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_ButtonCancelHeaderScheduleItem, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
@@ -317,7 +317,7 @@ void ui_ScheduleItemScreen_screen_init(void)
 
     ui_PanelScheduleContainerScheduleItem = lv_obj_create(ui_PanelScheduleItemContainerScreen);
     lv_obj_set_width(ui_PanelScheduleContainerScheduleItem, 300);
-    lv_obj_set_height(ui_PanelScheduleContainerScheduleItem, 720);
+    lv_obj_set_height(ui_PanelScheduleContainerScheduleItem, LV_SIZE_CONTENT);
     lv_obj_set_x(ui_PanelScheduleContainerScheduleItem, 0);
     lv_obj_set_y(ui_PanelScheduleContainerScheduleItem, 600);
     lv_obj_set_align(ui_PanelScheduleContainerScheduleItem, LV_ALIGN_TOP_MID);
@@ -343,7 +343,7 @@ void ui_ScheduleItemScreen_screen_init(void)
 
     ui_PanelScheduleInforContainerScheduleItem = lv_obj_create(ui_PanelScheduleContainerScheduleItem);
     lv_obj_set_width(ui_PanelScheduleInforContainerScheduleItem, 280);
-    lv_obj_set_height(ui_PanelScheduleInforContainerScheduleItem, 650);
+    lv_obj_set_height(ui_PanelScheduleInforContainerScheduleItem, LV_SIZE_CONTENT);
     lv_obj_set_flex_flow(ui_PanelScheduleInforContainerScheduleItem, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_PanelScheduleInforContainerScheduleItem, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START,
                           LV_FLEX_ALIGN_START);
@@ -621,7 +621,7 @@ void ui_ScheduleItemScreen_screen_init(void)
 
     ui_PanelScheduleDateContainerScheduleItem = lv_obj_create(ui_PanelScheduleInforContainerScheduleItem);
     lv_obj_set_width(ui_PanelScheduleDateContainerScheduleItem, 280);
-    lv_obj_set_height(ui_PanelScheduleDateContainerScheduleItem, 80);
+    lv_obj_set_height(ui_PanelScheduleDateContainerScheduleItem, 120);
     lv_obj_set_align(ui_PanelScheduleDateContainerScheduleItem, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_PanelScheduleDateContainerScheduleItem, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_PanelScheduleDateContainerScheduleItem, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START,
@@ -805,4 +805,15 @@ void ui_ScheduleItemScreen_screen_init(void)
     lv_obj_set_style_text_opa(ui_LabelLoadingScheduleItemScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);    
 
     lv_obj_add_event_cb(ui_scheduleItemScreen, ui_event_ScheduleItemScreen, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_DropdownScheduleRepeatScheduleItem, ui_event_DropdownClickedScheduleRepeatScheduleItem, LV_EVENT_VALUE_CHANGED, NULL);
+    lv_obj_add_event_cb(ui_CheckboxScheduleEndDateScheduleItem, ui_event_CheckboxScheduleEndDateScheduleItem, LV_EVENT_VALUE_CHANGED , NULL);
+    lv_obj_add_event_cb(ui_PanelScheduleWeekItemMondayScheduleItem, ui_event_PanelScheduleWeekItemMondayScheduleItem, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_PanelScheduleWeekItemTuesdayScheduleItem, ui_event_PanelScheduleWeekItemTuesdayScheduleItem, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_PanelScheduleWeekItemWednesdayScheduleItem, ui_event_PanelScheduleWeekItemWednesdayScheduleItem, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_PanelScheduleWeekItemThursdayScheduleItem, ui_event_PanelScheduleWeekItemThursdayScheduleItem, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_PanelScheduleWeekItemFridayScheduleItem, ui_event_PanelScheduleWeekItemFridayScheduleItem, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_PanelScheduleWeekItemSaturdayScheduleItem, ui_event_PanelScheduleWeekItemSaturdayScheduleItem, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_PanelScheduleWeekItemSundayScheduleItem, ui_event_PanelScheduleWeekItemSundayScheduleItem, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_ButtonOKHeaderScheduleItem, ui_event_ButtonOKHeaderScheduleItem, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_ButtonCancelHeaderScheduleItem, ui_event_ButtonCancelHeaderScheduleItem, LV_EVENT_CLICKED, NULL);
 }

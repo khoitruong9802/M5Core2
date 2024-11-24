@@ -21,6 +21,17 @@ void handle_out_ota_page();
 void handle_start_ota();
 void schedule_screen_init(lv_event_t * e);
 void deleteObject(lv_obj_t * obj);
+void ui_event_DropdownClickedScheduleRepeatScheduleItem(lv_event_t * e);
+void ui_event_CheckboxScheduleEndDateScheduleItem(lv_event_t * e);
+void ui_event_PanelScheduleWeekItemMondayScheduleItem(lv_event_t * e);
+void ui_event_PanelScheduleWeekItemTuesdayScheduleItem(lv_event_t * e);
+void ui_event_PanelScheduleWeekItemWednesdayScheduleItem(lv_event_t * e);
+void ui_event_PanelScheduleWeekItemThursdayScheduleItem(lv_event_t * e);
+void ui_event_PanelScheduleWeekItemFridayScheduleItem(lv_event_t * e);
+void ui_event_PanelScheduleWeekItemSaturdayScheduleItem(lv_event_t * e);
+void ui_event_PanelScheduleWeekItemSundayScheduleItem(lv_event_t * e);
+void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e);
+void ui_event_ButtonCancelHeaderScheduleItem(lv_event_t * e);
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

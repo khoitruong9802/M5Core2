@@ -237,10 +237,10 @@ extern lv_obj_t * ui_scheduleItemScreen;
 void ui_event_ScheduleItemScreen(lv_event_t * e);
 extern lv_obj_t * ui_PanelScheduleItemScreen;
 extern lv_obj_t * ui_PanelHeaderScheduleItem;
-void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e);
+
 extern lv_obj_t * ui_ButtonOKHeaderScheduleItem;
 extern lv_obj_t * ui_LabelOKHeaderScheduleItem;
-void ui_event_ButtonCancelHeaderScheduleItem(lv_event_t * e);
+
 extern lv_obj_t * ui_ButtonCancelHeaderScheduleItem;
 extern lv_obj_t * ui_LabelCancelHeaderScheduleItem;
 extern lv_obj_t * ui_PanelScheduleItemContainerScreen;

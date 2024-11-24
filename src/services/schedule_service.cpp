@@ -22,7 +22,9 @@ void renderScheduleItemUI(const char * schedule_name,
     const char * schedule_start_time,
     const char * schedule_stop_time,
     const char * schedule_start_day,
-    const char * schedule_end_day
+    const char * schedule_end_day,
+    const char* days_list[7],
+    int days_count
 )
 {
     // Generate UI for Schedule Item Screen
@@ -35,17 +37,67 @@ void renderScheduleItemUI(const char * schedule_name,
     lv_label_set_text(ui_LabelScheduleStartTimeScheduleItem, schedule_start_time);
     lv_label_set_text(ui_LabelScheduleEndTimeScheduleItem, schedule_stop_time);
     uint16_t type_idx = 0;
-    if (strcmp(schedule_type, "once") == 0) {
+    if (strcmp(schedule_type, "once") == 0) 
+    {
         type_idx = 0;
-    } else if (strcmp(schedule_type, "daily") == 0) {
+        lv_obj_clear_flag(ui_PanelScheduleDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+        lv_obj_add_flag(ui_PanelScheduleStartDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+        lv_obj_add_flag(ui_PanelScheduleEndDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+        lv_obj_add_flag(ui_PanelScheduleWeekContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+    } 
+    else if (strcmp(schedule_type, "daily") == 0) 
+    {
         type_idx = 1;
-    } else if (strcmp(schedule_type, "weekly") == 0) {
+        lv_obj_add_flag(ui_PanelScheduleDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+        lv_obj_clear_flag(ui_PanelScheduleStartDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+        lv_obj_clear_flag(ui_PanelScheduleEndDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+        lv_obj_add_flag(ui_PanelScheduleWeekContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+    } 
+    else if (strcmp(schedule_type, "weekly") == 0) 
+    {
         type_idx = 2;
+        lv_obj_add_flag(ui_PanelScheduleDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+        lv_obj_clear_flag(ui_PanelScheduleStartDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+        lv_obj_clear_flag(ui_PanelScheduleEndDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+        lv_obj_clear_flag(ui_PanelScheduleWeekContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
     }
     lv_dropdown_set_selected(ui_DropdownScheduleRepeatScheduleItem, type_idx);
     lv_label_set_text(ui_LabelScheduleDateScheduleItem, schedule_start_day);
     lv_label_set_text(ui_LabelScheduleStartDateScheduleItem, schedule_end_day);
     lv_label_set_text(ui_LabelScheduleEndDateScheduleItem, schedule_end_day);
+
+    for(int i = 0; i < days_count; i++) 
+    {
+        if(strcmp(days_list[i], "Monday") == 0)
+        {
+            lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemMondayScheduleItem, lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+        }
+        else if(strcmp(days_list[i], "Tuesday") == 0)
+        {
+            lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemTuesdayScheduleItem, lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+        }
+        else if(strcmp(days_list[i], "Wednesday") == 0)
+        {
+            lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemWednesdayScheduleItem, lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+        }
+        else if(strcmp(days_list[i], "Thursday") == 0)
+        {
+            lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemThursdayScheduleItem, lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+        }
+        else if(strcmp(days_list[i], "Friday") == 0)
+        {
+            lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemFridayScheduleItem, lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+        }
+        else if(strcmp(days_list[i], "Saturday") == 0)
+        {
+            lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemSaturdayScheduleItem, lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+        }
+        else if(strcmp(days_list[i], "Sunday") == 0)
+        {
+            lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemSundayScheduleItem, lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+        }
+    }
+    lv_task_handler();
     
 }
 
@@ -63,6 +115,8 @@ void handleScheduleItemUI(void * parameter)
     const char * schedule_stop_time;
     const char * schedule_start_day;
     const char * schedule_end_day;
+    const char* days_list[7];
+    int days_count = 0; 
     // const char * schedule_day;
     // Get the schedule item from the database
     DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
@@ -73,25 +127,99 @@ void handleScheduleItemUI(void * parameter)
 
     // Access the JSON array
     jsonArray = jsonDocGlobal.as<JsonArray>();    
-    for(JsonObject obj : jsonArray)
-    {
+    for(JsonObject obj : jsonArray) {
         int id = obj["id"];
-        if(schedule_id == id)
-        {
-            schedule_name = obj["schedule_name"].as<const char*>();
-            description = obj["description"].as<const char*>();
-            area = obj["area"].as<int>() - 1;
-            priority = obj["priority"].as<uint16_t>() - 1;
-            int water_quantity_int = obj["water_quantity"].as<int>();
-            char buffer[10];
-            itoa(water_quantity_int, buffer, 10);
-            water_quantity = buffer;
-            schedule_start_time = obj["schedule"]["start_time"].as<const char*>();
-            schedule_stop_time = obj["schedule"]["stop_time"].as<const char*>();
-            schedule_type = obj["schedule"]["type"].as<const char*>();
-            schedule_start_day = obj["schedule"]["start_day"].as<const char*>();
-            schedule_end_day = obj["schedule"]["end_day"].as<const char*>();
-            break;
+        if(schedule_id == id) {
+            // Extracting other values as you did previously with null checks.
+            
+            // Check if schedule_name key is not null
+            if (obj["schedule_name"].is<const char*>()) {
+                schedule_name = obj["schedule_name"].as<const char*>();
+            } else {
+                schedule_name = " ";  // Set a default value or handle appropriately
+            }
+
+            // Check if description key is not null
+            if (obj["description"].is<const char*>()) {
+                description = obj["description"].as<const char*>();
+            } else {
+                description = " ";
+            }
+
+            // Extract area
+            if (obj["area"].is<int>()) {
+                area = obj["area"].as<int>() - 1;
+            } else {
+                area = 0;  // Indicate that the area value is missing or invalid
+            }
+
+            // Extract priority
+            if (obj["priority"].is<int>()) {
+                priority = obj["priority"].as<uint16_t>() - 1;
+            } else {
+                priority = 0;  // Default value or handle appropriately
+            }
+
+            // Extract water quantity
+            if (obj["water_quantity"].is<int>()) {
+                int water_quantity_int = obj["water_quantity"].as<int>();
+                char buffer[10];
+                itoa(water_quantity_int, buffer, 10 );
+                water_quantity = buffer;
+            } else {
+                water_quantity = " ";  // Set default or handle appropriately
+            }
+
+            // Check each element in the schedule to avoid null pointers
+            if (obj["start_time"].is<const char*>()) {
+                schedule_start_time = obj["start_time"].as<const char*>();
+            } else {
+                schedule_start_time = " ";
+            }
+
+            if (obj["stop_time"].is<const char*>()) {
+                schedule_stop_time = obj["stop_time"].as<const char*>();
+            } else {
+                schedule_stop_time = " ";
+            }
+
+            if (obj["schedule_type"].is<const char*>()) {
+                schedule_type = obj["schedule_type"].as<const char*>();
+            } else {
+                schedule_type = " ";
+            }
+
+            if (obj["start_day"].is<const char*>()) {
+                schedule_start_day = obj["start_day"].as<const char*>();
+            } else {
+                schedule_start_day = " ";
+            }
+
+            if (obj["end_day"].is<const char*>()) {
+                schedule_end_day = obj["end_day"].as<const char*>();
+            } else {
+                schedule_end_day = " ";
+            }
+
+            // Extract the "days" array inside the "schedule" object, if it exists
+            if (obj["days"].is<JsonArray>()) {
+                JsonArray daysArray = obj["days"].as<JsonArray>();
+
+                // Clear the `days_list` and reset the counter
+                days_count = 0;
+
+                // Iterate over the "days" array and store the values in `days_list`
+                for (const char* day : daysArray) {
+                    if (day != nullptr && days_count < 7) { // Ensure we don't exceed our array size
+                        days_list[days_count] = day;
+                        days_count++;
+                    }
+                }
+            } else {
+                days_count = 0; // No days available
+            }
+
+            break;  // Exit the loop once the desired object is found.
         }
     }
     for(;;)
@@ -99,7 +227,15 @@ void handleScheduleItemUI(void * parameter)
         // Checking does mutex is available
         if (xSemaphoreTake(lvgl_mutex,  pdMS_TO_TICKS(10)) == pdTRUE)
         {
-            renderScheduleItemUI(schedule_name, description, area, priority, water_quantity, schedule_type, schedule_start_time, schedule_stop_time, schedule_start_day, schedule_end_day);
+            lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemMondayScheduleItem, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemTuesdayScheduleItem, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemWednesdayScheduleItem, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemThursdayScheduleItem, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemFridayScheduleItem, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemSaturdayScheduleItem, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemSundayScheduleItem, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_task_handler();
+            renderScheduleItemUI(schedule_name, description, area, priority, water_quantity, schedule_type, schedule_start_time, schedule_stop_time, schedule_start_day, schedule_end_day, days_list, days_count);
             lv_obj_add_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
             lv_task_handler();
             xSemaphoreGive(lvgl_mutex);
@@ -119,13 +255,14 @@ static void schedule_item_click_event_handler(lv_event_t * e)
     // Get the schedule ID or metadata associated with this panel
     int schedule_id = (int)(uintptr_t)lv_event_get_user_data(e);
     current_schedule_id = schedule_id;
-    Serial.println(current_schedule_id);
 
     // You could use the schedule ID to pull the detailed information from memory, 
     // for example, fetching from an array or JSON data stored locally.
 
     // Call a function to display the detailed information screen
-    lv_obj_clear_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);           
+    lv_obj_clear_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);    
+    lv_obj_scroll_to_x(ui_PanelScheduleItemContainerScreen, 0, LV_ANIM_OFF);
+    lv_obj_scroll_to_y(ui_PanelScheduleItemContainerScreen, 0, LV_ANIM_OFF);       
     lv_task_handler();
     _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");
@@ -244,7 +381,7 @@ void renderScheduleUI(int id, const char *time, int flow1, int flow2, int flow3,
 
 void handleScheduleUI(void *parameter)
 {
-    String response = http_get_data("http://192.168.0.112:3000/data");
+    String response = http_get_data("http://172.28.182.209:3000/data");
 
     jsonString = response;
     DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
@@ -271,12 +408,12 @@ void handleScheduleUI(void *parameter)
                     for (JsonObject obj : jsonArray) 
                     {
                         int id = obj["id"];
-                        const char *time = obj["schedule"]["start_time"];
+                        const char *time = obj["start_time"];
                         int flow1 = obj["flow1"];
                         int flow2 = obj["flow2"];
                         int flow3 = obj["flow3"];
-                        const char * schedule_type = obj["schedule"]["type"];
-                        const char * schedule_status = obj["schedule"]["status"];
+                        const char * schedule_type = obj["schedule_type"];
+                        const char * schedule_status = obj["status"];
                         //TO DO
 
                         renderScheduleUI(id, time, flow1, flow2, flow3, schedule_type);

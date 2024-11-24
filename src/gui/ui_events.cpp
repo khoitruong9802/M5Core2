@@ -212,3 +212,201 @@ void clean_memory()
   Serial.printf("Used: %lu, Free: %lu, Fragmentation: %u%%\n",
                 mon.total_size - mon.free_size, mon.free_size, mon.frag_pct);
 }
+
+void ui_event_DropdownClickedScheduleRepeatScheduleItem(lv_event_t * e)
+{
+  lv_obj_t * dropdown = lv_event_get_target(e);
+  char buf[64];
+  lv_dropdown_get_selected_str(dropdown, buf, sizeof(buf));
+  if(strcmp(buf, "Once") == 0)
+  {
+    lv_obj_clear_flag(ui_PanelScheduleDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+    lv_obj_add_flag(ui_PanelScheduleStartDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+    lv_obj_add_flag(ui_PanelScheduleEndDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+    lv_obj_add_flag(ui_PanelScheduleWeekContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+  }
+  else if (strcmp(buf, "Daily") == 0)
+  {
+    lv_obj_add_flag(ui_PanelScheduleDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+    lv_obj_clear_flag(ui_PanelScheduleStartDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+    lv_obj_clear_flag(ui_PanelScheduleEndDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+    lv_obj_add_flag(ui_PanelScheduleWeekContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+  }
+  else if (strcmp(buf, "Weekly") == 0)
+  {
+    lv_obj_add_flag(ui_PanelScheduleDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+    lv_obj_clear_flag(ui_PanelScheduleStartDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+    lv_obj_clear_flag(ui_PanelScheduleEndDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+    lv_obj_clear_flag(ui_PanelScheduleWeekContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+  }
+  lv_task_handler();
+}
+
+void ui_event_CheckboxScheduleEndDateScheduleItem(lv_event_t * e)
+{
+  lv_obj_t * checkbox = lv_event_get_target(e);
+  bool is_checked = lv_obj_has_state(checkbox, LV_STATE_CHECKED);
+  if (is_checked) {
+    Serial.println("checked!!!");
+    lv_obj_add_flag(ui_PanelScheduleEndDateScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+  }
+  else
+  {
+    Serial.println("uncheck!!");
+    lv_obj_clear_flag(ui_PanelScheduleEndDateScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+  }
+  lv_task_handler();
+}
+
+void ui_event_PanelScheduleWeekItemMondayScheduleItem(lv_event_t * e)
+{
+  lv_color_t target_color = lv_color_hex(0x4264FF);   // Original color to check against
+  lv_color_t new_color = lv_color_hex(0xFFFFFF);      // New color to change to
+  lv_color_t bg_color = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemMondayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+  if (bg_color.full == target_color.full) {
+      // If it matches, set it to the new color
+      lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemMondayScheduleItem, new_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+      Serial.println("Color changed to 0xFFFFFF");
+  } else if (bg_color.full == new_color.full) {
+      // If the color is already the new color, change it back to the target color
+      lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemMondayScheduleItem, target_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+      Serial.println("Color changed back to 0x4264FF");
+  } else {
+      Serial.println("No color change was required.");
+  }
+  lv_task_handler();
+}
+
+void ui_event_PanelScheduleWeekItemTuesdayScheduleItem(lv_event_t * e)
+{
+    lv_color_t target_color = lv_color_hex(0x4264FF);   // Original color to check against
+    lv_color_t new_color = lv_color_hex(0xFFFFFF);      // New color to change to
+    lv_color_t bg_color = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemTuesdayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    if (bg_color.full == target_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemTuesdayScheduleItem, new_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        Serial.println("Color changed to 0xFFFFFF");
+    } else if (bg_color.full == new_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemTuesdayScheduleItem, target_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        Serial.println("Color changed back to 0x4264FF");
+    } else {
+        Serial.println("No color change was required.");
+    }
+    lv_task_handler();
+}
+
+void ui_event_PanelScheduleWeekItemWednesdayScheduleItem(lv_event_t * e)
+{
+    lv_color_t target_color = lv_color_hex(0x4264FF);   // Original color to check against
+    lv_color_t new_color = lv_color_hex(0xFFFFFF);      // New color to change to
+    lv_color_t bg_color = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemWednesdayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    if (bg_color.full == target_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemWednesdayScheduleItem, new_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        Serial.println("Color changed to 0xFFFFFF");
+    } else if (bg_color.full == new_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemWednesdayScheduleItem, target_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        Serial.println("Color changed back to 0x4264FF");
+    } else {
+        Serial.println("No color change was required.");
+    }
+    lv_task_handler();
+}
+
+void ui_event_PanelScheduleWeekItemThursdayScheduleItem(lv_event_t * e)
+{
+    lv_color_t target_color = lv_color_hex(0x4264FF);   // Original color to check against
+    lv_color_t new_color = lv_color_hex(0xFFFFFF);      // New color to change to
+    lv_color_t bg_color = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemThursdayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    if (bg_color.full == target_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemThursdayScheduleItem, new_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        Serial.println("Color changed to 0xFFFFFF");
+    } else if (bg_color.full == new_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemThursdayScheduleItem, target_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        Serial.println("Color changed back to 0x4264FF");
+    } else {
+        Serial.println("No color change was required.");
+    }
+    lv_task_handler();
+}
+
+void ui_event_PanelScheduleWeekItemFridayScheduleItem(lv_event_t * e)
+{
+    lv_color_t target_color = lv_color_hex(0x4264FF);   // Original color to check against
+    lv_color_t new_color = lv_color_hex(0xFFFFFF);      // New color to change to
+    lv_color_t bg_color = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemFridayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    if (bg_color.full == target_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemFridayScheduleItem, new_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        Serial.println("Color changed to 0xFFFFFF");
+    } else if (bg_color.full == new_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemFridayScheduleItem, target_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        Serial.println("Color changed back to 0x4264FF");
+    } else {
+        Serial.println("No color change was required.");
+    }
+    lv_task_handler();
+}
+
+void ui_event_PanelScheduleWeekItemSaturdayScheduleItem(lv_event_t * e)
+{
+    lv_color_t target_color = lv_color_hex(0x4264FF);   // Original color to check against
+    lv_color_t new_color = lv_color_hex(0xFFFFFF);      // New color to change to
+    lv_color_t bg_color = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemSaturdayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    if (bg_color.full == target_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemSaturdayScheduleItem, new_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        Serial.println("Color changed to 0xFFFFFF");
+    } else if (bg_color.full == new_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemSaturdayScheduleItem, target_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        Serial.println("Color changed back to 0x4264FF");
+    } else {
+        Serial.println("No color change was required.");
+    }
+    lv_task_handler();
+}
+
+void ui_event_PanelScheduleWeekItemSundayScheduleItem(lv_event_t * e)
+{
+    lv_color_t target_color = lv_color_hex(0x4264FF);   // Original color to check against
+    lv_color_t new_color = lv_color_hex(0xFFFFFF);      // New color to change to
+    lv_color_t bg_color = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemSundayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    if (bg_color.full == target_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemSundayScheduleItem, new_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        Serial.println("Color changed to 0xFFFFFF");
+    } else if (bg_color.full == new_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemSundayScheduleItem, target_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        Serial.println("Color changed back to 0x4264FF");
+    } else {
+        Serial.println("No color change was required.");
+    }
+    lv_task_handler();
+}
+
+void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        const char * schedule_name_new = lv_label_get_text(ui_LabelNameScheduleItem);
+        const char * description_new = lv_label_get_text(ui_LabelDescriptionScheduleItem);
+        char area_new[64];
+        lv_dropdown_get_selected_str(ui_DropdownAreaScheduleItem, area_new, sizeof(area_new));
+        uint32_t priority_new = lv_slider_get_value(ui_SliderPriorityScheduleItem);
+        const char * water_quantity_new = lv_label_get_text(ui_LabelWaterQuantityScheduleItem);
+        const char * start_time_new = lv_label_get_text(ui_LabelScheduleStartTimeScheduleItem);
+        const char * end_time_new = lv_label_get_text(ui_LabelScheduleEndTimeScheduleItem);
+        const char * date_new = lv_label_get_text(ui_DateScheduleItemScreen);
+        const char * start_date_new = lv_label_get_text(ui_StartDateScheduleItemScreen);
+        const char * end_date_new = lv_label_get_text(ui_EndDateScheduleItemScreen);
+        char repeat_new[64];
+        lv_dropdown_get_selected_str(ui_DropdownScheduleRepeatScheduleItem, repeat_new, sizeof(repeat_new));        
+        
+        _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
+    }
+}
+void ui_event_ButtonCancelHeaderScheduleItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
+    }
+}
