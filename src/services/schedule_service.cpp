@@ -10,7 +10,6 @@ static void ScheduleItem_Dropdown_handle(lv_event_t * e)
     char buf[64];
     lv_dropdown_get_selected_str(obj, buf, sizeof(buf));
     lv_dropdown_set_text(obj, buf);
-    Serial.println(buf);
 }
 
 void renderScheduleItemUI(const char * schedule_name,
@@ -117,16 +116,7 @@ void handleScheduleItemUI(void * parameter)
     const char * schedule_end_day;
     const char* days_list[7];
     int days_count = 0; 
-    // const char * schedule_day;
-    // Get the schedule item from the database
-    DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
-    if (error) 
-    {
-        Serial.println(error.c_str());
-    }
-
-    // Access the JSON array
-    jsonArray = jsonDocGlobal.as<JsonArray>();    
+    // Get the schedule item data
     for(JsonObject obj : jsonArray) {
         int id = obj["id"];
         if(schedule_id == id) {
@@ -272,8 +262,29 @@ static void schedule_item_click_event_handler(lv_event_t * e)
     }
 }
 
+void renderNavigateSchedulePage(int numberOfElement)
+{
+    int numberOfPage = numberOfElement / 5;
+    for(int i = 0; i < 20; i++)
+    {
+        ui_Panel2 = lv_obj_create(ui_TitleScheduleScreen);
+        lv_obj_set_width(ui_Panel2, 35);
+        lv_obj_set_height(ui_Panel2, 35);
+        lv_obj_set_align(ui_Panel2, LV_ALIGN_CENTER);
+        lv_obj_clear_flag(ui_Panel2, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+        ui_Label3 = lv_label_create(ui_Panel2);
+        lv_obj_set_width(ui_Label3, LV_SIZE_CONTENT);   /// 1
+        lv_obj_set_height(ui_Label3, LV_SIZE_CONTENT);    /// 1
+        lv_obj_set_align(ui_Label3, LV_ALIGN_CENTER);
+        lv_label_set_text(ui_Label3, "1");
+    }
+}
+
+
 void renderScheduleUI(int id, const char *time, int flow1, int flow2, int flow3, const char * schedule_type) 
 {  
+    
     ui_PanelScheduleItem = lv_obj_create(ui_ScheduleContainer);
     lv_obj_set_width(ui_PanelScheduleItem, 285);
     lv_obj_set_height(ui_PanelScheduleItem, 50);
@@ -287,7 +298,6 @@ void renderScheduleUI(int id, const char *time, int flow1, int flow2, int flow3,
     lv_obj_set_style_bg_opa(ui_PanelScheduleItem, 255, LV_PART_MAIN | LV_STATE_PRESSED);
 
     lv_obj_add_event_cb(ui_PanelScheduleItem, schedule_item_click_event_handler, LV_EVENT_CLICKED, (void *)id);
-    Serial.printf("Address of my_obj: %p\n", ui_PanelScheduleItem);
     lv_obj_t * ui_LabelScheduleItem = lv_label_create(ui_PanelScheduleItem);
     lv_obj_set_width(ui_LabelScheduleItem, 60);   /// 1
     lv_obj_set_height(ui_LabelScheduleItem, LV_SIZE_CONTENT);    /// 1
@@ -370,18 +380,15 @@ void renderScheduleUI(int id, const char *time, int flow1, int flow2, int flow3,
     lv_obj_set_width(ui_SwitchScheduleItem, 50);
     lv_obj_set_height(ui_SwitchScheduleItem, 25);
     lv_obj_set_align(ui_SwitchScheduleItem, LV_ALIGN_CENTER);
-
-    Serial.println(time);
-    Serial.println(flow1);
-    Serial.println(flow2);
-    Serial.println(flow3);
 }
 
 
 
 void handleScheduleUI(void *parameter)
 {
-    String response = http_get_data("http://172.28.182.209:3000/data");
+    String response = http_get_data("http://192.168.0.101:3000/data");
+    String jsonString;
+    JsonDocument jsonDocGlobal;
 
     jsonString = response;
     DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
@@ -392,14 +399,22 @@ void handleScheduleUI(void *parameter)
 
     // Access the JSON array
     jsonArray = jsonDocGlobal.as<JsonArray>();
-
-
+    Serial.println(jsonArray);
+    int numberOfElement = jsonArray.size();
     for(;;)
     {
         print(PRINTLN, "Schedule UI task is running!"); 
         // Checking does mutex is available
         if (xSemaphoreTake(lvgl_mutex,  pdMS_TO_TICKS(10)) == pdTRUE)
         {
+            if(lv_obj_is_valid(ui_TitleScheduleScreen) == true)
+            {
+                lv_obj_t *child = lv_obj_get_child(ui_TitleScheduleScreen, 0);
+                if(child == NULL)
+                {
+                    renderNavigateSchedulePage(numberOfElement);
+                }
+            }
             if(lv_obj_is_valid(ui_ScheduleContainer) == true)
             {
                 lv_obj_t *child = lv_obj_get_child(ui_ScheduleContainer, 0);
@@ -418,10 +433,6 @@ void handleScheduleUI(void *parameter)
 
                         renderScheduleUI(id, time, flow1, flow2, flow3, schedule_type);
                     }
-                }
-                else
-                {
-                    print(PRINTLN, "ui_ScheduleContainer has been created!");
                 }
             }
             else

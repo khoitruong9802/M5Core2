@@ -69,7 +69,7 @@ void ui_ScheduleItemScreen_screen_init(void)
     lv_obj_set_width(ui_PanelScheduleItemContainerScreen, 320);
     lv_obj_set_height(ui_PanelScheduleItemContainerScreen, 240);
     lv_obj_set_x(ui_PanelScheduleItemContainerScreen, 0);
-    lv_obj_set_y(ui_PanelScheduleItemContainerScreen, 50);
+    lv_obj_set_y(ui_PanelScheduleItemContainerScreen, 70);
     lv_obj_set_align(ui_PanelScheduleItemContainerScreen, LV_ALIGN_CENTER);
     lv_obj_clear_flag(ui_PanelScheduleItemContainerScreen, LV_OBJ_FLAG_SCROLL_CHAIN);      /// Flags
     lv_obj_set_scroll_dir(ui_PanelScheduleItemContainerScreen, LV_DIR_VER);

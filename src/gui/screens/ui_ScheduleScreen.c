@@ -20,17 +20,27 @@ void ui_ScheduleScreen_screen_init(void)
     lv_obj_set_style_bg_color(ui_MainScheduleScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_MainScheduleScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_TitleScheduleScreen = lv_label_create(ui_MainScheduleScreen);
-    lv_obj_set_width(ui_TitleScheduleScreen, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_TitleScheduleScreen, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_TitleScheduleScreen, -135);
-    lv_obj_set_y(ui_TitleScheduleScreen, -104);
+    ui_TitleScheduleScreen = lv_obj_create(ui_MainScheduleScreen);
+    lv_obj_set_width(ui_TitleScheduleScreen, LV_SIZE_CONTENT);
+    lv_obj_set_style_max_width(ui_TitleScheduleScreen, 260, 0);
+    lv_obj_set_height(ui_TitleScheduleScreen, 40);
     lv_obj_set_align(ui_TitleScheduleScreen, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_TitleScheduleScreen, "FARMER");
-    lv_obj_set_style_text_color(ui_TitleScheduleScreen, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_TitleScheduleScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_TitleScheduleScreen, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
-
+    lv_obj_set_flex_flow(ui_TitleScheduleScreen, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(ui_TitleScheduleScreen, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
+    lv_obj_add_flag(ui_TitleScheduleScreen,
+                    LV_OBJ_FLAG_SCROLL_ON_FOCUS | LV_OBJ_FLAG_SCROLL_WITH_ARROW | LV_OBJ_FLAG_SCROLL_ONE);    /// Flags
+    lv_obj_set_scroll_dir(ui_TitleScheduleScreen, LV_DIR_HOR);
+    lv_obj_scroll_to_x(ui_TitleScheduleScreen, 0, LV_ANIM_OFF);
+    lv_obj_set_style_bg_color(ui_TitleScheduleScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_TitleScheduleScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_TitleScheduleScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_TitleScheduleScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_TitleScheduleScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_TitleScheduleScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_TitleScheduleScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_TitleScheduleScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_TitleScheduleScreen, lv_color_hex(0xFFFFFF), LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_TitleScheduleScreen, 255, LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
 
     // Create the scrollable container below the title
     ui_ScheduleContainer = lv_obj_create(ui_MainScheduleScreen);

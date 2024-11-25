@@ -228,6 +228,8 @@ void ui_event_ScheduleScreen(lv_event_t * e);
 extern lv_obj_t *  ui_ScheduleScreen;
 extern lv_obj_t *  ui_MainScheduleScreen;
 extern lv_obj_t *  ui_TitleScheduleScreen;
+extern lv_obj_t *  ui_PanelPageItemTitleScheduleScreen[100];
+extern lv_obj_t *  ui_LabelPageItemTitleScheduleScreen[100];
 extern lv_obj_t *  ui_ScheduleContainer;
 extern lv_obj_t *  ui_PanelScheduleItem;
 

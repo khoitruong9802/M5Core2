@@ -383,7 +383,8 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_CLICKED) {
+    if(event_code == LV_EVENT_CLICKED) 
+    {
         const char * schedule_name_new = lv_label_get_text(ui_LabelNameScheduleItem);
         const char * description_new = lv_label_get_text(ui_LabelDescriptionScheduleItem);
         char area_new[64];
@@ -392,9 +393,9 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
         const char * water_quantity_new = lv_label_get_text(ui_LabelWaterQuantityScheduleItem);
         const char * start_time_new = lv_label_get_text(ui_LabelScheduleStartTimeScheduleItem);
         const char * end_time_new = lv_label_get_text(ui_LabelScheduleEndTimeScheduleItem);
-        const char * date_new = lv_label_get_text(ui_DateScheduleItemScreen);
-        const char * start_date_new = lv_label_get_text(ui_StartDateScheduleItemScreen);
-        const char * end_date_new = lv_label_get_text(ui_EndDateScheduleItemScreen);
+        const char * date_new = lv_label_get_text(ui_LabelNameScheduleItem);
+        const char * start_date_new = lv_label_get_text(ui_LabelScheduleStartDateScheduleItem);
+        const char * end_date_new = lv_label_get_text(ui_LabelScheduleEndDateScheduleItem);
         char repeat_new[64];
         lv_dropdown_get_selected_str(ui_DropdownScheduleRepeatScheduleItem, repeat_new, sizeof(repeat_new));        
         

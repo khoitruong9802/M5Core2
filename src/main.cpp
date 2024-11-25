@@ -64,7 +64,7 @@ void setup()
 
 void loop()
 {
-  printHeapInfo();
-  delay(1000);
-  // vTaskDelete(NULL);
+  // printHeapInfo();
+  // delay(1000);
+  vTaskDelete(NULL);
 }

@@ -15,8 +15,6 @@ extern const char* web_server;
 extern SemaphoreHandle_t lvgl_mutex;
 
 extern JsonArray jsonArray;
-extern JsonDocument jsonDocGlobal;
-extern String jsonString;
 
 static int current_schedule_id = -1;
 
