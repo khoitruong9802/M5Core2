@@ -1,7 +1,9 @@
 #include "global.h"
 
-JsonArray jsonArray;
+String jsonString;
 
+int numberOfPage;
+int numberOfElement;
 void print(uint8_t print_mode, const char* msg, ...) {
     if (DEBUG_MODE == 1) {
         va_list args;

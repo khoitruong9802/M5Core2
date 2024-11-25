@@ -73,7 +73,8 @@
         "esp_log.h": "c",
         "lv_calendar.h": "c",
         "lv_calendar_header_arrow.h": "c",
-        "custom_widget.h": "c"
+        "custom_widget.h": "c",
+        "arduinojson.h": "c"
     },
     "window.zoomLevel": -1
 }

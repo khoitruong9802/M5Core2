@@ -116,6 +116,17 @@ void handleScheduleItemUI(void * parameter)
     const char * schedule_end_day;
     const char* days_list[7];
     int days_count = 0; 
+
+    JsonDocument jsonDocGlobal;
+
+    DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
+    if (error) 
+    {
+    Serial.println(error.c_str());
+    }
+
+    // Access the JSON array
+    JsonArray jsonArray = jsonDocGlobal.as<JsonArray>();
     // Get the schedule item data
     for(JsonObject obj : jsonArray) {
         int id = obj["id"];
@@ -244,7 +255,6 @@ static void schedule_item_click_event_handler(lv_event_t * e)
     lv_obj_t * panel = lv_event_get_target(e);
     // Get the schedule ID or metadata associated with this panel
     int schedule_id = (int)(uintptr_t)lv_event_get_user_data(e);
-    current_schedule_id = schedule_id;
 
     // You could use the schedule ID to pull the detailed information from memory, 
     // for example, fetching from an array or JSON data stored locally.
@@ -262,34 +272,40 @@ static void schedule_item_click_event_handler(lv_event_t * e)
     }
 }
 
-void renderNavigateSchedulePage(int numberOfElement)
+void renderNavigateSchedulePage(int numberOfPage)
 {
-    int numberOfPage = numberOfElement / 5;
-    for(int i = 0; i < 20; i++)
+    for(int i = 0; i < numberOfPage && i < 3; i++)
     {
-        ui_Panel2 = lv_obj_create(ui_TitleScheduleScreen);
-        lv_obj_set_width(ui_Panel2, 35);
-        lv_obj_set_height(ui_Panel2, 35);
-        lv_obj_set_align(ui_Panel2, LV_ALIGN_CENTER);
-        lv_obj_clear_flag(ui_Panel2, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-
-        ui_Label3 = lv_label_create(ui_Panel2);
-        lv_obj_set_width(ui_Label3, LV_SIZE_CONTENT);   /// 1
-        lv_obj_set_height(ui_Label3, LV_SIZE_CONTENT);    /// 1
-        lv_obj_set_align(ui_Label3, LV_ALIGN_CENTER);
-        lv_label_set_text(ui_Label3, "1");
+        int num = i + 1;
+        char buffer[10];           // Ensure buffer is large enough to hold the string representation
+        itoa(num, buffer, 10);     // Convert the int to a string (base 10)
+        const char *str = buffer;  // Now 'str' is a const char* pointing to the string
+        lv_label_set_text(ui_LabelPageItemTitleScheduleScreen[i], str);
+        lv_obj_clear_flag(ui_PanelPageItemTitleScheduleScreen[i], LV_OBJ_FLAG_HIDDEN);
     }
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[0], lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_task_handler();
 }
 
 
-void renderScheduleUI(int id, const char *time, int flow1, int flow2, int flow3, const char * schedule_type) 
+void renderScheduleUI(int id, const char * name, const char *time, int water_quantity, const char * schedule_type) 
 {  
     
-    ui_PanelScheduleItem = lv_obj_create(ui_ScheduleContainer);
+    lv_obj_t * ui_PanelScheduleItemContainer = lv_obj_create(ui_ScheduleContainer);
+    lv_obj_set_width(ui_PanelScheduleItemContainer, 300);
+    lv_obj_set_height(ui_PanelScheduleItemContainer, 90);
+    lv_obj_set_align(ui_PanelScheduleItemContainer, LV_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_PanelScheduleItemContainer, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_PanelScheduleItemContainer, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_PanelScheduleItemContainer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_PanelScheduleItemContainer, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_PanelScheduleItemContainer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    
+    ui_PanelScheduleItem = lv_obj_create(ui_PanelScheduleItemContainer);
     lv_obj_set_width(ui_PanelScheduleItem, 285);
-    lv_obj_set_height(ui_PanelScheduleItem, 50);
+    lv_obj_set_height(ui_PanelScheduleItem, 80);
     lv_obj_set_x(ui_PanelScheduleItem, 0);
-    lv_obj_set_y(ui_PanelScheduleItem, -45);
+    lv_obj_set_y(ui_PanelScheduleItem, 0);
     lv_obj_set_align(ui_PanelScheduleItem, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_PanelScheduleItem, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(ui_PanelScheduleItem, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
@@ -305,81 +321,52 @@ void renderScheduleUI(int id, const char *time, int flow1, int flow2, int flow3,
     lv_label_set_text(ui_LabelScheduleItem, time);
     lv_obj_set_style_text_font(ui_LabelScheduleItem, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    lv_obj_t * ui_PanelScheduleItemIngredient = lv_obj_create(ui_PanelScheduleItem);
-    lv_obj_set_width(ui_PanelScheduleItemIngredient, 75);
-    lv_obj_set_height(ui_PanelScheduleItemIngredient, 50);
-    lv_obj_set_x(ui_PanelScheduleItemIngredient, 2);
-    lv_obj_set_y(ui_PanelScheduleItemIngredient, 0);
-    lv_obj_set_align(ui_PanelScheduleItemIngredient, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_PanelScheduleItemIngredient, LV_FLEX_FLOW_ROW);
-    lv_obj_set_flex_align(ui_PanelScheduleItemIngredient, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_SPACE_EVENLY);
-    lv_obj_clear_flag(ui_PanelScheduleItemIngredient, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_border_opa(ui_PanelScheduleItemIngredient, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_row(ui_PanelScheduleItemIngredient, 0, LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_column(ui_PanelScheduleItemIngredient, 0, LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_PanelScheduleItemIngredient, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_DEFAULT); //set object to transparent color
+    lv_obj_t * ui_PanelScheduleItemIngredientWaterQuantity = lv_obj_create(ui_PanelScheduleItem);
+    lv_obj_set_width(ui_PanelScheduleItemIngredientWaterQuantity, 75);
+    lv_obj_set_height(ui_PanelScheduleItemIngredientWaterQuantity, 50);
+    lv_obj_set_x(ui_PanelScheduleItemIngredientWaterQuantity, 2);
+    lv_obj_set_y(ui_PanelScheduleItemIngredientWaterQuantity, 0);
+    lv_obj_set_align(ui_PanelScheduleItemIngredientWaterQuantity, LV_ALIGN_CENTER);
+    lv_obj_set_flex_flow(ui_PanelScheduleItemIngredientWaterQuantity, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(ui_PanelScheduleItemIngredientWaterQuantity, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_SPACE_EVENLY);
+    lv_obj_clear_flag(ui_PanelScheduleItemIngredientWaterQuantity, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_border_opa(ui_PanelScheduleItemIngredientWaterQuantity, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_row(ui_PanelScheduleItemIngredientWaterQuantity, 0, LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_column(ui_PanelScheduleItemIngredientWaterQuantity, 0, LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_PanelScheduleItemIngredientWaterQuantity, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_DEFAULT); //set object to transparent color
 
 
-    int num = flow1;
+    int num = water_quantity;
     char buffer[10];           // Ensure buffer is large enough to hold the string representation
     itoa(num, buffer, 10);     // Convert the int to a string (base 10)
+    strcat(buffer, " (ml)"); 
     const char *str = buffer;  // Now 'str' is a const char* pointing to the string
-    lv_obj_t * ui_LabelScheduleItemIngredient1 = lv_label_create(ui_PanelScheduleItemIngredient);
-    lv_obj_set_width(ui_LabelScheduleItemIngredient1, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_LabelScheduleItemIngredient1, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_LabelScheduleItemIngredient1, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_LabelScheduleItemIngredient1, str);
-    lv_obj_set_style_bg_color(ui_LabelScheduleItemIngredient1, lv_color_hex(0xFECACA), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_LabelScheduleItemIngredient1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui_LabelScheduleItemIngredient1, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui_LabelScheduleItemIngredient1, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui_LabelScheduleItemIngredient1, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui_LabelScheduleItemIngredient1, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    num = flow2;
-    itoa(num, buffer, 10);  // Convert the int to a string (base 10)
-    str = buffer;           // Now 'str' is a const char* pointing to the string
-
-    lv_obj_t * ui_LabelScheduleItemIngredient2 = lv_label_create(ui_PanelScheduleItemIngredient);
-    lv_obj_set_width(ui_LabelScheduleItemIngredient2, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_LabelScheduleItemIngredient2, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_LabelScheduleItemIngredient2, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_LabelScheduleItemIngredient2, str);
-    lv_obj_set_style_bg_color(ui_LabelScheduleItemIngredient2, lv_color_hex(0xBFDBFE), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_LabelScheduleItemIngredient2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui_LabelScheduleItemIngredient2, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui_LabelScheduleItemIngredient2, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui_LabelScheduleItemIngredient2, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui_LabelScheduleItemIngredient2, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    num = flow3;
-    itoa(num, buffer, 10);  // Convert the int to a string (base 10)
-    str = buffer;           // Now 'str' is a const char* pointing to the string
-
-    lv_obj_t * ui_LabelScheduleItemIngredient3 = lv_label_create(ui_PanelScheduleItemIngredient);
-    lv_obj_set_width(ui_LabelScheduleItemIngredient3, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_LabelScheduleItemIngredient3, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_LabelScheduleItemIngredient3, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_LabelScheduleItemIngredient3, str);
-    lv_obj_set_style_bg_color(ui_LabelScheduleItemIngredient3, lv_color_hex(0xFEF08A), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_LabelScheduleItemIngredient3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui_LabelScheduleItemIngredient3, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui_LabelScheduleItemIngredient3, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui_LabelScheduleItemIngredient3, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui_LabelScheduleItemIngredient3, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_t * ui_LabelScheduleItemWaterQuantity = lv_label_create(ui_PanelScheduleItemIngredientWaterQuantity);
+    lv_obj_set_width(ui_LabelScheduleItemWaterQuantity, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_LabelScheduleItemWaterQuantity, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_LabelScheduleItemWaterQuantity, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_LabelScheduleItemWaterQuantity, str);
 
     lv_obj_t * ui_LabelScheduleItemTimer = lv_label_create(ui_PanelScheduleItem);
     lv_obj_set_width(ui_LabelScheduleItemTimer, 75);   /// 1
     lv_obj_set_height(ui_LabelScheduleItemTimer, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_LabelScheduleItemTimer, LV_ALIGN_CENTER);
     lv_label_set_text(ui_LabelScheduleItemTimer, schedule_type);
-    lv_obj_set_style_text_font(ui_LabelScheduleItemTimer, &lv_font_montserrat_12, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_LabelScheduleItemTimer, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
 
     lv_obj_t * ui_SwitchScheduleItem = lv_switch_create(ui_PanelScheduleItem);
-    lv_obj_set_width(ui_SwitchScheduleItem, 50);
-    lv_obj_set_height(ui_SwitchScheduleItem, 25);
+    lv_obj_set_width(ui_SwitchScheduleItem, 70);
+    lv_obj_set_height(ui_SwitchScheduleItem, 35);
     lv_obj_set_align(ui_SwitchScheduleItem, LV_ALIGN_CENTER);
+
+    lv_obj_t * ui_LabelNameScheduleListItem = lv_label_create(ui_PanelScheduleItemContainer);
+    lv_obj_set_width(ui_LabelNameScheduleListItem, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_LabelNameScheduleListItem, LV_SIZE_CONTENT);    /// 1
+    lv_label_set_text(ui_LabelNameScheduleListItem, name);
+    lv_obj_set_style_text_color(ui_LabelNameScheduleListItem, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_LabelNameScheduleListItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_LabelNameScheduleListItem, &lv_font_montserrat_10, LV_PART_MAIN | LV_STATE_DEFAULT);
 }
 
 
@@ -387,10 +374,11 @@ void renderScheduleUI(int id, const char *time, int flow1, int flow2, int flow3,
 void handleScheduleUI(void *parameter)
 {
     String response = http_get_data("http://192.168.0.101:3000/data");
-    String jsonString;
-    JsonDocument jsonDocGlobal;
 
     jsonString = response;
+
+    JsonDocument jsonDocGlobal;
+
     DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
     if (error) 
     {
@@ -398,40 +386,40 @@ void handleScheduleUI(void *parameter)
     }
 
     // Access the JSON array
-    jsonArray = jsonDocGlobal.as<JsonArray>();
-    Serial.println(jsonArray);
-    int numberOfElement = jsonArray.size();
+    JsonArray jsonArray = jsonDocGlobal.as<JsonArray>();
+    numberOfElement = jsonArray.size();
+    numberOfPage = (numberOfElement / 3) + 1;
     for(;;)
     {
         print(PRINTLN, "Schedule UI task is running!"); 
         // Checking does mutex is available
         if (xSemaphoreTake(lvgl_mutex,  pdMS_TO_TICKS(10)) == pdTRUE)
         {
-            if(lv_obj_is_valid(ui_TitleScheduleScreen) == true)
-            {
-                lv_obj_t *child = lv_obj_get_child(ui_TitleScheduleScreen, 0);
-                if(child == NULL)
-                {
-                    renderNavigateSchedulePage(numberOfElement);
-                }
-            }
+            renderNavigateSchedulePage(numberOfPage);
             if(lv_obj_is_valid(ui_ScheduleContainer) == true)
             {
                 lv_obj_t *child = lv_obj_get_child(ui_ScheduleContainer, 0);
                 if(child == NULL)
                 {
+                    int i = 0;
                     for (JsonObject obj : jsonArray) 
                     {
-                        int id = obj["id"];
-                        const char *time = obj["start_time"];
-                        int flow1 = obj["flow1"];
-                        int flow2 = obj["flow2"];
-                        int flow3 = obj["flow3"];
-                        const char * schedule_type = obj["schedule_type"];
-                        const char * schedule_status = obj["status"];
-                        //TO DO
-
-                        renderScheduleUI(id, time, flow1, flow2, flow3, schedule_type);
+                        if(i < 5)
+                        {
+                            const char * name = obj["schedule_name"];
+                            int id = obj["id"];
+                            const char *time = obj["start_time"];
+                            int water_quantity = obj["water_quantity"];
+                            const char * schedule_type = obj["schedule_type"];
+                            const char * schedule_status = obj["status"];
+                            //TO DO
+                            renderScheduleUI(id, name, time, water_quantity, schedule_type);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                        i++;
                     }
                 }
             }

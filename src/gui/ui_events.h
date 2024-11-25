@@ -32,6 +32,11 @@ void ui_event_PanelScheduleWeekItemSaturdayScheduleItem(lv_event_t * e);
 void ui_event_PanelScheduleWeekItemSundayScheduleItem(lv_event_t * e);
 void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e);
 void ui_event_ButtonCancelHeaderScheduleItem(lv_event_t * e);
+void ui_event_PanelPageItemTitleScheduleScreen0(lv_event_t * e);
+void ui_event_PanelPageItemTitleScheduleScreen1(lv_event_t * e);
+void ui_event_PanelPageItemTitleScheduleScreen2(lv_event_t * e);
+void ui_event_ButtonNextPageItemTitleScheduleScreen(lv_event_t *e);
+void ui_event_ButtonPreviousPageItemTitleScheduleScreen(lv_event_t *e);
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

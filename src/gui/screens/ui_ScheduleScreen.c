@@ -15,37 +15,118 @@ void ui_ScheduleScreen_screen_init(void)
     lv_obj_set_height(ui_MainScheduleScreen, 240);
     lv_obj_set_align(ui_MainScheduleScreen, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_MainScheduleScreen, LV_FLEX_FLOW_COLUMN);
+    lv_obj_clear_flag(ui_MainScheduleScreen, LV_OBJ_FLAG_SCROLL_CHAIN);      /// Flags
+    lv_obj_set_scroll_dir(ui_MainScheduleScreen, LV_DIR_VER);
     lv_obj_set_flex_align(ui_MainScheduleScreen, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_set_style_radius(ui_MainScheduleScreen, 12, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_MainScheduleScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_MainScheduleScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_TitleScheduleScreen = lv_obj_create(ui_MainScheduleScreen);
-    lv_obj_set_width(ui_TitleScheduleScreen, LV_SIZE_CONTENT);
-    lv_obj_set_style_max_width(ui_TitleScheduleScreen, 260, 0);
-    lv_obj_set_height(ui_TitleScheduleScreen, 40);
-    lv_obj_set_align(ui_TitleScheduleScreen, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_TitleScheduleScreen, LV_FLEX_FLOW_ROW);
-    lv_obj_set_flex_align(ui_TitleScheduleScreen, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
-    lv_obj_add_flag(ui_TitleScheduleScreen,
-                    LV_OBJ_FLAG_SCROLL_ON_FOCUS | LV_OBJ_FLAG_SCROLL_WITH_ARROW | LV_OBJ_FLAG_SCROLL_ONE);    /// Flags
-    lv_obj_set_scroll_dir(ui_TitleScheduleScreen, LV_DIR_HOR);
-    lv_obj_scroll_to_x(ui_TitleScheduleScreen, 0, LV_ANIM_OFF);
-    lv_obj_set_style_bg_color(ui_TitleScheduleScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_TitleScheduleScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_TitleScheduleScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_TitleScheduleScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui_TitleScheduleScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui_TitleScheduleScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui_TitleScheduleScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui_TitleScheduleScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_TitleScheduleScreen, lv_color_hex(0xFFFFFF), LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_TitleScheduleScreen, 255, LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
+    ui_HeaderScheduleScreen = lv_obj_create(ui_MainScheduleScreen);
+    lv_obj_set_width(ui_HeaderScheduleScreen, 320);
+    lv_obj_set_height(ui_HeaderScheduleScreen, 50);
+    lv_obj_set_align(ui_HeaderScheduleScreen, LV_ALIGN_TOP_MID);
+    lv_obj_set_flex_flow(ui_HeaderScheduleScreen, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(ui_HeaderScheduleScreen, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
+    lv_obj_clear_flag(ui_HeaderScheduleScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_HeaderScheduleScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_HeaderScheduleScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_HeaderScheduleScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_HeaderScheduleScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_HeaderScheduleScreen, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_HeaderScheduleScreen, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_HeaderScheduleScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_HeaderScheduleScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_ButtonPreviousPageItemTitleScheduleScreen = lv_btn_create(ui_HeaderScheduleScreen);
+    lv_obj_set_width(ui_ButtonPreviousPageItemTitleScheduleScreen, 45);
+    lv_obj_set_height(ui_ButtonPreviousPageItemTitleScheduleScreen, 45);
+    lv_obj_set_align(ui_ButtonPreviousPageItemTitleScheduleScreen, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_ButtonPreviousPageItemTitleScheduleScreen, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_ButtonPreviousPageItemTitleScheduleScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_LabelPreviousPageItemTitleScheduleScreen = lv_label_create(ui_ButtonPreviousPageItemTitleScheduleScreen);
+    lv_obj_set_width(ui_LabelPreviousPageItemTitleScheduleScreen, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_LabelPreviousPageItemTitleScheduleScreen, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_LabelPreviousPageItemTitleScheduleScreen, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_LabelPreviousPageItemTitleScheduleScreen, "<");
+
+    ui_PanelPageItemTitleScheduleContainerScreen = lv_obj_create(ui_HeaderScheduleScreen);
+    lv_obj_set_width(ui_PanelPageItemTitleScheduleContainerScreen, 180);
+    lv_obj_set_height(ui_PanelPageItemTitleScheduleContainerScreen, 60);
+    lv_obj_set_align(ui_PanelPageItemTitleScheduleContainerScreen, LV_ALIGN_CENTER);
+    lv_obj_set_flex_flow(ui_PanelPageItemTitleScheduleContainerScreen, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(ui_PanelPageItemTitleScheduleContainerScreen, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
+    lv_obj_clear_flag(ui_PanelPageItemTitleScheduleContainerScreen, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleContainerScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_PanelPageItemTitleScheduleContainerScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_PanelPageItemTitleScheduleContainerScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_PanelPageItemTitleScheduleContainerScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_PanelPageItemTitleScheduleContainerScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_PanelPageItemTitleScheduleContainerScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_PanelPageItemTitleScheduleContainerScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_PanelPageItemTitleScheduleContainerScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_PanelPageItemTitleScheduleContainerScreen, lv_color_hex(0xFFFFFF), LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_PanelPageItemTitleScheduleContainerScreen, 255, LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
+
+
+    ui_PanelPageItemTitleScheduleScreen[0] = lv_obj_create(ui_PanelPageItemTitleScheduleContainerScreen);
+    lv_obj_set_width(ui_PanelPageItemTitleScheduleScreen[0], 45);
+    lv_obj_set_height(ui_PanelPageItemTitleScheduleScreen[0], 45);
+    lv_obj_set_align(ui_PanelPageItemTitleScheduleScreen[0], LV_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_PanelPageItemTitleScheduleScreen[0], LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[0], LV_OBJ_FLAG_HIDDEN);
+
+    ui_LabelPageItemTitleScheduleScreen[0] = lv_label_create(ui_PanelPageItemTitleScheduleScreen[0]);
+    lv_obj_set_width(ui_LabelPageItemTitleScheduleScreen[0], LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_LabelPageItemTitleScheduleScreen[0], LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_LabelPageItemTitleScheduleScreen[0], LV_ALIGN_CENTER);
+    lv_label_set_text(ui_LabelPageItemTitleScheduleScreen[0], " ");
+
+    ui_PanelPageItemTitleScheduleScreen[1] = lv_obj_create(ui_PanelPageItemTitleScheduleContainerScreen);
+    lv_obj_set_width(ui_PanelPageItemTitleScheduleScreen[1], 45);
+    lv_obj_set_height(ui_PanelPageItemTitleScheduleScreen[1], 45);
+    lv_obj_set_align(ui_PanelPageItemTitleScheduleScreen[1], LV_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_PanelPageItemTitleScheduleScreen[1], LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[1], LV_OBJ_FLAG_HIDDEN);
+
+
+    ui_LabelPageItemTitleScheduleScreen[1] = lv_label_create(ui_PanelPageItemTitleScheduleScreen[1]);
+    lv_obj_set_width(ui_LabelPageItemTitleScheduleScreen[1], LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_LabelPageItemTitleScheduleScreen[1], LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_LabelPageItemTitleScheduleScreen[1], LV_ALIGN_CENTER);
+    lv_label_set_text(ui_LabelPageItemTitleScheduleScreen[1], " ");
+
+    ui_PanelPageItemTitleScheduleScreen[2] = lv_obj_create(ui_PanelPageItemTitleScheduleContainerScreen);
+    lv_obj_set_width(ui_PanelPageItemTitleScheduleScreen[2], 45);
+    lv_obj_set_height(ui_PanelPageItemTitleScheduleScreen[2], 45);
+    lv_obj_set_align(ui_PanelPageItemTitleScheduleScreen[2], LV_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_PanelPageItemTitleScheduleScreen[2], LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[2], LV_OBJ_FLAG_HIDDEN);
+
+    ui_LabelPageItemTitleScheduleScreen[2] = lv_label_create(ui_PanelPageItemTitleScheduleScreen[2]);
+    lv_obj_set_width(ui_LabelPageItemTitleScheduleScreen[2], LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_LabelPageItemTitleScheduleScreen[2], LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_LabelPageItemTitleScheduleScreen[2], LV_ALIGN_CENTER);
+    lv_label_set_text(ui_LabelPageItemTitleScheduleScreen[2], " ");
+
+    ui_ButtonNextPageItemTitleScheduleScreen = lv_btn_create(ui_HeaderScheduleScreen);
+    lv_obj_set_width(ui_ButtonNextPageItemTitleScheduleScreen, 45);
+    lv_obj_set_height(ui_ButtonNextPageItemTitleScheduleScreen, 45);
+    lv_obj_set_align(ui_ButtonNextPageItemTitleScheduleScreen, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_ButtonNextPageItemTitleScheduleScreen, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_ButtonNextPageItemTitleScheduleScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_LabelNextPageItemTitleScheduleScreen = lv_label_create(ui_ButtonNextPageItemTitleScheduleScreen);
+    lv_obj_set_width(ui_LabelNextPageItemTitleScheduleScreen, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_LabelNextPageItemTitleScheduleScreen, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_LabelNextPageItemTitleScheduleScreen, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_LabelNextPageItemTitleScheduleScreen, ">");
 
     // Create the scrollable container below the title
     ui_ScheduleContainer = lv_obj_create(ui_MainScheduleScreen);
     lv_obj_clear_flag(ui_ScheduleContainer, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_width(ui_ScheduleContainer, 290);   // Set the width to fit within the main screen
+    lv_obj_set_width(ui_ScheduleContainer, 310);   // Set the width to fit within the main screen
     lv_obj_set_height(ui_ScheduleContainer, LV_SIZE_CONTENT);  // Let the height adapt based on the content
     lv_obj_set_flex_flow(ui_ScheduleContainer, LV_FLEX_FLOW_COLUMN);  // Arrange children vertically
     lv_obj_set_align(ui_ScheduleContainer, LV_ALIGN_TOP_MID);  // Align container in the middle of the main schedule screen
@@ -57,6 +138,12 @@ void ui_ScheduleScreen_screen_init(void)
     lv_obj_set_style_border_width(ui_ScheduleContainer, 0, LV_PART_MAIN | LV_STATE_DEFAULT);  // Set border width to 0
     lv_obj_set_style_border_opa(ui_ScheduleContainer, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_DEFAULT);  // Set border opacity to transparent
 
+
+    lv_obj_add_event_cb(ui_PanelPageItemTitleScheduleScreen[0], ui_event_PanelPageItemTitleScheduleScreen0, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_PanelPageItemTitleScheduleScreen[1], ui_event_PanelPageItemTitleScheduleScreen1, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_PanelPageItemTitleScheduleScreen[2], ui_event_PanelPageItemTitleScheduleScreen2, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_ButtonNextPageItemTitleScheduleScreen, ui_event_ButtonNextPageItemTitleScheduleScreen, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_ButtonPreviousPageItemTitleScheduleScreen,ui_event_ButtonPreviousPageItemTitleScheduleScreen, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_ScheduleScreen, ui_event_ScheduleScreen, LV_EVENT_ALL, NULL);
 
 

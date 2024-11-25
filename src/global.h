@@ -14,9 +14,10 @@ extern const char* web_server;
 
 extern SemaphoreHandle_t lvgl_mutex;
 
-extern JsonArray jsonArray;
+extern String jsonString;
 
-static int current_schedule_id = -1;
+extern int numberOfPage;
+extern int numberOfElement;
 
 #define PRINT   1
 #define PRINTLN 2

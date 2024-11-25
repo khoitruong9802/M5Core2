@@ -227,9 +227,14 @@ void ui_ScheduleScreen_screen_init(void);
 void ui_event_ScheduleScreen(lv_event_t * e);
 extern lv_obj_t *  ui_ScheduleScreen;
 extern lv_obj_t *  ui_MainScheduleScreen;
-extern lv_obj_t *  ui_TitleScheduleScreen;
-extern lv_obj_t *  ui_PanelPageItemTitleScheduleScreen[100];
-extern lv_obj_t *  ui_LabelPageItemTitleScheduleScreen[100];
+extern lv_obj_t *  ui_HeaderScheduleScreen;
+extern lv_obj_t * ui_ButtonPreviousPageItemTitleScheduleScreen;
+extern lv_obj_t * ui_ButtonNextPageItemTitleScheduleScreen;
+extern lv_obj_t * ui_LabelPreviousPageItemTitleScheduleScreen;
+extern lv_obj_t * ui_LabelNextPageItemTitleScheduleScreen;
+extern lv_obj_t * ui_PanelPageItemTitleScheduleContainerScreen;
+extern lv_obj_t *  ui_PanelPageItemTitleScheduleScreen[3];
+extern lv_obj_t *  ui_LabelPageItemTitleScheduleScreen[3];
 extern lv_obj_t *  ui_ScheduleContainer;
 extern lv_obj_t *  ui_PanelScheduleItem;
 

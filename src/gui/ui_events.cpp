@@ -12,6 +12,7 @@
 #include "global.h"
 #include "services/ota_service.h"
 #include "ui.h"
+#include<stdio.h>
 
 const char *get_json_device(uint8_t device1_status, uint8_t device2_status) {
   char *result = new char[256];
@@ -410,4 +411,106 @@ void ui_event_ButtonCancelHeaderScheduleItem(lv_event_t * e)
         lv_indev_wait_release(lv_indev_get_act());
         _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
     }
+}
+
+void ui_event_PanelPageItemTitleScheduleScreen0(lv_event_t * e)
+{
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t * target = lv_event_get_target(e);
+  if(event_code == LV_EVENT_CLICKED) 
+  {
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[0], lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[1], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[2], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_task_handler();
+  }
+}
+void ui_event_PanelPageItemTitleScheduleScreen1(lv_event_t * e)
+{
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t * target = lv_event_get_target(e);
+  if(event_code == LV_EVENT_CLICKED) 
+  {
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[0], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[1], lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[2], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_task_handler();    
+  }
+}
+void ui_event_PanelPageItemTitleScheduleScreen2(lv_event_t * e)
+{
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t * target = lv_event_get_target(e);
+  if(event_code == LV_EVENT_CLICKED) 
+  {
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[0], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[1], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[2], lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_task_handler();    
+  }
+}
+
+
+
+void ui_event_ButtonNextPageItemTitleScheduleScreen(lv_event_t *e)
+{
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t * target = lv_event_get_target(e);
+  if(event_code == LV_EVENT_CLICKED)
+  {
+      lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[0], LV_OBJ_FLAG_HIDDEN);
+      lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[1], LV_OBJ_FLAG_HIDDEN);
+      lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[2], LV_OBJ_FLAG_HIDDEN);
+      lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[0], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+      lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[1], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+      lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[2], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    const char * max_index_c_tr = lv_label_get_text(ui_LabelPageItemTitleScheduleScreen[2]);
+    int index = atoi(max_index_c_tr) + 1;
+    for(int i = 0; i < 2 && index <= numberOfElement; i++)
+    {
+      char buffer[10];           // Ensure buffer is large enough to hold the string representation
+      itoa(index, buffer, 10);     // Convert the int to a string (base 10)
+      const char *str = buffer;  // Now 'str' is a const char* pointing to the string
+      lv_label_set_text(ui_LabelPageItemTitleScheduleScreen[i], buffer);
+      lv_obj_clear_flag(ui_PanelPageItemTitleScheduleScreen[i], LV_OBJ_FLAG_HIDDEN);
+      index = index + 1;
+    }  
+    lv_task_handler();
+  }
+}
+
+void ui_event_ButtonPreviousPageItemTitleScheduleScreen(lv_event_t *e)
+{
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t * target = lv_event_get_target(e);
+  if(event_code == LV_EVENT_CLICKED)
+  {
+    const char * max_index_c_tr = lv_label_get_text(ui_LabelPageItemTitleScheduleScreen[0]);
+    int index = atoi(max_index_c_tr);
+    if(index == 1)
+    {
+      return;
+    }
+    else
+    {
+      lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[0], LV_OBJ_FLAG_HIDDEN);
+      lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[1], LV_OBJ_FLAG_HIDDEN);
+      lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[2], LV_OBJ_FLAG_HIDDEN);
+      lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[0], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+      lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[1], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+      lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[2], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+      index = index - 1;
+      for(int i = 2; i >= 0; i--)
+      {
+        char buffer[10];           // Ensure buffer is large enough to hold the string representation
+        itoa(index, buffer, 10);     // Convert the int to a string (base 10)
+        const char *str = buffer;  // Now 'str' is a const char* pointing to the string
+        lv_label_set_text(ui_LabelPageItemTitleScheduleScreen[i], buffer);
+        lv_obj_clear_flag(ui_PanelPageItemTitleScheduleScreen[i], LV_OBJ_FLAG_HIDDEN);
+        index = index - 1;
+      }  
+      lv_task_handler();
+    }
+    
+  }
 }
