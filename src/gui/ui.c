@@ -235,7 +235,6 @@ lv_obj_t *  ui_PanelPageItemTitleScheduleContainerScreen;
 lv_obj_t *  ui_PanelPageItemTitleScheduleScreen[3];
 lv_obj_t *  ui_LabelPageItemTitleScheduleScreen[3];
 lv_obj_t *  ui_ScheduleContainer;
-lv_obj_t *  ui_PanelScheduleItem;
 
 
 // SCREEN: ui_scheduleItemScreen
@@ -777,6 +776,9 @@ void ui_event_ScheduleScreen(lv_event_t * e)
         lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[0], LV_OBJ_FLAG_HIDDEN);
         lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[1], LV_OBJ_FLAG_HIDDEN);
         lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[2], LV_OBJ_FLAG_HIDDEN);
+        lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[0], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[1], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[2], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);        
         lv_task_handler();
         lv_indev_wait_release(lv_indev_get_act());
         _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_AppScreen_screen_init);

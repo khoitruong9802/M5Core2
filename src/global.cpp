@@ -1,9 +1,13 @@
 #include "global.h"
 
+jsonScheduleItem jsonScheduleItemList[5];
+
 String jsonString;
 
 int numberOfPage;
 int numberOfElement;
+int currentOfElementHeader;
+
 void print(uint8_t print_mode, const char* msg, ...) {
     if (DEBUG_MODE == 1) {
         va_list args;

@@ -7,7 +7,9 @@
 #include <SPIFFS.h>
 #include "esp_heap_caps.h"
 #include "esp_psram.h"
-
+#include <Arduino.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
 SemaphoreHandle_t lvgl_mutex;
 void printHeapInfo() {
     // Get PSRAM and SRAM information
@@ -25,6 +27,23 @@ void printHeapInfo() {
     Serial.printf("Total free heap: %u bytes\n", heap_info.total_free_bytes);
     Serial.println("=========================================================");
 }
+
+void printDetailedHeapInfo() {
+    heap_caps_print_heap_info(MALLOC_CAP_8BIT);
+}
+
+
+void monitorHealth() {
+    // Print free heap memory
+    Serial.printf("Free heap memory: %u bytes\n", ESP.getFreeHeap());
+
+    // Print heap information
+    printHeapInfo();
+
+    // Print detailed heap information
+    // printDetailedHeapInfo();
+}
+
 void my_log_cb(const char * buf)
 {
     Serial.println(buf);
@@ -41,7 +60,13 @@ void setup()
   {
     print(PRINTLN,"Can not create mutex");
   }
-
+  bool psramEnabled = psramFound();
+  if (psramEnabled) {
+      Serial.println("PSRAM is enabled.");
+      Serial.printf("Free PSRAM: %u bytes\n", ESP.getFreePsram());
+  } else {
+      Serial.println("PSRAM is not enabled.");
+  }
   m5::M5Unified::config_t cfg = M5.config();
 
   cfg.serial_baudrate = 115200; // default=115200. if "Serial" is not needed, set it to 0.
@@ -64,7 +89,7 @@ void setup()
 
 void loop()
 {
-  // printHeapInfo();
-  // delay(1000);
-  vTaskDelete(NULL);
+  monitorHealth();
+  delay(1000);
+//   vTaskDelete(NULL);
 }

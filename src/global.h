@@ -9,6 +9,23 @@
 #include <stdarg.h>
 #include <lvgl.h>
 #include <ArduinoJson.h>
+#include <cmath>
+
+typedef struct
+{
+    /* data */
+    int schedule_id;
+    lv_obj_t *  ui_PanelScheduleItemContainer;
+    lv_obj_t *  ui_PanelScheduleItem;
+    lv_obj_t *  ui_LabelScheduleItem;
+    lv_obj_t *  ui_PanelScheduleItemIngredientWaterQuantity;
+    lv_obj_t *  ui_LabelScheduleItemWaterQuantity;
+    lv_obj_t *  ui_LabelScheduleItemTimer;
+    lv_obj_t *  ui_SwitchScheduleItem;
+    lv_obj_t *  ui_LabelNameScheduleListItem;
+} jsonScheduleItem;
+
+extern jsonScheduleItem jsonScheduleItemList[5];
 
 extern const char* web_server;
 
@@ -18,6 +35,7 @@ extern String jsonString;
 
 extern int numberOfPage;
 extern int numberOfElement;
+extern int currentOfElementHeader;
 
 #define PRINT   1
 #define PRINTLN 2

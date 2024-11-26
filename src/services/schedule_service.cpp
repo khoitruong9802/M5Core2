@@ -223,6 +223,7 @@ void handleScheduleItemUI(void * parameter)
             break;  // Exit the loop once the desired object is found.
         }
     }
+    
     for(;;)
     {
         // Checking does mutex is available
@@ -239,6 +240,7 @@ void handleScheduleItemUI(void * parameter)
             renderScheduleItemUI(schedule_name, description, area, priority, water_quantity, schedule_type, schedule_start_time, schedule_stop_time, schedule_start_day, schedule_end_day, days_list, days_count);
             lv_obj_add_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
             lv_task_handler();
+            jsonDocGlobal.clear();
             xSemaphoreGive(lvgl_mutex);
             vTaskDelete(NULL);
         }
@@ -250,20 +252,93 @@ void handleScheduleItemUI(void * parameter)
     }
 }
 
-static void schedule_item_click_event_handler(lv_event_t * e)
+static void ui_event_PanelScheduleItemContainer0Clicked(lv_event_t * e)
 {
     lv_obj_t * panel = lv_event_get_target(e);
     // Get the schedule ID or metadata associated with this panel
-    int schedule_id = (int)(uintptr_t)lv_event_get_user_data(e);
+    int schedule_id = jsonScheduleItemList[0].schedule_id;
 
     // You could use the schedule ID to pull the detailed information from memory, 
     // for example, fetching from an array or JSON data stored locally.
 
     // Call a function to display the detailed information screen
-    lv_obj_clear_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);    
-    lv_obj_scroll_to_x(ui_PanelScheduleItemContainerScreen, 0, LV_ANIM_OFF);
-    lv_obj_scroll_to_y(ui_PanelScheduleItemContainerScreen, 0, LV_ANIM_OFF);       
-    lv_task_handler();
+    _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
+    TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");
+    if(scheItem_task == NULL)
+    {
+        Serial.println("OK");
+        xTaskCreate(handleScheduleItemUI, "scheItem_task", 8192, (void *)(uintptr_t)schedule_id, 1, &scheItem_task);
+    }
+    else
+    {
+        Serial.println("NO");
+    }
+}
+
+static void ui_event_PanelScheduleItemContainer1Clicked(lv_event_t * e)
+{
+    lv_obj_t * panel = lv_event_get_target(e);
+    // Get the schedule ID or metadata associated with this panel
+    int schedule_id = jsonScheduleItemList[1].schedule_id;
+
+    // You could use the schedule ID to pull the detailed information from memory, 
+    // for example, fetching from an array or JSON data stored locally.
+
+    // Call a function to display the detailed information screen
+    _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
+    TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");
+    if(scheItem_task == NULL)
+    {
+        xTaskCreate(handleScheduleItemUI, "scheItem_task", 8192, (void *)(uintptr_t)schedule_id, 1, &scheItem_task);
+    }
+}
+
+static void ui_event_PanelScheduleItemContainer2Clicked(lv_event_t * e)
+{
+    lv_obj_t * panel = lv_event_get_target(e);
+    // Get the schedule ID or metadata associated with this panel
+    int schedule_id = jsonScheduleItemList[2].schedule_id;
+
+    // You could use the schedule ID to pull the detailed information from memory, 
+    // for example, fetching from an array or JSON data stored locally.
+
+    // Call a function to display the detailed information screen
+    _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
+    TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");
+    if(scheItem_task == NULL)
+    {
+        xTaskCreate(handleScheduleItemUI, "scheItem_task", 8192, (void *)(uintptr_t)schedule_id, 1, &scheItem_task);
+    }
+}
+
+static void ui_event_PanelScheduleItemContainer3Clicked(lv_event_t * e)
+{
+    lv_obj_t * panel = lv_event_get_target(e);
+    // Get the schedule ID or metadata associated with this panel
+    int schedule_id = jsonScheduleItemList[3].schedule_id;
+
+    // You could use the schedule ID to pull the detailed information from memory, 
+    // for example, fetching from an array or JSON data stored locally.
+
+    // Call a function to display the detailed information screen
+    _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
+    TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");
+    if(scheItem_task == NULL)
+    {
+        xTaskCreate(handleScheduleItemUI, "scheItem_task", 8192, (void *)(uintptr_t)schedule_id, 1, &scheItem_task);
+    }
+}
+
+static void ui_event_PanelScheduleItemContainer4Clicked(lv_event_t * e)
+{
+    lv_obj_t * panel = lv_event_get_target(e);
+    // Get the schedule ID or metadata associated with this panel
+    int schedule_id = jsonScheduleItemList[4].schedule_id;
+
+    // You could use the schedule ID to pull the detailed information from memory, 
+    // for example, fetching from an array or JSON data stored locally.
+
+    // Call a function to display the detailed information screen
     _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");
     if(scheItem_task == NULL)
@@ -284,56 +359,57 @@ void renderNavigateSchedulePage(int numberOfPage)
         lv_obj_clear_flag(ui_PanelPageItemTitleScheduleScreen[i], LV_OBJ_FLAG_HIDDEN);
     }
     lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[0], lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    currentOfElementHeader = 1;
     lv_task_handler();
 }
 
 
-void renderScheduleUI(int id, const char * name, const char *time, int water_quantity, const char * schedule_type) 
+void renderScheduleUI(int index, int id, const char * name, const char *time, int water_quantity, const char * schedule_type) 
 {  
+    jsonScheduleItemList[index].schedule_id = id;
     
-    lv_obj_t * ui_PanelScheduleItemContainer = lv_obj_create(ui_ScheduleContainer);
-    lv_obj_set_width(ui_PanelScheduleItemContainer, 300);
-    lv_obj_set_height(ui_PanelScheduleItemContainer, 90);
-    lv_obj_set_align(ui_PanelScheduleItemContainer, LV_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_PanelScheduleItemContainer, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_PanelScheduleItemContainer, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_PanelScheduleItemContainer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_PanelScheduleItemContainer, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_PanelScheduleItemContainer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    jsonScheduleItemList[index].ui_PanelScheduleItemContainer = lv_obj_create(ui_ScheduleContainer);
+    lv_obj_set_width(jsonScheduleItemList[index].ui_PanelScheduleItemContainer, 300);
+    lv_obj_set_height(jsonScheduleItemList[index].ui_PanelScheduleItemContainer, 90);
+    lv_obj_set_align(jsonScheduleItemList[index].ui_PanelScheduleItemContainer, LV_ALIGN_CENTER);
+    lv_obj_clear_flag(jsonScheduleItemList[index].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(jsonScheduleItemList[index].ui_PanelScheduleItemContainer, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(jsonScheduleItemList[index].ui_PanelScheduleItemContainer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(jsonScheduleItemList[index].ui_PanelScheduleItemContainer, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(jsonScheduleItemList[index].ui_PanelScheduleItemContainer, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     
-    ui_PanelScheduleItem = lv_obj_create(ui_PanelScheduleItemContainer);
-    lv_obj_set_width(ui_PanelScheduleItem, 285);
-    lv_obj_set_height(ui_PanelScheduleItem, 80);
-    lv_obj_set_x(ui_PanelScheduleItem, 0);
-    lv_obj_set_y(ui_PanelScheduleItem, 0);
-    lv_obj_set_align(ui_PanelScheduleItem, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_PanelScheduleItem, LV_FLEX_FLOW_ROW);
-    lv_obj_set_flex_align(ui_PanelScheduleItem, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_PanelScheduleItem, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_PanelScheduleItem, lv_color_hex(0xC8C8C8), LV_PART_MAIN | LV_STATE_PRESSED); //Light Gray
-    lv_obj_set_style_bg_opa(ui_PanelScheduleItem, 255, LV_PART_MAIN | LV_STATE_PRESSED);
+    jsonScheduleItemList[index].ui_PanelScheduleItem = lv_obj_create(jsonScheduleItemList[index].ui_PanelScheduleItemContainer);
+    lv_obj_set_width(jsonScheduleItemList[index].ui_PanelScheduleItem, 285);
+    lv_obj_set_height(jsonScheduleItemList[index].ui_PanelScheduleItem, 80);
+    lv_obj_set_x(jsonScheduleItemList[index].ui_PanelScheduleItem, 0);
+    lv_obj_set_y(jsonScheduleItemList[index].ui_PanelScheduleItem, 0);
+    lv_obj_set_align(jsonScheduleItemList[index].ui_PanelScheduleItem, LV_ALIGN_CENTER);
+    lv_obj_set_flex_flow(jsonScheduleItemList[index].ui_PanelScheduleItem, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(jsonScheduleItemList[index].ui_PanelScheduleItem, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_clear_flag(jsonScheduleItemList[index].ui_PanelScheduleItem, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(jsonScheduleItemList[index].ui_PanelScheduleItem, lv_color_hex(0xC8C8C8), LV_PART_MAIN | LV_STATE_PRESSED); //Light Gray
+    lv_obj_set_style_bg_opa(jsonScheduleItemList[index].ui_PanelScheduleItem, 255, LV_PART_MAIN | LV_STATE_PRESSED);
 
-    lv_obj_add_event_cb(ui_PanelScheduleItem, schedule_item_click_event_handler, LV_EVENT_CLICKED, (void *)id);
-    lv_obj_t * ui_LabelScheduleItem = lv_label_create(ui_PanelScheduleItem);
-    lv_obj_set_width(ui_LabelScheduleItem, 60);   /// 1
-    lv_obj_set_height(ui_LabelScheduleItem, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_LabelScheduleItem, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_LabelScheduleItem, time);
-    lv_obj_set_style_text_font(ui_LabelScheduleItem, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
+    jsonScheduleItemList[index].ui_LabelScheduleItem = lv_label_create(jsonScheduleItemList[index].ui_PanelScheduleItem);
+    lv_obj_set_width(jsonScheduleItemList[index].ui_LabelScheduleItem, 60);   /// 1
+    lv_obj_set_height(jsonScheduleItemList[index].ui_LabelScheduleItem, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(jsonScheduleItemList[index].ui_LabelScheduleItem, LV_ALIGN_CENTER);
+    lv_label_set_text(jsonScheduleItemList[index].ui_LabelScheduleItem, time);
+    lv_obj_set_style_text_font(jsonScheduleItemList[index].ui_LabelScheduleItem, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    lv_obj_t * ui_PanelScheduleItemIngredientWaterQuantity = lv_obj_create(ui_PanelScheduleItem);
-    lv_obj_set_width(ui_PanelScheduleItemIngredientWaterQuantity, 75);
-    lv_obj_set_height(ui_PanelScheduleItemIngredientWaterQuantity, 50);
-    lv_obj_set_x(ui_PanelScheduleItemIngredientWaterQuantity, 2);
-    lv_obj_set_y(ui_PanelScheduleItemIngredientWaterQuantity, 0);
-    lv_obj_set_align(ui_PanelScheduleItemIngredientWaterQuantity, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_PanelScheduleItemIngredientWaterQuantity, LV_FLEX_FLOW_ROW);
-    lv_obj_set_flex_align(ui_PanelScheduleItemIngredientWaterQuantity, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_SPACE_EVENLY);
-    lv_obj_clear_flag(ui_PanelScheduleItemIngredientWaterQuantity, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_border_opa(ui_PanelScheduleItemIngredientWaterQuantity, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_row(ui_PanelScheduleItemIngredientWaterQuantity, 0, LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_column(ui_PanelScheduleItemIngredientWaterQuantity, 0, LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_PanelScheduleItemIngredientWaterQuantity, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_DEFAULT); //set object to transparent color
+    jsonScheduleItemList[index].ui_PanelScheduleItemIngredientWaterQuantity = lv_obj_create(jsonScheduleItemList[index].ui_PanelScheduleItem);
+    lv_obj_set_width(jsonScheduleItemList[index].ui_PanelScheduleItemIngredientWaterQuantity, 75);
+    lv_obj_set_height(jsonScheduleItemList[index].ui_PanelScheduleItemIngredientWaterQuantity, 50);
+    lv_obj_set_x(jsonScheduleItemList[index].ui_PanelScheduleItemIngredientWaterQuantity, 2);
+    lv_obj_set_y(jsonScheduleItemList[index].ui_PanelScheduleItemIngredientWaterQuantity, 0);
+    lv_obj_set_align(jsonScheduleItemList[index].ui_PanelScheduleItemIngredientWaterQuantity, LV_ALIGN_CENTER);
+    lv_obj_set_flex_flow(jsonScheduleItemList[index].ui_PanelScheduleItemIngredientWaterQuantity, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(jsonScheduleItemList[index].ui_PanelScheduleItemIngredientWaterQuantity, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_SPACE_EVENLY);
+    lv_obj_clear_flag(jsonScheduleItemList[index].ui_PanelScheduleItemIngredientWaterQuantity, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_border_opa(jsonScheduleItemList[index].ui_PanelScheduleItemIngredientWaterQuantity, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_row(jsonScheduleItemList[index].ui_PanelScheduleItemIngredientWaterQuantity, 0, LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_column(jsonScheduleItemList[index].ui_PanelScheduleItemIngredientWaterQuantity, 0, LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(jsonScheduleItemList[index].ui_PanelScheduleItemIngredientWaterQuantity, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_DEFAULT); //set object to transparent color
 
 
     int num = water_quantity;
@@ -341,39 +417,64 @@ void renderScheduleUI(int id, const char * name, const char *time, int water_qua
     itoa(num, buffer, 10);     // Convert the int to a string (base 10)
     strcat(buffer, " (ml)"); 
     const char *str = buffer;  // Now 'str' is a const char* pointing to the string
-    lv_obj_t * ui_LabelScheduleItemWaterQuantity = lv_label_create(ui_PanelScheduleItemIngredientWaterQuantity);
-    lv_obj_set_width(ui_LabelScheduleItemWaterQuantity, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_LabelScheduleItemWaterQuantity, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_LabelScheduleItemWaterQuantity, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_LabelScheduleItemWaterQuantity, str);
+    jsonScheduleItemList[index].ui_LabelScheduleItemWaterQuantity = lv_label_create(jsonScheduleItemList[index].ui_PanelScheduleItemIngredientWaterQuantity);
+    lv_obj_set_width(jsonScheduleItemList[index].ui_LabelScheduleItemWaterQuantity, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(jsonScheduleItemList[index].ui_LabelScheduleItemWaterQuantity, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(jsonScheduleItemList[index].ui_LabelScheduleItemWaterQuantity, LV_ALIGN_CENTER);
+    lv_label_set_text(jsonScheduleItemList[index].ui_LabelScheduleItemWaterQuantity, str);
 
-    lv_obj_t * ui_LabelScheduleItemTimer = lv_label_create(ui_PanelScheduleItem);
-    lv_obj_set_width(ui_LabelScheduleItemTimer, 75);   /// 1
-    lv_obj_set_height(ui_LabelScheduleItemTimer, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_LabelScheduleItemTimer, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_LabelScheduleItemTimer, schedule_type);
-    lv_obj_set_style_text_font(ui_LabelScheduleItemTimer, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
+    jsonScheduleItemList[index].ui_LabelScheduleItemTimer = lv_label_create(jsonScheduleItemList[index].ui_PanelScheduleItem);
+    lv_obj_set_width(jsonScheduleItemList[index].ui_LabelScheduleItemTimer, 75);   /// 1
+    lv_obj_set_height(jsonScheduleItemList[index].ui_LabelScheduleItemTimer, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(jsonScheduleItemList[index].ui_LabelScheduleItemTimer, LV_ALIGN_CENTER);
+    lv_label_set_text(jsonScheduleItemList[index].ui_LabelScheduleItemTimer, schedule_type);
+    lv_obj_set_style_text_font(jsonScheduleItemList[index].ui_LabelScheduleItemTimer, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
 
-    lv_obj_t * ui_SwitchScheduleItem = lv_switch_create(ui_PanelScheduleItem);
-    lv_obj_set_width(ui_SwitchScheduleItem, 70);
-    lv_obj_set_height(ui_SwitchScheduleItem, 35);
-    lv_obj_set_align(ui_SwitchScheduleItem, LV_ALIGN_CENTER);
+    jsonScheduleItemList[index].ui_SwitchScheduleItem = lv_switch_create(jsonScheduleItemList[index].ui_PanelScheduleItem);
+    lv_obj_set_width(jsonScheduleItemList[index].ui_SwitchScheduleItem, 70);
+    lv_obj_set_height(jsonScheduleItemList[index].ui_SwitchScheduleItem, 35);
+    lv_obj_set_align(jsonScheduleItemList[index].ui_SwitchScheduleItem, LV_ALIGN_CENTER);
 
-    lv_obj_t * ui_LabelNameScheduleListItem = lv_label_create(ui_PanelScheduleItemContainer);
-    lv_obj_set_width(ui_LabelNameScheduleListItem, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_LabelNameScheduleListItem, LV_SIZE_CONTENT);    /// 1
-    lv_label_set_text(ui_LabelNameScheduleListItem, name);
-    lv_obj_set_style_text_color(ui_LabelNameScheduleListItem, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_LabelNameScheduleListItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_LabelNameScheduleListItem, &lv_font_montserrat_10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    jsonScheduleItemList[index].ui_LabelNameScheduleListItem = lv_label_create(jsonScheduleItemList[index].ui_PanelScheduleItemContainer);
+    lv_obj_set_width(jsonScheduleItemList[index].ui_LabelNameScheduleListItem, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(jsonScheduleItemList[index].ui_LabelNameScheduleListItem, LV_SIZE_CONTENT);    /// 1
+    lv_label_set_text(jsonScheduleItemList[index].ui_LabelNameScheduleListItem, name);
+    lv_obj_set_style_text_color(jsonScheduleItemList[index].ui_LabelNameScheduleListItem, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(jsonScheduleItemList[index].ui_LabelNameScheduleListItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(jsonScheduleItemList[index].ui_LabelNameScheduleListItem, &lv_font_montserrat_10, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    if(index == 0)
+    {
+        lv_obj_add_event_cb(jsonScheduleItemList[0].ui_PanelScheduleItem , ui_event_PanelScheduleItemContainer0Clicked, LV_EVENT_CLICKED, NULL);
+    }
+    else
+    if(index == 1)
+    {
+        lv_obj_add_event_cb(jsonScheduleItemList[1].ui_PanelScheduleItem , ui_event_PanelScheduleItemContainer1Clicked, LV_EVENT_CLICKED, NULL);
+    }
+    else
+    if(index == 2)
+    {
+        lv_obj_add_event_cb(jsonScheduleItemList[2].ui_PanelScheduleItem , ui_event_PanelScheduleItemContainer2Clicked, LV_EVENT_CLICKED, NULL);
+    }
+    else
+    if(index == 3)
+    {
+        lv_obj_add_event_cb(jsonScheduleItemList[3].ui_PanelScheduleItem , ui_event_PanelScheduleItemContainer3Clicked, LV_EVENT_CLICKED, NULL);
+    }
+    else
+    if(index == 4)
+    {
+        lv_obj_add_event_cb(jsonScheduleItemList[4].ui_PanelScheduleItem , ui_event_PanelScheduleItemContainer4Clicked, LV_EVENT_CLICKED, NULL);
+    }
 }
 
 
 
 void handleScheduleUI(void *parameter)
 {
-    String response = http_get_data("http://192.168.0.101:3000/data");
+    String response = http_get_data("http://192.168.0.100:3000/data");
 
     jsonString = response;
 
@@ -388,7 +489,9 @@ void handleScheduleUI(void *parameter)
     // Access the JSON array
     JsonArray jsonArray = jsonDocGlobal.as<JsonArray>();
     numberOfElement = jsonArray.size();
-    numberOfPage = (numberOfElement / 3) + 1;
+    float numberOfPagefl = ((float)numberOfElement / (float)5);
+    Serial.println(numberOfElement);
+    numberOfPage = ceil(numberOfPagefl);
     for(;;)
     {
         print(PRINTLN, "Schedule UI task is running!"); 
@@ -413,7 +516,7 @@ void handleScheduleUI(void *parameter)
                             const char * schedule_type = obj["schedule_type"];
                             const char * schedule_status = obj["status"];
                             //TO DO
-                            renderScheduleUI(id, name, time, water_quantity, schedule_type);
+                            renderScheduleUI(i, id, name, time, water_quantity, schedule_type);
                         }
                         else
                         {
@@ -422,6 +525,45 @@ void handleScheduleUI(void *parameter)
                         i++;
                     }
                 }
+                else
+                {
+                    lv_obj_add_flag(jsonScheduleItemList[0].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
+                    lv_obj_add_flag(jsonScheduleItemList[1].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
+                    lv_obj_add_flag(jsonScheduleItemList[2].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
+                    lv_obj_add_flag(jsonScheduleItemList[3].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
+                    lv_obj_add_flag(jsonScheduleItemList[4].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
+                    int i = 0;
+                    for (JsonObject obj : jsonArray) 
+                    {
+                        if(i < 5)
+                        {
+                            const char * name = obj["schedule_name"];
+                            int id = obj["id"];
+                            const char *time = obj["start_time"];
+                            int water_quantity = obj["water_quantity"];
+                            const char * schedule_type = obj["schedule_type"];
+                            const char * schedule_status = obj["status"];
+                            //TO DO
+                            jsonScheduleItemList[i].schedule_id = id;
+                            lv_label_set_text(jsonScheduleItemList[i].ui_LabelNameScheduleListItem, name);
+                            lv_label_set_text(jsonScheduleItemList[i].ui_LabelScheduleItem, time);
+                            char buffer[10];           // Ensure buffer is large enough to hold the string representation
+                            itoa(water_quantity, buffer, 10);     // Convert the int to a string (base 10)
+                            const char *str = buffer;  // Now 'str' is a const char* pointing to the string   
+                            strcat(buffer, " (ml)");  
+                            lv_label_set_text(jsonScheduleItemList[i].ui_LabelScheduleItemWaterQuantity, str);
+                            lv_label_set_text(jsonScheduleItemList[i].ui_LabelScheduleItemTimer, schedule_type);
+                            lv_obj_clear_flag(jsonScheduleItemList[i].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
+                            
+                        }
+                        else
+                        {
+                            break;
+                        }
+                        i++;
+                    }
+                }
+                jsonDocGlobal.clear();
             }
             else
             {
