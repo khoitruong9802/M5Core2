@@ -364,7 +364,7 @@ lv_obj_t * ui_LabelCloseButtonWaterQuantityScheduleItem;
 lv_obj_t * ui_TextAreaWaterQuantityScheduleItem;
 lv_obj_t * ui_KeyboardWaterQuantityScheduleItem;
 lv_obj_t * ui_LabelUnitWaterQuantityScheduleItem;
-
+lv_obj_t * ui_PanelTextAreaWaterQuantityScheduleItem;
 
 // SCREEN: ui_startTime
 void ui_startTime_screen_init(void);
@@ -830,7 +830,10 @@ void ui_event_PanelWaterQuantityScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_waterQuantity, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_waterQuantity_screen_init);
+        const char * text = lv_label_get_text(ui_LabelWaterQuantityScheduleItem);
+        lv_textarea_set_text(ui_TextAreaWaterQuantityScheduleItem, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_waterQuantity, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_waterQuantity_screen_init);
     }
 }
 void ui_event_PanelScheduleStartTimeScheduleItem(lv_event_t * e)
@@ -838,7 +841,7 @@ void ui_event_PanelScheduleStartTimeScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_startTime, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_startTime_screen_init);
+        _ui_screen_change(&ui_startTime, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_startTime_screen_init);
     }
 }
 void ui_event_PanelScheduleEndTimeScheduleItem(lv_event_t * e)
@@ -846,7 +849,7 @@ void ui_event_PanelScheduleEndTimeScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_endTime, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_endTime_screen_init);
+        _ui_screen_change(&ui_endTime, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_endTime_screen_init);
     }
 }
 void ui_event_PanelScheduleDateScheduleItem(lv_event_t * e)
@@ -854,7 +857,7 @@ void ui_event_PanelScheduleDateScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_date, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_date_screen_init);
+        _ui_screen_change(&ui_date, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_date_screen_init);
     }
 }
 void ui_event_PanelScheduleStartDateScheduleItem(lv_event_t * e)
@@ -862,7 +865,7 @@ void ui_event_PanelScheduleStartDateScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_startDate, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_startDate_screen_init);
+        _ui_screen_change(&ui_startDate, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_startDate_screen_init);
     }
 }
 void ui_event_PanelScheduleEndDateScheduleItem(lv_event_t * e)
@@ -870,7 +873,7 @@ void ui_event_PanelScheduleEndDateScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_EndDate, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_EndDate_screen_init);
+        _ui_screen_change(&ui_EndDate, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_EndDate_screen_init);
     }
 }
 void ui_event_PanelCloseButtonNameScheduleItem(lv_event_t * e)
@@ -894,7 +897,7 @@ void ui_event_PanelCloseButtonWaterQuantityScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_scheduleItemScreen_screen_init);
+        _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
 void ui_event_ButtonOKStartTimeScheduleItem(lv_event_t * e)
@@ -902,7 +905,7 @@ void ui_event_ButtonOKStartTimeScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_scheduleItemScreen_screen_init);
+        _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
 void ui_event_ButtonCancelStartTimeScheduleItem(lv_event_t * e)
@@ -910,7 +913,7 @@ void ui_event_ButtonCancelStartTimeScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_scheduleItemScreen_screen_init);
+        _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
 void ui_event_ButtonOKEndTimeScheduleItem(lv_event_t * e)
@@ -918,7 +921,7 @@ void ui_event_ButtonOKEndTimeScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_scheduleItemScreen_screen_init);
+        _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
 void ui_event_ButtonCancelEndTimeScheduleItem(lv_event_t * e)
@@ -926,7 +929,7 @@ void ui_event_ButtonCancelEndTimeScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_scheduleItemScreen_screen_init);
+        _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
 void ui_event_ButtonOKEndDateScheduleItem(lv_event_t * e)
@@ -934,7 +937,7 @@ void ui_event_ButtonOKEndDateScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_scheduleItemScreen_screen_init);
+        _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
 void ui_event_ButtonCancelEndDateScheduleItem(lv_event_t * e)
@@ -942,7 +945,7 @@ void ui_event_ButtonCancelEndDateScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_scheduleItemScreen_screen_init);
+        _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
 void ui_event_ButtonOKStartDateScheduleItem(lv_event_t * e)
@@ -950,7 +953,7 @@ void ui_event_ButtonOKStartDateScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_scheduleItemScreen_screen_init);
+        _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
 void ui_event_ButtonCancelStartDateScheduleItem(lv_event_t * e)
@@ -958,7 +961,7 @@ void ui_event_ButtonCancelStartDateScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_scheduleItemScreen_screen_init);
+        _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
 void ui_event_ButtonOKDateScheduleItem(lv_event_t * e)
@@ -966,7 +969,7 @@ void ui_event_ButtonOKDateScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_scheduleItemScreen_screen_init);
+        _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
 void ui_event_ButtonCancelDateScheduleItem(lv_event_t * e)
@@ -974,7 +977,7 @@ void ui_event_ButtonCancelDateScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_scheduleItemScreen_screen_init);
+        _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
 
@@ -1000,6 +1003,12 @@ void ui_init(void)
     ui_ScheduleItemScreen_screen_init();
     ui_name_screen_init();
     ui_description_screen_init();
+    ui_waterQuantity_screen_init();
+    ui_startTime_screen_init();
+    ui_endTime_screen_init();
+    ui_startDate_screen_init();
+    ui_EndDate_screen_init();
+    ui_date_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
     lv_disp_load_scr(ui_MainScreen);
 }

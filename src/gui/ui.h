@@ -365,6 +365,7 @@ extern lv_obj_t * ui_LabelCloseButtonWaterQuantityScheduleItem;
 extern lv_obj_t * ui_TextAreaWaterQuantityScheduleItem;
 extern lv_obj_t * ui_KeyboardWaterQuantityScheduleItem;
 extern lv_obj_t * ui_LabelUnitWaterQuantityScheduleItem;
+extern lv_obj_t * ui_PanelTextAreaWaterQuantityScheduleItem;
 // SCREEN: ui_startTime
 void ui_startTime_screen_init(void);
 extern lv_obj_t * ui_startTime;

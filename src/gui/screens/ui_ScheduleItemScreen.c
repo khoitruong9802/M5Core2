@@ -818,4 +818,11 @@ void ui_ScheduleItemScreen_screen_init(void)
     lv_obj_add_event_cb(ui_ButtonCancelHeaderScheduleItem, ui_event_ButtonCancelHeaderScheduleItem, LV_EVENT_CLICKED, NULL);
     lv_obj_add_event_cb(ui_PanelNameScheduleItem, ui_event_PanelNameScheduleItem, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_PanelDescriptionScheduleItem, ui_event_PanelDescriptionScheduleItem, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_PanelWaterQuantityScheduleItem, ui_event_PanelWaterQuantityScheduleItem, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_PanelScheduleStartTimeScheduleItem, ui_event_PanelScheduleStartTimeScheduleItem, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_PanelScheduleEndTimeScheduleItem, ui_event_PanelScheduleEndTimeScheduleItem, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_PanelScheduleDateScheduleItem, ui_event_PanelScheduleDateScheduleItem, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_PanelScheduleStartDateScheduleItem, ui_event_PanelScheduleStartDateScheduleItem, LV_EVENT_ALL,
+                        NULL);
+    lv_obj_add_event_cb(ui_PanelScheduleEndDateScheduleItem, ui_event_PanelScheduleEndDateScheduleItem, LV_EVENT_ALL, NULL);
 }
