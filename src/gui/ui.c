@@ -235,7 +235,9 @@ lv_obj_t *  ui_PanelPageItemTitleScheduleContainerScreen;
 lv_obj_t *  ui_PanelPageItemTitleScheduleScreen[3];
 lv_obj_t *  ui_LabelPageItemTitleScheduleScreen[3];
 lv_obj_t *  ui_ScheduleContainer;
-
+lv_obj_t *  ui_PanelLoadingScheduleScreen;
+lv_obj_t *  ui_SpinnerLoadingScheduleScreen;
+lv_obj_t *  ui_LabelLoadingScheduleScreen;
 
 // SCREEN: ui_scheduleItemScreen
 void ui_ScheduleItemScreen_screen_init(void);
@@ -337,7 +339,7 @@ lv_obj_t * ui_LabelCloseButtonNameScheduleItem;
 lv_obj_t * ui_TextAreaNameScheduleItem;
 lv_obj_t * ui_KeyboardNameScheduleItem;
 lv_obj_t * ui_LabelTitleNameScheduleItem;
-
+lv_obj_t * ui_PanelTextAreaNameScheduleItem;
 
 // SCREEN: ui_description
 void ui_description_screen_init(void);
@@ -349,7 +351,7 @@ lv_obj_t * ui_LabelCloseButtonDescriptionScheduleItem;
 lv_obj_t * ui_TextAreaDescriptionsScheduleItem;
 lv_obj_t * ui_KeyboardDescriptionsScheduleItem;
 lv_obj_t * ui_LabelTitleDescriptionScheduleItem;
-
+lv_obj_t * ui_PanelTextAreaDescriptionScheduleItem;
 
 // SCREEN: ui_waterQuantity
 void ui_waterQuantity_screen_init(void);
@@ -806,7 +808,10 @@ void ui_event_PanelNameScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_name, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_name_screen_init);
+        const char * text = lv_label_get_text(ui_LabelNameScheduleItem);
+        lv_textarea_set_text(ui_TextAreaNameScheduleItem, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_name, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_name_screen_init);
     }
 }
 void ui_event_PanelDescriptionScheduleItem(lv_event_t * e)
@@ -814,7 +819,10 @@ void ui_event_PanelDescriptionScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_description, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_description_screen_init);
+        const char * text = lv_label_get_text(ui_LabelDescriptionScheduleItem);
+        lv_textarea_set_text(ui_TextAreaDescriptionsScheduleItem, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_description, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_description_screen_init);
     }
 }
 void ui_event_PanelWaterQuantityScheduleItem(lv_event_t * e)
@@ -870,7 +878,7 @@ void ui_event_PanelCloseButtonNameScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_scheduleItemScreen_screen_init);
+        _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
 void ui_event_PanelCloseButtonDescriptionScheduleItem(lv_event_t * e)
@@ -878,7 +886,7 @@ void ui_event_PanelCloseButtonDescriptionScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        // _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_scheduleItemScreen_screen_init);
+        _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
 void ui_event_PanelCloseButtonWaterQuantityScheduleItem(lv_event_t * e)
@@ -990,6 +998,8 @@ void ui_init(void)
     ui_OtaScreen_screen_init();
     ui_ScheduleScreen_screen_init();
     ui_ScheduleItemScreen_screen_init();
+    ui_name_screen_init();
+    ui_description_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
     lv_disp_load_scr(ui_MainScreen);
 }

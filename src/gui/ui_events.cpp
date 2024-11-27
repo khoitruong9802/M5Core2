@@ -173,7 +173,6 @@ void handle_start_ota() {
 void schedule_screen_init(lv_event_t * e)
 {
     // Check wifi connection
-    Serial.println("test1");
     if(WiFi.status() != WL_CONNECTED)
     {
         // Pop-up alert table to inform user of wifi connection issue
@@ -181,12 +180,12 @@ void schedule_screen_init(lv_event_t * e)
     }
     else
     {
-        Serial.println("test2");
+        lv_obj_clear_flag(ui_PanelLoadingScheduleScreen, LV_OBJ_FLAG_HIDDEN);
          _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
+         lv_task_handler();
         TaskHandle_t schedule_task = xTaskGetHandle("schedule_task");
         if(schedule_task == NULL)
         {
-          Serial.println("test3");
           void *taskStackMemory = heap_caps_malloc(8192, MALLOC_CAP_SPIRAM); // Allocating in PSRAM
 
           if (taskStackMemory != nullptr) {
@@ -601,4 +600,9 @@ void ui_event_ButtonPreviousPageItemTitleScheduleScreen(lv_event_t *e)
     }
     
   }
+}
+
+void printText(const char * text)
+{
+  Serial.println(text);
 }

@@ -236,6 +236,9 @@ extern lv_obj_t *  ui_PanelPageItemTitleScheduleContainerScreen;
 extern lv_obj_t *  ui_PanelPageItemTitleScheduleScreen[3];
 extern lv_obj_t *  ui_LabelPageItemTitleScheduleScreen[3];
 extern lv_obj_t *  ui_ScheduleContainer;
+extern lv_obj_t *  ui_PanelLoadingScheduleScreen;
+extern lv_obj_t *  ui_SpinnerLoadingScheduleScreen;
+extern lv_obj_t *  ui_LabelLoadingScheduleScreen;
 
 // SCREEN: ui_scheduleItemScreen
 void ui_ScheduleItemScreen_screen_init(void);
@@ -339,6 +342,7 @@ extern lv_obj_t * ui_LabelCloseButtonNameScheduleItem;
 extern lv_obj_t * ui_TextAreaNameScheduleItem;
 extern lv_obj_t * ui_KeyboardNameScheduleItem;
 extern lv_obj_t * ui_LabelTitleNameScheduleItem;
+extern lv_obj_t * ui_PanelTextAreaNameScheduleItem;
 // SCREEN: ui_description
 void ui_description_screen_init(void);
 extern lv_obj_t * ui_description;
@@ -349,6 +353,7 @@ extern lv_obj_t * ui_LabelCloseButtonDescriptionScheduleItem;
 extern lv_obj_t * ui_TextAreaDescriptionsScheduleItem;
 extern lv_obj_t * ui_KeyboardDescriptionsScheduleItem;
 extern lv_obj_t * ui_LabelTitleDescriptionScheduleItem;
+extern lv_obj_t * ui_PanelTextAreaDescriptionScheduleItem;
 // SCREEN: ui_waterQuantity
 void ui_waterQuantity_screen_init(void);
 extern lv_obj_t * ui_waterQuantity;

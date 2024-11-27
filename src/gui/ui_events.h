@@ -37,6 +37,7 @@ void ui_event_PanelPageItemTitleScheduleScreen1(lv_event_t * e);
 void ui_event_PanelPageItemTitleScheduleScreen2(lv_event_t * e);
 void ui_event_ButtonNextPageItemTitleScheduleScreen(lv_event_t *e);
 void ui_event_ButtonPreviousPageItemTitleScheduleScreen(lv_event_t *e);
+void printText(const char * text);
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

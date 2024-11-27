@@ -816,4 +816,6 @@ void ui_ScheduleItemScreen_screen_init(void)
     lv_obj_add_event_cb(ui_PanelScheduleWeekItemSundayScheduleItem, ui_event_PanelScheduleWeekItemSundayScheduleItem, LV_EVENT_CLICKED, NULL);
     lv_obj_add_event_cb(ui_ButtonOKHeaderScheduleItem, ui_event_ButtonOKHeaderScheduleItem, LV_EVENT_CLICKED, NULL);
     lv_obj_add_event_cb(ui_ButtonCancelHeaderScheduleItem, ui_event_ButtonCancelHeaderScheduleItem, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_PanelNameScheduleItem, ui_event_PanelNameScheduleItem, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_PanelDescriptionScheduleItem, ui_event_PanelDescriptionScheduleItem, LV_EVENT_ALL, NULL);
 }

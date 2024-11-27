@@ -262,16 +262,13 @@ static void ui_event_PanelScheduleItemContainer0Clicked(lv_event_t * e)
     // for example, fetching from an array or JSON data stored locally.
 
     // Call a function to display the detailed information screen
+    lv_obj_clear_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
     _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
+    lv_task_handler();
     TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");
     if(scheItem_task == NULL)
     {
-        Serial.println("OK");
         xTaskCreate(handleScheduleItemUI, "scheItem_task", 8192, (void *)(uintptr_t)schedule_id, 1, &scheItem_task);
-    }
-    else
-    {
-        Serial.println("NO");
     }
 }
 
@@ -285,7 +282,9 @@ static void ui_event_PanelScheduleItemContainer1Clicked(lv_event_t * e)
     // for example, fetching from an array or JSON data stored locally.
 
     // Call a function to display the detailed information screen
+    lv_obj_clear_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
     _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
+    lv_task_handler();
     TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");
     if(scheItem_task == NULL)
     {
@@ -303,7 +302,9 @@ static void ui_event_PanelScheduleItemContainer2Clicked(lv_event_t * e)
     // for example, fetching from an array or JSON data stored locally.
 
     // Call a function to display the detailed information screen
+    lv_obj_clear_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
     _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
+    lv_task_handler();
     TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");
     if(scheItem_task == NULL)
     {
@@ -321,7 +322,9 @@ static void ui_event_PanelScheduleItemContainer3Clicked(lv_event_t * e)
     // for example, fetching from an array or JSON data stored locally.
 
     // Call a function to display the detailed information screen
+    lv_obj_clear_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
     _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
+    lv_task_handler();
     TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");
     if(scheItem_task == NULL)
     {
@@ -339,7 +342,9 @@ static void ui_event_PanelScheduleItemContainer4Clicked(lv_event_t * e)
     // for example, fetching from an array or JSON data stored locally.
 
     // Call a function to display the detailed information screen
+    lv_obj_clear_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
     _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
+    lv_task_handler();
     TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");
     if(scheItem_task == NULL)
     {
@@ -364,7 +369,7 @@ void renderNavigateSchedulePage(int numberOfPage)
 }
 
 
-void renderScheduleUI(int index, int id, const char * name, const char *time, int water_quantity, const char * schedule_type) 
+void renderScheduleUI(int index, int id, const char * name, const char *time, int water_quantity, const char * schedule_type, int schedule_status) 
 {  
     jsonScheduleItemList[index].schedule_id = id;
     
@@ -432,6 +437,7 @@ void renderScheduleUI(int index, int id, const char * name, const char *time, in
 
 
     jsonScheduleItemList[index].ui_SwitchScheduleItem = lv_switch_create(jsonScheduleItemList[index].ui_PanelScheduleItem);
+    lv_obj_add_state(jsonScheduleItemList[index].ui_SwitchScheduleItem, schedule_status == 1 ? LV_STATE_CHECKED : 0);
     lv_obj_set_width(jsonScheduleItemList[index].ui_SwitchScheduleItem, 70);
     lv_obj_set_height(jsonScheduleItemList[index].ui_SwitchScheduleItem, 35);
     lv_obj_set_align(jsonScheduleItemList[index].ui_SwitchScheduleItem, LV_ALIGN_CENTER);
@@ -474,7 +480,7 @@ void renderScheduleUI(int index, int id, const char * name, const char *time, in
 
 void handleScheduleUI(void *parameter)
 {
-    String response = http_get_data("http://192.168.0.100:3000/data");
+    String response = http_get_data("http://192.168.0.103:3000/data");
 
     jsonString = response;
 
@@ -509,14 +515,14 @@ void handleScheduleUI(void *parameter)
                     {
                         if(i < 5)
                         {
-                            const char * name = obj["schedule_name"];
-                            int id = obj["id"];
-                            const char *time = obj["start_time"];
-                            int water_quantity = obj["water_quantity"];
-                            const char * schedule_type = obj["schedule_type"];
-                            const char * schedule_status = obj["status"];
+                            const char * name = obj["schedule_name"].as<const char *>();
+                            int id = obj["id"].as<int>();
+                            const char *time = obj["start_time"].as<const char *>();
+                            int water_quantity = obj["water_quantity"].as<int>();
+                            const char * schedule_type = obj["schedule_type"].as<const char *>();
+                            int schedule_status = obj["status"].as<int>();
                             //TO DO
-                            renderScheduleUI(i, id, name, time, water_quantity, schedule_type);
+                            renderScheduleUI(i, id, name, time, water_quantity, schedule_type, schedule_status);
                         }
                         else
                         {
@@ -537,12 +543,12 @@ void handleScheduleUI(void *parameter)
                     {
                         if(i < 5)
                         {
-                            const char * name = obj["schedule_name"];
-                            int id = obj["id"];
-                            const char *time = obj["start_time"];
-                            int water_quantity = obj["water_quantity"];
-                            const char * schedule_type = obj["schedule_type"];
-                            const char * schedule_status = obj["status"];
+                            const char * name = obj["schedule_name"].as<const char *>();
+                            int id = obj["id"].as<int>();
+                            const char *time = obj["start_time"].as<const char *>();
+                            int water_quantity = obj["water_quantity"].as<int>();
+                            const char * schedule_type = obj["schedule_type"].as<const char *>();
+                            int schedule_status = obj["status"].as<int>();
                             //TO DO
                             jsonScheduleItemList[i].schedule_id = id;
                             lv_label_set_text(jsonScheduleItemList[i].ui_LabelNameScheduleListItem, name);
@@ -569,6 +575,7 @@ void handleScheduleUI(void *parameter)
             {
                 print(PRINTLN, "ui_ScheduleContainer is not valid!");
             }
+            lv_obj_add_flag(ui_PanelLoadingScheduleScreen, LV_OBJ_FLAG_HIDDEN);
             xSemaphoreGive(lvgl_mutex);
             vTaskDelete(NULL);
         }

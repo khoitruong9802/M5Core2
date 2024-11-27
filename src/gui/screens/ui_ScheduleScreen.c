@@ -22,6 +22,31 @@ void ui_ScheduleScreen_screen_init(void)
     lv_obj_set_style_bg_color(ui_MainScheduleScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_MainScheduleScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    ui_PanelLoadingScheduleScreen = lv_obj_create(ui_ScheduleScreen);
+    lv_obj_set_width(ui_PanelLoadingScheduleScreen, 320);
+    lv_obj_set_height(ui_PanelLoadingScheduleScreen, 240);
+    lv_obj_set_align(ui_PanelLoadingScheduleScreen, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_PanelLoadingScheduleScreen, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_clear_flag(ui_PanelLoadingScheduleScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_PanelLoadingScheduleScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_PanelLoadingScheduleScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_SpinnerLoadingScheduleScreen = lv_spinner_create(ui_PanelLoadingScheduleScreen, 1000, 90);
+    lv_obj_set_width(ui_SpinnerLoadingScheduleScreen, 80);
+    lv_obj_set_height(ui_SpinnerLoadingScheduleScreen, 80);
+    lv_obj_set_align(ui_SpinnerLoadingScheduleScreen, LV_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_SpinnerLoadingScheduleScreen, LV_OBJ_FLAG_CLICKABLE);      /// Flags
+
+    ui_LabelLoadingScheduleScreen = lv_label_create(ui_PanelLoadingScheduleScreen);
+    lv_obj_set_width(ui_LabelLoadingScheduleScreen, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_LabelLoadingScheduleScreen, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_LabelLoadingScheduleScreen, 0);
+    lv_obj_set_y(ui_LabelLoadingScheduleScreen, 75);
+    lv_obj_set_align(ui_LabelLoadingScheduleScreen, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_LabelLoadingScheduleScreen, "Loading...");
+    lv_obj_set_style_text_color(ui_LabelLoadingScheduleScreen, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_LabelLoadingScheduleScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);   
+
     ui_HeaderScheduleScreen = lv_obj_create(ui_MainScheduleScreen);
     lv_obj_set_width(ui_HeaderScheduleScreen, 320);
     lv_obj_set_height(ui_HeaderScheduleScreen, 50);
