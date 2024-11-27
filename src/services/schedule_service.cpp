@@ -22,7 +22,7 @@ void renderScheduleItemUI(const char * schedule_name,
     const char * schedule_stop_time,
     const char * schedule_start_day,
     const char * schedule_end_day,
-    const char* days_list[7],
+    int days_list[7],
     int days_count
 )
 {
@@ -67,31 +67,31 @@ void renderScheduleItemUI(const char * schedule_name,
 
     for(int i = 0; i < days_count; i++) 
     {
-        if(strcmp(days_list[i], "Monday") == 0)
+        if(days_list[i] == 2)
         {
             lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemMondayScheduleItem, lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
         }
-        else if(strcmp(days_list[i], "Tuesday") == 0)
+        else if(days_list[i] == 3)
         {
             lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemTuesdayScheduleItem, lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
         }
-        else if(strcmp(days_list[i], "Wednesday") == 0)
+        else if(days_list[i] == 4)
         {
             lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemWednesdayScheduleItem, lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
         }
-        else if(strcmp(days_list[i], "Thursday") == 0)
+        else if(days_list[i] == 5)
         {
             lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemThursdayScheduleItem, lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
         }
-        else if(strcmp(days_list[i], "Friday") == 0)
+        else if(days_list[i] == 6)
         {
             lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemFridayScheduleItem, lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
         }
-        else if(strcmp(days_list[i], "Saturday") == 0)
+        else if(days_list[i] == 7)
         {
             lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemSaturdayScheduleItem, lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
         }
-        else if(strcmp(days_list[i], "Sunday") == 0)
+        else if(days_list[i] == 8)
         {
             lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemSundayScheduleItem, lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
         }
@@ -114,7 +114,7 @@ void handleScheduleItemUI(void * parameter)
     const char * schedule_stop_time;
     const char * schedule_start_day;
     const char * schedule_end_day;
-    const char* days_list[7];
+    int days_list[7];
     int days_count = 0; 
 
     JsonDocument jsonDocGlobal;
@@ -210,8 +210,8 @@ void handleScheduleItemUI(void * parameter)
                 days_count = 0;
 
                 // Iterate over the "days" array and store the values in `days_list`
-                for (const char* day : daysArray) {
-                    if (day != nullptr && days_count < 7) { // Ensure we don't exceed our array size
+                for (int day : daysArray) {
+                    if (days_count < 7) { // Ensure we don't exceed our array size
                         days_list[days_count] = day;
                         days_count++;
                     }

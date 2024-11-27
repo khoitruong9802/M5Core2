@@ -37,6 +37,10 @@ extern int numberOfPage;
 extern int numberOfElement;
 extern int currentOfElementHeader;
 
+extern uint16_t current_year;
+extern uint16_t current_month;
+extern uint16_t current_day;
+
 #define PRINT   1
 #define PRINTLN 2
 #define PRINTF  3

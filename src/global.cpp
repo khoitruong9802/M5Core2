@@ -8,6 +8,10 @@ int numberOfPage;
 int numberOfElement;
 int currentOfElementHeader;
 
+uint16_t current_year;
+uint16_t current_month;
+uint16_t current_day;
+
 void print(uint8_t print_mode, const char* msg, ...) {
     if (DEBUG_MODE == 1) {
         va_list args;

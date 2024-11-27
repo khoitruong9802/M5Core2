@@ -606,3 +606,58 @@ void printText(const char * text)
 {
   Serial.println(text);
 }
+
+uint16_t get_hour(const char *time_str) 
+{
+    char hour_str[3]; // A buffer for the hour portion (2 digits + null terminator)
+    strncpy(hour_str, time_str, 2); // Copy the first two characters
+    hour_str[2] = '\0'; // Null-terminate the string
+
+    return atoi(hour_str); // Convert to an integer and return
+}
+
+uint16_t get_minute(const char *time_str) 
+{
+    char minute_str[3]; // A buffer for the minute portion (2 digits + null terminator)
+    strncpy(minute_str, time_str + 3, 2); // Copy the two characters after the colon (offset by 3)
+    minute_str[2] = '\0'; // Null-terminate the string
+
+    return atoi(minute_str); // Convert to an integer and return
+}
+
+// Function to extract the year
+uint32_t get_year(const char * date_str) {
+    char year_str[5]; // Allocate space for "YYYY" + null terminator
+    strncpy(year_str, date_str, 4);  // Copy the first 4 characters (YYYY)
+    year_str[4] = '\0';              // Null-terminate the string
+    return (uint32_t)atoi(year_str); // Convert to uint32_t
+}
+
+// Function to extract the month
+uint32_t get_month(const char * date_str) {
+    char month_str[3];               // Allocate space for "MM" + null terminator
+    strncpy(month_str, date_str + 5, 2); // Copy 2 characters starting from index 5 (MM)
+    month_str[2] = '\0';             // Null-terminate the string
+    return (uint32_t)atoi(month_str); // Convert to uint32_t
+}
+
+// Function to extract the day
+uint32_t get_day(const char * date_str) {
+    char day_str[3];                 // Allocate space for "DD" + null terminator
+    strncpy(day_str, date_str + 8, 2); // Copy 2 characters starting from index 8 (DD)
+    day_str[2] = '\0';               // Null-terminate the string
+    return (uint32_t)atoi(day_str);  // Convert to uint32_t
+}
+
+uint32_t get_current_year()
+{
+  return (uint32_t)current_year;
+}
+uint32_t get_current_month()
+{
+  return (uint32_t)current_month;
+}
+uint32_t get_current_day()
+{
+  return (uint32_t)current_day;
+}

@@ -53,6 +53,18 @@ void rtc_service(void *parameter) {
 
     auto dt = M5.Rtc.getDateTime();
     // print(PRINTF,"RTC:%04d/%s/%02d (%s)  %02d:%02d:%02d\r\n", dt.date.year, mon[dt.date.month], dt.date.date, wd[dt.date.weekDay], dt.time.hours, dt.time.minutes, dt.time.seconds);
+    if(dt.date.year != current_year)
+    {
+      current_year = dt.date.year;
+    }
+    if(dt.date.month != current_month)
+    {
+      current_month = dt.date.month;
+    }
+    if(dt.date.date != current_day)
+    {
+      current_day = dt.date.date;
+    }
 
     char time1[6];  // Allocate fixed size buffer on stack
     snprintf(time1, sizeof(time1), "%02d:%02d", dt.time.hours, dt.time.minutes);

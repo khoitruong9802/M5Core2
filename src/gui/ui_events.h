@@ -38,6 +38,14 @@ void ui_event_PanelPageItemTitleScheduleScreen2(lv_event_t * e);
 void ui_event_ButtonNextPageItemTitleScheduleScreen(lv_event_t *e);
 void ui_event_ButtonPreviousPageItemTitleScheduleScreen(lv_event_t *e);
 void printText(const char * text);
+uint16_t get_hour(const char *time_str);
+uint16_t get_minute(const char *time_str);
+uint32_t get_year(const char * date_str);
+uint32_t get_month(const char * date_str);
+uint32_t get_day(const char * date_str);
+uint32_t get_current_year();
+uint32_t get_current_month();
+uint32_t get_current_day();
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

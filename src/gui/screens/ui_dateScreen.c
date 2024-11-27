@@ -81,6 +81,7 @@ void ui_date_screen_init(void)
     lv_label_set_text(ui_LabelCancelDateScheduleItem, "Cancel");
     lv_obj_set_style_text_font(ui_LabelCancelDateScheduleItem, &lv_font_montserrat_12, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    lv_obj_add_event_cb(ui_CalendarDateScheduleItem, ui_event_CalendarDateScheduleItem, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_ButtonOKDateScheduleItem, ui_event_ButtonOKDateScheduleItem, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_ButtonCancelDateScheduleItem, ui_event_ButtonCancelDateScheduleItem, LV_EVENT_ALL, NULL);
 

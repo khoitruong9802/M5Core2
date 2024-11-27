@@ -86,5 +86,6 @@ void ui_startDate_screen_init(void)
     lv_obj_add_event_cb(ui_ButtonOKStartDateScheduleItem, ui_event_ButtonOKStartDateScheduleItem, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_ButtonCancelStartDateScheduleItem, ui_event_ButtonCancelStartDateScheduleItem, LV_EVENT_ALL,
                         NULL);
+    lv_obj_add_event_cb(ui_CalendarStartDateScheduleItem, ui_event_CalendarStartDateScheduleItem, LV_EVENT_ALL, NULL);
 
 }

@@ -406,6 +406,7 @@ void ui_event_ButtonOKEndDateScheduleItem(lv_event_t * e);
 lv_obj_t * ui_ButtonOKEndDateScheduleItem;
 lv_obj_t * ui_LabelOKEndDateScheduleItem;
 lv_obj_t * ui_LabelTitleEndDateScheduleItem;
+void ui_event_CalendarEndDateScheduleItem(lv_event_t * e);
 lv_obj_t * ui_CalendarEndDateScheduleItem;
 void ui_event_ButtonCancelEndDateScheduleItem(lv_event_t * e);
 lv_obj_t * ui_ButtonCancelEndDateScheduleItem;
@@ -420,6 +421,7 @@ void ui_event_ButtonOKStartDateScheduleItem(lv_event_t * e);
 lv_obj_t * ui_ButtonOKStartDateScheduleItem;
 lv_obj_t * ui_LabelOKStartDateScheduleItem;
 lv_obj_t * ui_LabelTitleStartDateScheduleItem;
+void ui_event_CalendarStartDateScheduleItem(lv_event_t * e);
 lv_obj_t * ui_CalendarStartDateScheduleItem;
 void ui_event_ButtonCancelStartDateScheduleItem(lv_event_t * e);
 lv_obj_t * ui_ButtonCancelStartDateScheduleItem;
@@ -434,6 +436,7 @@ void ui_event_ButtonOKDateScheduleItem(lv_event_t * e);
 lv_obj_t * ui_ButtonOKDateScheduleItem;
 lv_obj_t * ui_LabelOKDateScheduleItem;
 lv_obj_t * ui_LabelTitleDateScheduleItem;
+void ui_event_CalendarDateScheduleItem(lv_event_t * e);
 lv_obj_t * ui_CalendarDateScheduleItem;
 void ui_event_ButtonCancelDateScheduleItem(lv_event_t * e);
 lv_obj_t * ui_ButtonCancelDateScheduleItem;
@@ -841,6 +844,11 @@ void ui_event_PanelScheduleStartTimeScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
+        const char * text = lv_label_get_text(ui_LabelScheduleStartTimeScheduleItem);
+        uint16_t hour_value = get_hour(text);
+        uint16_t minute_value = get_minute(text);
+        lv_roller_set_selected(ui_RollerHourStartTimeScheduleItem, hour_value, LV_ANIM_OFF);
+        lv_roller_set_selected(ui_RollerMinuteStartTimeScheduleItem, minute_value, LV_ANIM_OFF);
         _ui_screen_change(&ui_startTime, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_startTime_screen_init);
     }
 }
@@ -849,6 +857,11 @@ void ui_event_PanelScheduleEndTimeScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
+        const char * text = lv_label_get_text(ui_LabelScheduleEndTimeScheduleItem);
+        uint16_t hour_value = get_hour(text);
+        uint16_t minute_value = get_minute(text);
+        lv_roller_set_selected(ui_RollerHourEndTimeScheduleItem, hour_value, LV_ANIM_OFF);
+        lv_roller_set_selected(ui_RollerMinuteEndTimeScheduleItem, minute_value, LV_ANIM_OFF);
         _ui_screen_change(&ui_endTime, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_endTime_screen_init);
     }
 }
@@ -857,6 +870,12 @@ void ui_event_PanelScheduleDateScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
+        const char * text = lv_label_get_text(ui_LabelScheduleDateScheduleItem);
+        uint32_t year = get_year(text);
+        uint32_t month = get_month(text);
+        uint32_t day = get_day(text);
+        lv_calendar_set_today_date(ui_CalendarDateScheduleItem, year, month, day);
+        lv_calendar_set_showed_date(ui_CalendarDateScheduleItem, year, month);
         _ui_screen_change(&ui_date, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_date_screen_init);
     }
 }
@@ -865,6 +884,12 @@ void ui_event_PanelScheduleStartDateScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
+        const char * text = lv_label_get_text(ui_LabelScheduleStartDateScheduleItem);
+        uint32_t year = get_year(text);
+        uint32_t month = get_month(text);
+        uint32_t day = get_day(text);
+        lv_calendar_set_today_date(ui_CalendarStartDateScheduleItem, year, month, day);
+        lv_calendar_set_showed_date(ui_CalendarStartDateScheduleItem, year, month);
         _ui_screen_change(&ui_startDate, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_startDate_screen_init);
     }
 }
@@ -873,6 +898,12 @@ void ui_event_PanelScheduleEndDateScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
+        const char * text = lv_label_get_text(ui_LabelScheduleEndDateScheduleItem);
+        uint32_t year = get_year(text);
+        uint32_t month = get_month(text);
+        uint32_t day = get_day(text);
+        lv_calendar_set_today_date(ui_CalendarEndDateScheduleItem, year, month, day);
+        lv_calendar_set_showed_date(ui_CalendarEndDateScheduleItem, year, month);
         _ui_screen_change(&ui_EndDate, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_EndDate_screen_init);
     }
 }
@@ -978,6 +1009,52 @@ void ui_event_ButtonCancelDateScheduleItem(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
         _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
+    }
+}
+
+void ui_event_CalendarDateScheduleItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * obj = lv_event_get_current_target(e);
+
+    if(event_code == LV_EVENT_VALUE_CHANGED) 
+    {
+        lv_calendar_date_t date;
+        if(lv_calendar_get_pressed_date(obj, &date)) 
+        {
+            lv_calendar_set_today_date(ui_CalendarDateScheduleItem, date.year, date.month, date.day);
+        }
+    }
+
+}
+
+
+void ui_event_CalendarEndDateScheduleItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * obj = lv_event_get_current_target(e);
+
+    if(event_code == LV_EVENT_VALUE_CHANGED) 
+    {
+        lv_calendar_date_t date;
+        if(lv_calendar_get_pressed_date(obj, &date)) 
+        {
+            lv_calendar_set_today_date(ui_CalendarEndDateScheduleItem, date.year, date.month, date.day);
+        }
+    }
+}
+void ui_event_CalendarStartDateScheduleItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * obj = lv_event_get_current_target(e);
+
+    if(event_code == LV_EVENT_VALUE_CHANGED) 
+    {
+        lv_calendar_date_t date;
+        if(lv_calendar_get_pressed_date(obj, &date)) 
+        {
+            lv_calendar_set_today_date(ui_CalendarStartDateScheduleItem, date.year, date.month, date.day);
+        }
     }
 }
 
