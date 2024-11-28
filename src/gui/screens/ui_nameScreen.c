@@ -89,6 +89,6 @@ void ui_name_screen_init(void)
     lv_obj_set_style_text_opa(ui_LabelTitleNameScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_add_event_cb(ui_PanelCloseButtonNameScheduleItem, ui_event_PanelCloseButtonNameScheduleItem, LV_EVENT_ALL, NULL);
-    
+    lv_obj_add_event_cb(ui_TextAreaNameScheduleItem, ui_event_TextAreaNameScheduleItem, LV_EVENT_ALL, NULL);
 
 }

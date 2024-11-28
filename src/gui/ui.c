@@ -242,7 +242,6 @@ lv_obj_t *  ui_LabelLoadingScheduleScreen;
 // SCREEN: ui_scheduleItemScreen
 void ui_ScheduleItemScreen_screen_init(void);
 lv_obj_t * ui_scheduleItemScreen;
-void ui_event_ScheduleItemScreen(lv_event_t * e);
 lv_obj_t * ui_PanelScheduleItemScreen;
 lv_obj_t * ui_PanelHeaderScheduleItem;
 lv_obj_t * ui_ButtonOKHeaderScheduleItem;
@@ -336,6 +335,7 @@ lv_obj_t * ui_NameScheduleItemScreen;
 void ui_event_PanelCloseButtonNameScheduleItem(lv_event_t * e);
 lv_obj_t * ui_PanelCloseButtonNameScheduleItem;
 lv_obj_t * ui_LabelCloseButtonNameScheduleItem;
+void ui_event_TextAreaNameScheduleItem(lv_event_t * e);
 lv_obj_t * ui_TextAreaNameScheduleItem;
 lv_obj_t * ui_KeyboardNameScheduleItem;
 lv_obj_t * ui_LabelTitleNameScheduleItem;
@@ -348,6 +348,7 @@ lv_obj_t * ui_DescriptionScheduleItemScreen;
 void ui_event_PanelCloseButtonDescriptionScheduleItem(lv_event_t * e);
 lv_obj_t * ui_PanelCloseButtonDescriptionScheduleItem;
 lv_obj_t * ui_LabelCloseButtonDescriptionScheduleItem;
+void ui_event_TextAreaDescriptionScheduleItem(lv_event_t * e);
 lv_obj_t * ui_TextAreaDescriptionsScheduleItem;
 lv_obj_t * ui_KeyboardDescriptionsScheduleItem;
 lv_obj_t * ui_LabelTitleDescriptionScheduleItem;
@@ -361,6 +362,7 @@ lv_obj_t * ui_LabelTitleWaterQuantityScheduleItem;
 void ui_event_PanelCloseButtonWaterQuantityScheduleItem(lv_event_t * e);
 lv_obj_t * ui_PanelCloseButtonWaterQuantityScheduleItem;
 lv_obj_t * ui_LabelCloseButtonWaterQuantityScheduleItem;
+void ui_event_TextAreaWaterQuantityScheduleItem(lv_event_t * e);
 lv_obj_t * ui_TextAreaWaterQuantityScheduleItem;
 lv_obj_t * ui_KeyboardWaterQuantityScheduleItem;
 lv_obj_t * ui_LabelUnitWaterQuantityScheduleItem;
@@ -791,18 +793,6 @@ void ui_event_ScheduleScreen(lv_event_t * e)
 
 }
 
-void ui_event_ScheduleItemScreen(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT && lv_obj_has_flag(ui_Panel93, LV_OBJ_FLAG_HIDDEN)) 
-    {
-        lv_indev_wait_release(lv_indev_get_act());
-        _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
-    }
-
-}
-
 
 
 
@@ -915,6 +905,20 @@ void ui_event_PanelCloseButtonNameScheduleItem(lv_event_t * e)
         _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
+
+void ui_event_TextAreaNameScheduleItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * obj = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY)
+    {
+        const char * text = lv_textarea_get_text(obj);
+        lv_label_set_text(ui_LabelNameScheduleItem, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
+    }
+}
+
 void ui_event_PanelCloseButtonDescriptionScheduleItem(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -923,6 +927,20 @@ void ui_event_PanelCloseButtonDescriptionScheduleItem(lv_event_t * e)
         _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
+
+void ui_event_TextAreaDescriptionScheduleItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * obj = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY)
+    {
+        const char * text = lv_textarea_get_text(obj);
+        lv_label_set_text(ui_LabelDescriptionScheduleItem, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
+    }
+}
+
 void ui_event_PanelCloseButtonWaterQuantityScheduleItem(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -931,11 +949,30 @@ void ui_event_PanelCloseButtonWaterQuantityScheduleItem(lv_event_t * e)
         _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
+
+void ui_event_TextAreaWaterQuantityScheduleItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * obj = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY)
+    {
+        const char * text = lv_textarea_get_text(obj);
+        lv_label_set_text(ui_LabelWaterQuantityScheduleItem, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
+    }
+}
+
 void ui_event_ButtonOKStartTimeScheduleItem(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
+        uint16_t hour = lv_roller_get_selected(ui_RollerHourStartTimeScheduleItem);
+        uint16_t minute = lv_roller_get_selected(ui_RollerMinuteStartTimeScheduleItem);
+        const char* timeStr = formatTime(hour, minute);
+        lv_label_set_text(ui_LabelScheduleStartTimeScheduleItem, timeStr);
+        lv_task_handler();
         _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
@@ -952,6 +989,11 @@ void ui_event_ButtonOKEndTimeScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
+        uint16_t hour = lv_roller_get_selected(ui_RollerHourEndTimeScheduleItem);
+        uint16_t minute = lv_roller_get_selected(ui_RollerMinuteEndTimeScheduleItem);
+        const char* timeStr = formatTime(hour, minute);
+        lv_label_set_text(ui_LabelScheduleEndTimeScheduleItem, timeStr);
+        lv_task_handler();
         _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
@@ -968,6 +1010,14 @@ void ui_event_ButtonOKEndDateScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
+        const lv_calendar_date_t * date;
+        date = lv_calendar_get_today_date(ui_CalendarEndDateScheduleItem);
+        uint16_t year = date->year;
+        uint16_t month = date->month;
+        uint16_t day = date->day;
+        const char * text = formatDate(year, month, day);
+        lv_label_set_text(ui_LabelScheduleEndDateScheduleItem, text);
+        lv_task_handler();
         _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
@@ -984,6 +1034,14 @@ void ui_event_ButtonOKStartDateScheduleItem(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
+        const lv_calendar_date_t * date;
+        date = lv_calendar_get_today_date(ui_CalendarStartDateScheduleItem);
+        uint16_t year = date->year;
+        uint16_t month = date->month;
+        uint16_t day = date->day;
+        const char * text = formatDate(year, month, day);
+        lv_label_set_text(ui_LabelScheduleStartDateScheduleItem, text);
+        lv_task_handler();
         _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
@@ -999,7 +1057,16 @@ void ui_event_ButtonOKDateScheduleItem(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_CLICKED) {
+    if(event_code == LV_EVENT_CLICKED) 
+    {
+        const lv_calendar_date_t * date;
+        date = lv_calendar_get_today_date(ui_CalendarDateScheduleItem);
+        uint16_t year = date->year;
+        uint16_t month = date->month;
+        uint16_t day = date->day;
+        const char * text = formatDate(year, month, day);
+        lv_label_set_text(ui_LabelScheduleDateScheduleItem, text);
+        lv_task_handler();
         _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
@@ -1023,6 +1090,7 @@ void ui_event_CalendarDateScheduleItem(lv_event_t * e)
         if(lv_calendar_get_pressed_date(obj, &date)) 
         {
             lv_calendar_set_today_date(ui_CalendarDateScheduleItem, date.year, date.month, date.day);
+            lv_calendar_set_showed_date(ui_CalendarDateScheduleItem, date.year, date.month);
         }
     }
 
@@ -1040,6 +1108,7 @@ void ui_event_CalendarEndDateScheduleItem(lv_event_t * e)
         if(lv_calendar_get_pressed_date(obj, &date)) 
         {
             lv_calendar_set_today_date(ui_CalendarEndDateScheduleItem, date.year, date.month, date.day);
+            lv_calendar_set_showed_date(ui_CalendarEndDateScheduleItem, date.year, date.month);
         }
     }
 }
@@ -1054,9 +1123,12 @@ void ui_event_CalendarStartDateScheduleItem(lv_event_t * e)
         if(lv_calendar_get_pressed_date(obj, &date)) 
         {
             lv_calendar_set_today_date(ui_CalendarStartDateScheduleItem, date.year, date.month, date.day);
+            lv_calendar_set_showed_date(ui_CalendarStartDateScheduleItem, date.year, date.month);
         }
     }
 }
+
+
 
 ///////////////////// SCREENS ////////////////////
 

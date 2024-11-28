@@ -4,6 +4,7 @@
 #include "../gui/ui.h"
 #include "../utils/http.h"
 
+
 static void ScheduleItem_Dropdown_handle(lv_event_t * e)
 {
     lv_obj_t * obj = lv_event_get_target(e);
@@ -12,7 +13,9 @@ static void ScheduleItem_Dropdown_handle(lv_event_t * e)
     lv_dropdown_set_text(obj, buf);
 }
 
-void renderScheduleItemUI(const char * schedule_name,
+void renderScheduleItemUI(
+    int schedule_id,
+    const char * schedule_name,
     const char * description,
     uint16_t area,
     uint16_t priority,
@@ -27,6 +30,9 @@ void renderScheduleItemUI(const char * schedule_name,
 )
 {
     // Generate UI for Schedule Item Screen
+    char buffer[10];           // Ensure buffer is large enough to hold the string representation
+    itoa(schedule_id, buffer, 10);     // Convert the int to a string (base 10)
+    const char *str = buffer;
     lv_label_set_text(ui_LabelNameScheduleItem, schedule_name);
     lv_label_set_text(ui_LabelDescriptionScheduleItem, description);
     lv_dropdown_set_selected(ui_DropdownAreaScheduleItem, area);
@@ -36,7 +42,7 @@ void renderScheduleItemUI(const char * schedule_name,
     lv_label_set_text(ui_LabelScheduleStartTimeScheduleItem, schedule_start_time);
     lv_label_set_text(ui_LabelScheduleEndTimeScheduleItem, schedule_stop_time);
     uint16_t type_idx = 0;
-    if (strcmp(schedule_type, "once") == 0) 
+    if (strcmp(schedule_type, "Once") == 0) 
     {
         type_idx = 0;
         lv_obj_clear_flag(ui_PanelScheduleDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
@@ -44,7 +50,7 @@ void renderScheduleItemUI(const char * schedule_name,
         lv_obj_add_flag(ui_PanelScheduleEndDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
         lv_obj_add_flag(ui_PanelScheduleWeekContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
     } 
-    else if (strcmp(schedule_type, "daily") == 0) 
+    else if (strcmp(schedule_type, "Daily") == 0) 
     {
         type_idx = 1;
         lv_obj_add_flag(ui_PanelScheduleDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
@@ -52,7 +58,7 @@ void renderScheduleItemUI(const char * schedule_name,
         lv_obj_clear_flag(ui_PanelScheduleEndDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
         lv_obj_add_flag(ui_PanelScheduleWeekContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
     } 
-    else if (strcmp(schedule_type, "weekly") == 0) 
+    else if (strcmp(schedule_type, "Weekly") == 0) 
     {
         type_idx = 2;
         lv_obj_add_flag(ui_PanelScheduleDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
@@ -62,7 +68,7 @@ void renderScheduleItemUI(const char * schedule_name,
     }
     lv_dropdown_set_selected(ui_DropdownScheduleRepeatScheduleItem, type_idx);
     lv_label_set_text(ui_LabelScheduleDateScheduleItem, schedule_start_day);
-    lv_label_set_text(ui_LabelScheduleStartDateScheduleItem, schedule_end_day);
+    lv_label_set_text(ui_LabelScheduleStartDateScheduleItem, schedule_start_day);
     lv_label_set_text(ui_LabelScheduleEndDateScheduleItem, schedule_end_day);
 
     for(int i = 0; i < days_count; i++) 
@@ -104,6 +110,7 @@ void handleScheduleItemUI(void * parameter)
 {
     // Get the schedule item
     int schedule_id = (int)(uintptr_t)parameter;
+    current_schedule_id = schedule_id;
     const char * schedule_name;
     const char * description;
     uint16_t area;
@@ -117,7 +124,9 @@ void handleScheduleItemUI(void * parameter)
     int days_list[7];
     int days_count = 0; 
 
-    JsonDocument jsonDocGlobal;
+
+    using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
+    SpiRamJsonDocument jsonDocGlobal(1048576);
 
     DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
     if (error) 
@@ -237,10 +246,12 @@ void handleScheduleItemUI(void * parameter)
             lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemSaturdayScheduleItem, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemSundayScheduleItem, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_task_handler();
-            renderScheduleItemUI(schedule_name, description, area, priority, water_quantity, schedule_type, schedule_start_time, schedule_stop_time, schedule_start_day, schedule_end_day, days_list, days_count);
+            renderScheduleItemUI(schedule_id, schedule_name, description, area, priority, water_quantity, schedule_type, schedule_start_time, schedule_stop_time, schedule_start_day, schedule_end_day, days_list, days_count);
             lv_obj_add_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
             lv_task_handler();
-            jsonDocGlobal.clear();
+            // Cleanup and free resources manually when you're done
+            jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
+            jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible
             xSemaphoreGive(lvgl_mutex);
             vTaskDelete(NULL);
         }
@@ -263,6 +274,7 @@ static void ui_event_PanelScheduleItemContainer0Clicked(lv_event_t * e)
 
     // Call a function to display the detailed information screen
     lv_obj_clear_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_scroll_to_y(ui_PanelScheduleItemContainerScreen, 0, LV_ANIM_OFF);
     _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     lv_task_handler();
     TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");
@@ -283,6 +295,7 @@ static void ui_event_PanelScheduleItemContainer1Clicked(lv_event_t * e)
 
     // Call a function to display the detailed information screen
     lv_obj_clear_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_scroll_to_y(ui_PanelScheduleItemContainerScreen, 0, LV_ANIM_OFF);
     _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     lv_task_handler();
     TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");
@@ -303,6 +316,7 @@ static void ui_event_PanelScheduleItemContainer2Clicked(lv_event_t * e)
 
     // Call a function to display the detailed information screen
     lv_obj_clear_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_scroll_to_y(ui_PanelScheduleItemContainerScreen, 0, LV_ANIM_OFF);
     _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     lv_task_handler();
     TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");
@@ -323,6 +337,7 @@ static void ui_event_PanelScheduleItemContainer3Clicked(lv_event_t * e)
 
     // Call a function to display the detailed information screen
     lv_obj_clear_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_scroll_to_y(ui_PanelScheduleItemContainerScreen, 0, LV_ANIM_OFF);
     _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     lv_task_handler();
     TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");
@@ -343,6 +358,7 @@ static void ui_event_PanelScheduleItemContainer4Clicked(lv_event_t * e)
 
     // Call a function to display the detailed information screen
     lv_obj_clear_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_scroll_to_y(ui_PanelScheduleItemContainerScreen, 0, LV_ANIM_OFF);
     _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     lv_task_handler();
     TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");

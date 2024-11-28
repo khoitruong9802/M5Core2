@@ -804,7 +804,6 @@ void ui_ScheduleItemScreen_screen_init(void)
     lv_obj_set_style_text_color(ui_LabelLoadingScheduleItemScreen, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_LabelLoadingScheduleItemScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);    
 
-    lv_obj_add_event_cb(ui_scheduleItemScreen, ui_event_ScheduleItemScreen, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_DropdownScheduleRepeatScheduleItem, ui_event_DropdownClickedScheduleRepeatScheduleItem, LV_EVENT_VALUE_CHANGED, NULL);
     lv_obj_add_event_cb(ui_CheckboxScheduleEndDateScheduleItem, ui_event_CheckboxScheduleEndDateScheduleItem, LV_EVENT_VALUE_CHANGED , NULL);
     lv_obj_add_event_cb(ui_PanelScheduleWeekItemMondayScheduleItem, ui_event_PanelScheduleWeekItemMondayScheduleItem, LV_EVENT_CLICKED, NULL);

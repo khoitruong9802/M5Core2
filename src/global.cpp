@@ -8,6 +8,8 @@ int numberOfPage;
 int numberOfElement;
 int currentOfElementHeader;
 
+int current_schedule_id;
+
 uint16_t current_year;
 uint16_t current_month;
 uint16_t current_day;

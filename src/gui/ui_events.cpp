@@ -12,6 +12,7 @@
 #include "global.h"
 #include "services/ota_service.h"
 #include "ui.h"
+#include "../utils/http.h"
 #include<stdio.h>
 
 const char *get_json_device(uint8_t device1_status, uint8_t device2_status) {
@@ -209,11 +210,6 @@ void schedule_screen_init(lv_event_t * e)
               Serial.println("Failed to allocate memory for the task stack in PSRAM.");
           }
         }
-        else
-        {
-          Serial.println("test4");
-        }
-        Serial.println("test5");
     }
 }
 
@@ -405,27 +401,294 @@ void ui_event_PanelScheduleWeekItemSundayScheduleItem(lv_event_t * e)
     lv_task_handler();
 }
 
+int convertStringToInt(const char* str) {
+    if (str == nullptr) {
+        return 0; 
+    }
+
+    char* end;
+    int value = strtol(str, &end, 10);
+
+    if (*end != '\0') {
+        // If *end is not '\0', it means that there were non-numeric characters
+        return 0; // You could also handle this case differently
+    }
+
+    return value;
+}
+
 void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) 
     {
+        using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
+        SpiRamJsonDocument jsonDocGlobal(1048576);
+
+        DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
+        if (error) 
+        {
+        Serial.println(error.c_str());
+        }
+        // Access the JSON array
+        JsonArray jsonArray = jsonDocGlobal.as<JsonArray>();
+        jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
+        jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible
+        // Call the sendPutRequest function
+        const char* serverURL = "http://192.168.0.101:3000/data/1";
+        StaticJsonDocument<1024> jsonPayloadDoc;
+        // Get new data to compare with the old data
+        int new_status = 1;
         const char * schedule_name_new = lv_label_get_text(ui_LabelNameScheduleItem);
         const char * description_new = lv_label_get_text(ui_LabelDescriptionScheduleItem);
-        char area_new[64];
-        lv_dropdown_get_selected_str(ui_DropdownAreaScheduleItem, area_new, sizeof(area_new));
-        uint32_t priority_new = lv_slider_get_value(ui_SliderPriorityScheduleItem);
-        const char * water_quantity_new = lv_label_get_text(ui_LabelWaterQuantityScheduleItem);
+        int area_new = (int)lv_dropdown_get_selected(ui_DropdownAreaScheduleItem) + 1;
+        int priority_new = lv_slider_get_value(ui_SliderPriorityScheduleItem) + 1;
+        const char * water_quantity_str = lv_label_get_text(ui_LabelWaterQuantityScheduleItem);
+        int water_quantity_new = convertStringToInt(water_quantity_str);
         const char * start_time_new = lv_label_get_text(ui_LabelScheduleStartTimeScheduleItem);
         const char * end_time_new = lv_label_get_text(ui_LabelScheduleEndTimeScheduleItem);
-        const char * date_new = lv_label_get_text(ui_LabelNameScheduleItem);
+        char repeat_new[64];
+        lv_dropdown_get_selected_str(ui_DropdownScheduleRepeatScheduleItem, repeat_new, sizeof(repeat_new));  
+        int weekday_new[7];
+        lv_color_t target_color = lv_color_hex(0x4264FF);   // Original color to check against
+        
+        int current_idx = 0;
+
+        lv_color_t bg_color_2 = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemMondayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+        if (bg_color_2.full == target_color.full)
+        {
+          weekday_new[current_idx] = 2;
+          current_idx++;
+        }
+        lv_color_t bg_color_3 = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemTuesdayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+        if (bg_color_3.full == target_color.full)
+        {
+          weekday_new[current_idx] = 3;
+          current_idx++;
+        }
+        lv_color_t bg_color_4 = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemWednesdayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+        if (bg_color_4.full == target_color.full)
+        {
+          weekday_new[current_idx] = 4;
+          current_idx++;
+        }
+        lv_color_t bg_color_5 = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemThursdayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+        if (bg_color_5.full == target_color.full)
+        {
+          weekday_new[current_idx] = 5;
+          current_idx++;
+        }
+        lv_color_t bg_color_6 = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemFridayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+        if (bg_color_6.full == target_color.full)
+        {
+          weekday_new[current_idx] = 6;
+          current_idx++;
+        }
+        lv_color_t bg_color_7 = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemSaturdayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+        if (bg_color_7.full == target_color.full)
+        {
+          weekday_new[current_idx] = 7;
+          current_idx++;
+        }
+        lv_color_t bg_color_8 = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemSundayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+        if (bg_color_8.full == target_color.full)
+        {
+          weekday_new[current_idx] = 8;
+          current_idx++;
+        }
+        const char * date_new = lv_label_get_text(ui_LabelScheduleDateScheduleItem);
         const char * start_date_new = lv_label_get_text(ui_LabelScheduleStartDateScheduleItem);
         const char * end_date_new = lv_label_get_text(ui_LabelScheduleEndDateScheduleItem);
-        char repeat_new[64];
-        lv_dropdown_get_selected_str(ui_DropdownScheduleRepeatScheduleItem, repeat_new, sizeof(repeat_new));        
+        bool forever_checkbox_new = lv_obj_has_state(ui_CheckboxScheduleEndDateScheduleItem, LV_STATE_CHECKED);
         
-        _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
+        for(JsonObject obj : jsonArray)
+        {
+          int id = obj["id"];
+          if(current_schedule_id == id)
+          {
+            // Extracting other values as you did previously with null checks.
+            // Check if status is not null
+            if(obj["status"].is<int>())
+            {
+              int status = obj["status"];
+              if(status != new_status)
+              {
+                //TODO
+                jsonPayloadDoc["status"] = new_status;
+              }
+            }
+            // Check if schedule_name key is not null
+            if (obj["schedule_name"].is<const char*>()) 
+            {
+              const char* schedule_name = obj["schedule_name"].as<const char*>();
+              if(strcmp(schedule_name, schedule_name_new) != 0)
+              {
+                //TODO
+                jsonPayloadDoc["schedule_name"] = schedule_name_new;
+              }
+            } 
+
+            // Check if description key is not null
+            if (obj["description"].is<const char*>()) 
+            {
+                const char * description = obj["description"].as<const char*>();
+                if(strcmp(description, description_new) != 0)
+                {
+                  //TODO
+                  jsonPayloadDoc["description"] = description_new;
+                }
+            }
+
+            // Extract area
+            if (obj["area"].is<int>()) 
+            {
+                int area = obj["area"].as<int>();
+                if(area != area_new)
+                {
+                  //TODO
+                  jsonPayloadDoc["area"] = area_new;
+                }
+            } 
+
+            // Extract priority
+            if (obj["priority"].is<int>()) 
+            {
+                int priority = obj["priority"].as<uint16_t>();
+                if(priority != priority_new)
+                {
+                  //TODO
+                  jsonPayloadDoc["priority"] = priority_new;
+                }
+            }
+            // Extract water quantity
+            if (obj["water_quantity"].is<int>()) 
+            {
+                int water_quantity_int = obj["water_quantity"].as<int>();
+                if(water_quantity_int != water_quantity_new)
+                {
+                  //TODO
+                  jsonPayloadDoc["water_quantity"] = water_quantity_new;
+                }
+            }
+
+            // Check each element in the schedule to avoid null pointers
+            if (obj["start_time"].is<const char*>()) 
+            {
+                const char * schedule_start_time = obj["start_time"].as<const char*>();
+                if(strcmp(schedule_start_time, start_time_new) != 0)
+                {
+                  //TODO
+                  jsonPayloadDoc["start_time"] = start_time_new;
+                }
+            }
+            if (obj["stop_time"].is<const char*>()) 
+            {
+                const char * schedule_end_time = obj["stop_time"].as<const char*>();
+                if(strcmp(schedule_end_time, end_time_new) != 0)
+                {
+                  //TODO
+                  jsonPayloadDoc["stop_time"] = end_time_new;
+                }
+            }
+
+            if (obj["schedule_type"].is<const char*>()) 
+            {
+                const char * schedule_type = obj["schedule_type"].as<const char*>();
+                if(strcmp(schedule_type, repeat_new) != 0)
+                {
+                  //TODO
+                  jsonPayloadDoc["schedule_type"] = repeat_new;
+                }
+
+            }
+
+            if (obj["start_day"].is<const char*>()) 
+            {
+                const char * schedule_start_day = obj["start_day"].as<const char*>();
+                if(strcmp(schedule_start_day, start_date_new) != 0)
+                {
+                  //TODO
+                  jsonPayloadDoc["start_day"] = start_date_new;
+                }
+            }
+
+            if (obj["end_day"].is<const char*>()) 
+            {
+                const char * schedule_end_day = obj["end_day"].as<const char*>();
+                if(strcmp(schedule_end_day, end_date_new) != 0)
+                {
+                  //TODO
+                  jsonPayloadDoc["end_day"] = end_date_new;
+                }
+            }
+
+            // Extract the "days" array inside the "schedule" object, if it exists
+            if (obj["days"].is<JsonArray>()) 
+            {
+              JsonArray daysArray = obj["days"].as<JsonArray>();
+
+              // Compare each value in the "days" array with `weekday_new`
+              bool days_changed = false;
+              int days_count = 0;
+              for (int day : daysArray) 
+              {
+                  if (day != weekday_new[days_count]) {
+                      days_changed = true;
+                      break;
+                  }
+                  days_count++;
+              }
+
+              if (days_changed || days_count != current_idx) 
+              {
+                  JsonArray newDaysArray = jsonPayloadDoc.createNestedArray("days");
+                  for (int i = 0; i < current_idx; i++) {
+                      newDaysArray.add(weekday_new[i]);
+                  }
+              }
+            }
+            break;  // Exit the loop once the desired object is found.
+          }
+        }
+        if (jsonPayloadDoc.size() > 0) {
+            // Convert jsonPayloadDoc to a string and send the PUT request
+            String jsonPayload;
+            serializeJson(jsonPayloadDoc, jsonPayload);
+            sendPutRequest(serverURL, jsonPayload.c_str());
+            lv_obj_clear_flag(ui_PanelLoadingScheduleScreen, LV_OBJ_FLAG_HIDDEN);
+            _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
+            lv_task_handler();
+            TaskHandle_t schedule_task = xTaskGetHandle("schedule_task");
+            if(schedule_task == NULL)
+            {
+              void *taskStackMemory = heap_caps_malloc(8192, MALLOC_CAP_SPIRAM); // Allocating in PSRAM
+
+              if (taskStackMemory != nullptr) {
+                  BaseType_t result = xTaskCreatePinnedToCore(
+                      handleScheduleUI,  // Function to execute
+                      "schedule_task",   // Task name
+                      8192,              // Stack size in bytes
+                      NULL,              // Task parameter
+                      1,                 // Priority
+                      &schedule_task,    // Task handle
+                      1                  // Core
+                  );
+
+                  if (result == pdPASS) {
+                      Serial.println("Task created successfully in PSRAM.");
+                  } else {
+                      Serial.println("Failed to create task.");
+                      free(taskStackMemory); // Free memory if task creation failed
+                  }
+              } else {
+                  Serial.println("Failed to allocate memory for the task stack in PSRAM.");
+              }
+            }
+          } else {
+              Serial.println("No changes detected. Skipping PUT request.");
+              _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
+          }
     }
 }
 void ui_event_ButtonCancelHeaderScheduleItem(lv_event_t * e)
@@ -445,7 +708,8 @@ void updatePageScheduleItem(int indexOfElement)
     lv_obj_add_flag(jsonScheduleItemList[i].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
   }
 
-  JsonDocument jsonDocGlobal;
+  using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
+  SpiRamJsonDocument jsonDocGlobal(1048576);
 
   DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
   if (error) 
@@ -479,7 +743,9 @@ void updatePageScheduleItem(int indexOfElement)
     lv_obj_clear_flag(jsonScheduleItemList[index].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
     index++;
   }
-  jsonDocGlobal.clear();
+  // Cleanup and free resources manually when you're done
+  jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
+  jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible
   lv_task_handler();
 }
 void ui_event_PanelPageItemTitleScheduleScreen0(lv_event_t * e)
@@ -660,4 +926,46 @@ uint32_t get_current_month()
 uint32_t get_current_day()
 {
   return (uint32_t)current_day;
+}
+
+const char* formatTime(uint16_t hour, uint16_t minute) {
+    static char buffer[6];  // Buffer to store the resulting string in "HH:MM" format
+    snprintf(buffer, sizeof(buffer), "%02d:%02d", hour, minute);
+    return buffer;  // Return the formatted time string as a const char*
+}
+
+const char* formatDate(uint16_t year, uint16_t month, uint16_t day) {
+    static char buffer[11];  // Buffer to store the resulting string in "YYYY-MM-DD" format
+    snprintf(buffer, sizeof(buffer), "%04d-%02d-%02d", year, month, day);
+    return buffer;  // Return the formatted date string as a const char*
+}
+
+
+// Function to make a PUT request
+void sendPutRequest(const char* serverURL, const char* jsonPayload) {
+  if (WiFi.status() == WL_CONNECTED) { // Check WiFi connection status
+
+    HTTPClient http;
+    http.begin(serverURL); // Specify the URL for the PUT request
+    http.addHeader("Content-Type", "application/json"); // Set content type to JSON
+
+    // Make the PUT request
+    int httpResponseCode = http.PUT(jsonPayload);
+
+    // Handle the response
+    if (httpResponseCode > 0) {
+      String response = http.getString();
+      Serial.print("HTTP Response code: ");
+      Serial.println(httpResponseCode);
+      Serial.print("Response from server: ");
+      Serial.println(response);
+    } else {
+      Serial.print("Error on sending PUT request: ");
+      Serial.println(http.errorToString(httpResponseCode).c_str());
+    }
+
+    http.end(); // End the HTTP connection
+  } else {
+    Serial.println("WiFi Disconnected");
+  }
 }

@@ -51,6 +51,7 @@ extern String jsonString;
 extern int numberOfPage;
 extern int numberOfElement;
 extern int currentOfElementHeader;
+extern int current_schedule_id;
 
 extern uint16_t current_year;
 extern uint16_t current_month;

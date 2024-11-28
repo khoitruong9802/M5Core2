@@ -46,6 +46,10 @@ uint32_t get_day(const char * date_str);
 uint32_t get_current_year();
 uint32_t get_current_month();
 uint32_t get_current_day();
+const char* formatTime(uint16_t hour, uint16_t minute);
+const char* formatDate(uint16_t year, uint16_t month, uint16_t day);
+int convertStringToInt(const char* str);
+void sendPutRequest(const char* serverURL, const char* jsonPayload);
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

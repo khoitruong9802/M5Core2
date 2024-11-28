@@ -93,6 +93,7 @@ void ui_description_screen_init(void)
 
     lv_obj_add_event_cb(ui_PanelCloseButtonDescriptionScheduleItem, ui_event_PanelCloseButtonDescriptionScheduleItem,
                         LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_TextAreaDescriptionsScheduleItem, ui_event_TextAreaDescriptionScheduleItem, LV_EVENT_ALL, NULL);
     lv_keyboard_set_textarea(ui_KeyboardDescriptionsScheduleItem, ui_TextAreaDescriptionsScheduleItem);
 
 }

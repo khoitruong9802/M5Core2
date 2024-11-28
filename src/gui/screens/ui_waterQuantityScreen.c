@@ -109,6 +109,7 @@ void ui_waterQuantity_screen_init(void)
 
     lv_obj_add_event_cb(ui_PanelCloseButtonWaterQuantityScheduleItem, ui_event_PanelCloseButtonWaterQuantityScheduleItem,
                         LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_TextAreaWaterQuantityScheduleItem, ui_event_TextAreaWaterQuantityScheduleItem, LV_EVENT_ALL, NULL);
     lv_keyboard_set_textarea(ui_KeyboardWaterQuantityScheduleItem, ui_TextAreaWaterQuantityScheduleItem);
 
 }
