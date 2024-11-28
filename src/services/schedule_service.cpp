@@ -477,14 +477,13 @@ void renderScheduleUI(int index, int id, const char * name, const char *time, in
 }
 
 
-
 void handleScheduleUI(void *parameter)
 {
-    String response = http_get_data("http://192.168.0.103:3000/data");
+    String response = http_get_data("http://192.168.0.101:3000/data");
 
+    using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
     jsonString = response;
-
-    JsonDocument jsonDocGlobal;
+    SpiRamJsonDocument jsonDocGlobal(1048576);
 
     DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
     if (error) 
@@ -569,7 +568,9 @@ void handleScheduleUI(void *parameter)
                         i++;
                     }
                 }
-                jsonDocGlobal.clear();
+                // Cleanup and free resources manually when you're done
+                jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
+                jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible
             }
             else
             {
