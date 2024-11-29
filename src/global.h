@@ -43,6 +43,8 @@ typedef struct
 extern jsonScheduleItem jsonScheduleItemList[5];
 
 extern const char* web_server;
+extern const char* ota_server;
+
 
 extern SemaphoreHandle_t lvgl_mutex;
 

@@ -417,26 +417,74 @@ int convertStringToInt(const char* str) {
     return value;
 }
 
+
+void updatePageScheduleItem(int indexOfElement)
+{
+  for(int i = 0; i < 5; i++)
+  {
+    lv_obj_add_flag(jsonScheduleItemList[i].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
+  }
+
+  using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
+  SpiRamJsonDocument jsonDocGlobal(1048576);
+
+  DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
+  if (error) 
+  {
+  Serial.println(error.c_str());
+  }
+
+  // Access the JSON array
+  JsonArray jsonArray = jsonDocGlobal.as<JsonArray>();
+  int minOfElement = (indexOfElement - 1) * 5;
+  int maxOfElement = indexOfElement * 5;
+  int index = 0;
+  for(int i = minOfElement; i < maxOfElement && i < jsonArray.size(); i++)
+  {
+    // lv_obj_clear_flag(jsonScheduleItemList[index].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
+    const char * name = jsonArray[i]["schedule_name"].as<const char *>();
+    int id = jsonArray[i]["id"].as<int>();
+    const char *time = jsonArray[i]["start_time"].as<const char *>();
+    int water_quantity = jsonArray[i]["water_quantity"].as<int>();
+    const char * schedule_type = jsonArray[i]["schedule_type"].as<const char *>();
+    int schedule_status = jsonArray[i]["status"].as<int>();
+    jsonScheduleItemList[index].schedule_id = id;
+    lv_label_set_text(jsonScheduleItemList[index].ui_LabelNameScheduleListItem, name);
+    lv_label_set_text(jsonScheduleItemList[index].ui_LabelScheduleItem, time);
+    char buffer[10];           // Ensure buffer is large enough to hold the string representation
+    itoa(water_quantity, buffer, 10);     // Convert the int to a string (base 10)
+    const char *str = buffer;  // Now 'str' is a const char* pointing to the string   
+    strcat(buffer, " (ml)");  
+    lv_label_set_text(jsonScheduleItemList[index].ui_LabelScheduleItemWaterQuantity, str);
+    lv_label_set_text(jsonScheduleItemList[index].ui_LabelScheduleItemTimer, schedule_type);
+    if(schedule_status == 1)
+    {
+      lv_obj_add_state(jsonScheduleItemList[index].ui_SwitchScheduleItem, LV_STATE_CHECKED);
+    }
+    else
+    {
+      lv_obj_clear_state(jsonScheduleItemList[index].ui_SwitchScheduleItem, LV_STATE_CHECKED);
+    }
+    
+    
+    lv_obj_clear_flag(jsonScheduleItemList[index].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
+    index++;
+  }
+  // Cleanup and free resources manually when you're done
+  jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
+  jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible
+  lv_task_handler();
+}
+
+
 void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) 
     {
-        using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
-        SpiRamJsonDocument jsonDocGlobal(1048576);
-
-        DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
-        if (error) 
-        {
-        Serial.println(error.c_str());
-        }
-        // Access the JSON array
-        JsonArray jsonArray = jsonDocGlobal.as<JsonArray>();
-        jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
-        jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible
-        // Call the sendPutRequest function
-        const char* serverURL = "http://192.168.0.101:3000/data/1";
+        char serverURL[150]; // Adjust size if needed based on the URL length
+        snprintf(serverURL, sizeof(serverURL), "%s/%d", web_server, current_schedule_id);
         StaticJsonDocument<1024> jsonPayloadDoc;
         // Get new data to compare with the old data
         int new_status = 1;
@@ -501,7 +549,16 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
         const char * start_date_new = lv_label_get_text(ui_LabelScheduleStartDateScheduleItem);
         const char * end_date_new = lv_label_get_text(ui_LabelScheduleEndDateScheduleItem);
         bool forever_checkbox_new = lv_obj_has_state(ui_CheckboxScheduleEndDateScheduleItem, LV_STATE_CHECKED);
-        
+        using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
+        SpiRamJsonDocument jsonDocGlobal(1048576);
+
+        DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
+        if (error) 
+        {
+        Serial.println(error.c_str());
+        }
+        // Access the JSON array
+        JsonArray jsonArray = jsonDocGlobal.as<JsonArray>();
         for(JsonObject obj : jsonArray)
         {
           int id = obj["id"];
@@ -656,39 +713,16 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
             String jsonPayload;
             serializeJson(jsonPayloadDoc, jsonPayload);
             sendPutRequest(serverURL, jsonPayload.c_str());
-            lv_obj_clear_flag(ui_PanelLoadingScheduleScreen, LV_OBJ_FLAG_HIDDEN);
-            _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
+            updatePageScheduleItem(currentOfElementHeader);
             lv_task_handler();
-            TaskHandle_t schedule_task = xTaskGetHandle("schedule_task");
-            if(schedule_task == NULL)
-            {
-              void *taskStackMemory = heap_caps_malloc(8192, MALLOC_CAP_SPIRAM); // Allocating in PSRAM
-
-              if (taskStackMemory != nullptr) {
-                  BaseType_t result = xTaskCreatePinnedToCore(
-                      handleScheduleUI,  // Function to execute
-                      "schedule_task",   // Task name
-                      8192,              // Stack size in bytes
-                      NULL,              // Task parameter
-                      1,                 // Priority
-                      &schedule_task,    // Task handle
-                      1                  // Core
-                  );
-
-                  if (result == pdPASS) {
-                      Serial.println("Task created successfully in PSRAM.");
-                  } else {
-                      Serial.println("Failed to create task.");
-                      free(taskStackMemory); // Free memory if task creation failed
-                  }
-              } else {
-                  Serial.println("Failed to allocate memory for the task stack in PSRAM.");
-              }
-            }
+            _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
+            
           } else {
               Serial.println("No changes detected. Skipping PUT request.");
               _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
           }
+          jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
+          jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible
     }
 }
 void ui_event_ButtonCancelHeaderScheduleItem(lv_event_t * e)
@@ -701,53 +735,6 @@ void ui_event_ButtonCancelHeaderScheduleItem(lv_event_t * e)
     }
 }
 
-void updatePageScheduleItem(int indexOfElement)
-{
-  for(int i = 0; i < 5; i++)
-  {
-    lv_obj_add_flag(jsonScheduleItemList[i].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
-  }
-
-  using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
-  SpiRamJsonDocument jsonDocGlobal(1048576);
-
-  DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
-  if (error) 
-  {
-  Serial.println(error.c_str());
-  }
-
-  // Access the JSON array
-  JsonArray jsonArray = jsonDocGlobal.as<JsonArray>();
-  int minOfElement = (indexOfElement - 1) * 5;
-  int maxOfElement = indexOfElement * 5;
-  int index = 0;
-  for(int i = minOfElement; i < maxOfElement && i < jsonArray.size(); i++)
-  {
-    // lv_obj_clear_flag(jsonScheduleItemList[index].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
-    const char * name = jsonArray[i]["schedule_name"].as<const char *>();
-    int id = jsonArray[i]["id"].as<int>();
-    const char *time = jsonArray[i]["start_time"].as<const char *>();
-    int water_quantity = jsonArray[i]["water_quantity"].as<int>();
-    const char * schedule_type = jsonArray[i]["schedule_type"].as<const char *>();
-    const char * schedule_status = jsonArray[i]["status"].as<const char *>();
-    jsonScheduleItemList[index].schedule_id = id;
-    lv_label_set_text(jsonScheduleItemList[index].ui_LabelNameScheduleListItem, name);
-    lv_label_set_text(jsonScheduleItemList[index].ui_LabelScheduleItem, time);
-    char buffer[10];           // Ensure buffer is large enough to hold the string representation
-    itoa(water_quantity, buffer, 10);     // Convert the int to a string (base 10)
-    const char *str = buffer;  // Now 'str' is a const char* pointing to the string   
-    strcat(buffer, " (ml)");  
-    lv_label_set_text(jsonScheduleItemList[index].ui_LabelScheduleItemWaterQuantity, str);
-    lv_label_set_text(jsonScheduleItemList[index].ui_LabelScheduleItemTimer, schedule_type);
-    lv_obj_clear_flag(jsonScheduleItemList[index].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
-    index++;
-  }
-  // Cleanup and free resources manually when you're done
-  jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
-  jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible
-  lv_task_handler();
-}
 void ui_event_PanelPageItemTitleScheduleScreen0(lv_event_t * e)
 {
   lv_event_code_t event_code = lv_event_get_code(e);
@@ -759,6 +746,7 @@ void ui_event_PanelPageItemTitleScheduleScreen0(lv_event_t * e)
     lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[0], lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[1], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[2], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+
     updatePageScheduleItem(currentOfElementHeader);
     lv_task_handler();
   }
@@ -796,7 +784,7 @@ void ui_event_PanelPageItemTitleScheduleScreen2(lv_event_t * e)
 
 
 
-void ui_event_ButtonNextPageItemTitleScheduleScreen(lv_event_t *e)
+void  ui_event_ButtonNextPageItemTitleScheduleScreen(lv_event_t *e)
 {
   lv_event_code_t event_code = lv_event_get_code(e);
   lv_obj_t * target = lv_event_get_target(e);
@@ -959,6 +947,8 @@ void sendPutRequest(const char* serverURL, const char* jsonPayload) {
       Serial.println(httpResponseCode);
       Serial.print("Response from server: ");
       Serial.println(response);
+      Serial.println(jsonPayload);
+      updateJsonGlobalArray();
     } else {
       Serial.print("Error on sending PUT request: ");
       Serial.println(http.errorToString(httpResponseCode).c_str());

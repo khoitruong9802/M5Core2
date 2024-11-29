@@ -1,6 +1,6 @@
 #include "ota_service.h"
 #include <lvgl.h>
-const char* web_server = "http://192.168.0.112:4000";
+
 
 // Function to check for the latest firmware file
 String getLatestFirmwareFileName(const char* Url) 
@@ -59,11 +59,11 @@ String getLatestFirmwareFileName(const char* Url)
 void ota_update(void *parameter)
 {
     print(PRINTLN,"Start OTA");
-    String filename = getLatestFirmwareFileName(web_server);
+    String filename = getLatestFirmwareFileName(ota_server);
     write_new_ota_version(filename);
     print(PRINTF,"Start installing: %s\n", filename.c_str());
 
-    String firmwareURL = web_server + String("/uploads/") + filename;
+    String firmwareURL = ota_server + String("/uploads/") + filename;
     HTTPClient http;
     http.begin(firmwareURL);
     int httpCode = http.GET();
@@ -135,7 +135,7 @@ void ota_checking_update(void *paramter)
     String line = file.readStringUntil('\n');
     for(;;)
     {
-        String filename = getLatestFirmwareFileName(web_server);
+        String filename = getLatestFirmwareFileName(ota_server);
         print(PRINTLN,"The original:");
         print(PRINTLN,line.c_str());
         print(PRINTLN,"The new:");

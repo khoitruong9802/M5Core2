@@ -4,6 +4,9 @@ jsonScheduleItem jsonScheduleItemList[5];
 
 String jsonString;
 
+const char * web_server = "http://192.168.0.100:3000/data";
+const char* ota_server = "http://192.168.0.112:4000";
+
 int numberOfPage;
 int numberOfElement;
 int currentOfElementHeader;
