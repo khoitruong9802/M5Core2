@@ -12,7 +12,34 @@ void updateJsonGlobalArray()
     jsonString = response;
 
 }
+int getMaxScheduleId()
+{
+    using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
+    SpiRamJsonDocument jsonDocGlobal(1048576);
 
+    DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);   
+    if (error) 
+    {
+    Serial.println(error.c_str());
+    }
+
+    // Access the JSON array
+    JsonArray jsonArray = jsonDocGlobal.as<JsonArray>();
+    int max_schedule_id = 0;
+    // Get the schedule item data
+    for(JsonObject obj : jsonArray) 
+    {
+        int schedule_id = obj["id"].as<int>();
+        if (schedule_id > max_schedule_id) {
+            max_schedule_id = schedule_id;
+        }
+    }
+    // Cleanup and free resources manually when you're done
+    jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
+    jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible   
+    return max_schedule_id;   
+
+}
 static void ScheduleItem_Dropdown_handle(lv_event_t * e)
 {
     lv_obj_t * obj = lv_event_get_target(e);
@@ -132,115 +159,136 @@ void handleScheduleItemUI(void * parameter)
     int days_list[7];
     int days_count = 0; 
 
-
-    using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
-    SpiRamJsonDocument jsonDocGlobal(1048576);
-
-    DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
-    if (error) 
+    if(schedule_id == -1)
     {
-    Serial.println(error.c_str());
+        schedule_name = "";
+        description = "";
+        area = 0;
+        priority = 0;
+        water_quantity = "";
+        schedule_type = "Once";
+        schedule_start_time = "08:00";
+        schedule_stop_time = "09:00";
+        //Handle for day by getting current time
+        uint16_t year = (uint16_t)get_current_year();
+        uint16_t month = (uint16_t)get_current_month();
+        uint16_t day = (uint16_t)get_current_day();
+        schedule_start_day = formatDate(year, month, day);
+        schedule_end_day = schedule_start_day;
     }
+    else
+    {
+        using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
+        SpiRamJsonDocument jsonDocGlobal(1048576);
 
-    // Access the JSON array
-    JsonArray jsonArray = jsonDocGlobal.as<JsonArray>();
-    // Get the schedule item data
-    for(JsonObject obj : jsonArray) {
-        int id = obj["id"];
-        if(schedule_id == id) {
-            // Extracting other values as you did previously with null checks.
-            
-            // Check if schedule_name key is not null
-            if (obj["schedule_name"].is<const char*>()) {
-                schedule_name = obj["schedule_name"].as<const char*>();
-            } else {
-                schedule_name = " ";  // Set a default value or handle appropriately
-            }
-
-            // Check if description key is not null
-            if (obj["description"].is<const char*>()) {
-                description = obj["description"].as<const char*>();
-            } else {
-                description = " ";
-            }
-
-            // Extract area
-            if (obj["area"].is<int>()) {
-                area = obj["area"].as<int>() - 1;
-            } else {
-                area = 0;  // Indicate that the area value is missing or invalid
-            }
-
-            // Extract priority
-            if (obj["priority"].is<int>()) {
-                priority = obj["priority"].as<uint16_t>() - 1;
-            } else {
-                priority = 0;  // Default value or handle appropriately
-            }
-
-            // Extract water quantity
-            if (obj["water_quantity"].is<int>()) {
-                int water_quantity_int = obj["water_quantity"].as<int>();
-                char buffer[10];
-                itoa(water_quantity_int, buffer, 10 );
-                water_quantity = buffer;
-            } else {
-                water_quantity = " ";  // Set default or handle appropriately
-            }
-
-            // Check each element in the schedule to avoid null pointers
-            if (obj["start_time"].is<const char*>()) {
-                schedule_start_time = obj["start_time"].as<const char*>();
-            } else {
-                schedule_start_time = " ";
-            }
-
-            if (obj["stop_time"].is<const char*>()) {
-                schedule_stop_time = obj["stop_time"].as<const char*>();
-            } else {
-                schedule_stop_time = " ";
-            }
-
-            if (obj["schedule_type"].is<const char*>()) {
-                schedule_type = obj["schedule_type"].as<const char*>();
-            } else {
-                schedule_type = " ";
-            }
-
-            if (obj["start_day"].is<const char*>()) {
-                schedule_start_day = obj["start_day"].as<const char*>();
-            } else {
-                schedule_start_day = " ";
-            }
-
-            if (obj["end_day"].is<const char*>()) {
-                schedule_end_day = obj["end_day"].as<const char*>();
-            } else {
-                schedule_end_day = " ";
-            }
-
-            // Extract the "days" array inside the "schedule" object, if it exists
-            if (obj["days"].is<JsonArray>()) {
-                JsonArray daysArray = obj["days"].as<JsonArray>();
-
-                // Clear the `days_list` and reset the counter
-                days_count = 0;
-
-                // Iterate over the "days" array and store the values in `days_list`
-                for (int day : daysArray) {
-                    if (days_count < 7) { // Ensure we don't exceed our array size
-                        days_list[days_count] = day;
-                        days_count++;
-                    }
-                }
-            } else {
-                days_count = 0; // No days available
-            }
-
-            break;  // Exit the loop once the desired object is found.
+        DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
+        if (error) 
+        {
+        Serial.println(error.c_str());
         }
+
+        // Access the JSON array
+        JsonArray jsonArray = jsonDocGlobal.as<JsonArray>();
+        // Get the schedule item data
+        for(JsonObject obj : jsonArray) {
+            int id = obj["id"];
+            if(schedule_id == id) {
+                // Extracting other values as you did previously with null checks.
+                
+                // Check if schedule_name key is not null
+                if (obj["schedule_name"].is<const char*>()) {
+                    schedule_name = obj["schedule_name"].as<const char*>();
+                } else {
+                    schedule_name = " ";  // Set a default value or handle appropriately
+                }
+
+                // Check if description key is not null
+                if (obj["description"].is<const char*>()) {
+                    description = obj["description"].as<const char*>();
+                } else {
+                    description = " ";
+                }
+
+                // Extract area
+                if (obj["area"].is<int>()) {
+                    area = obj["area"].as<int>() - 1;
+                } else {
+                    area = 0;  // Indicate that the area value is missing or invalid
+                }
+
+                // Extract priority
+                if (obj["priority"].is<int>()) {
+                    priority = obj["priority"].as<uint16_t>() - 1;
+                } else {
+                    priority = 0;  // Default value or handle appropriately
+                }
+
+                // Extract water quantity
+                if (obj["water_quantity"].is<int>()) {
+                    int water_quantity_int = obj["water_quantity"].as<int>();
+                    char buffer[10];
+                    itoa(water_quantity_int, buffer, 10 );
+                    water_quantity = buffer;
+                } else {
+                    water_quantity = " ";  // Set default or handle appropriately
+                }
+
+                // Check each element in the schedule to avoid null pointers
+                if (obj["start_time"].is<const char*>()) {
+                    schedule_start_time = obj["start_time"].as<const char*>();
+                } else {
+                    schedule_start_time = " ";
+                }
+
+                if (obj["stop_time"].is<const char*>()) {
+                    schedule_stop_time = obj["stop_time"].as<const char*>();
+                } else {
+                    schedule_stop_time = " ";
+                }
+
+                if (obj["schedule_type"].is<const char*>()) {
+                    schedule_type = obj["schedule_type"].as<const char*>();
+                } else {
+                    schedule_type = " ";
+                }
+
+                if (obj["start_day"].is<const char*>()) {
+                    schedule_start_day = obj["start_day"].as<const char*>();
+                } else {
+                    schedule_start_day = " ";
+                }
+
+                if (obj["end_day"].is<const char*>()) {
+                    schedule_end_day = obj["end_day"].as<const char*>();
+                } else {
+                    schedule_end_day = " ";
+                }
+
+                // Extract the "days" array inside the "schedule" object, if it exists
+                if (obj["days"].is<JsonArray>()) {
+                    JsonArray daysArray = obj["days"].as<JsonArray>();
+
+                    // Clear the `days_list` and reset the counter
+                    days_count = 0;
+
+                    // Iterate over the "days" array and store the values in `days_list`
+                    for (int day : daysArray) {
+                        if (days_count < 7) { // Ensure we don't exceed our array size
+                            days_list[days_count] = day;
+                            days_count++;
+                        }
+                    }
+                } else {
+                    days_count = 0; // No days available
+                }
+
+                break;  // Exit the loop once the desired object is found.
+            }
+        }
+        // Cleanup and free resources manually when you're done
+        jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
+        jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible            
     }
-    
     for(;;)
     {
         // Checking does mutex is available
@@ -257,9 +305,6 @@ void handleScheduleItemUI(void * parameter)
             renderScheduleItemUI(schedule_id, schedule_name, description, area, priority, water_quantity, schedule_type, schedule_start_time, schedule_stop_time, schedule_start_day, schedule_end_day, days_list, days_count);
             lv_obj_add_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
             lv_task_handler();
-            // Cleanup and free resources manually when you're done
-            jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
-            jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible
             xSemaphoreGive(lvgl_mutex);
             vTaskDelete(NULL);
         }
@@ -268,6 +313,7 @@ void handleScheduleItemUI(void * parameter)
             print(PRINTLN, "mutex is not available. Waiting in the next time...");
             vTaskDelay(1000 / portTICK_PERIOD_MS);
         }
+
     }
 }
 
@@ -503,6 +549,71 @@ static void ui_event_SwitchScheduleItemContainer4Clicked(lv_event_t * e)
     sendPutRequest(serverURL, jsonPayload.c_str());
 }
 
+void removeButtonHandler(int index)
+{
+    lv_state_t state = lv_obj_get_state(jsonScheduleItemList[index].ui_ButtonRemoveScheduleListItem);
+    // Get the schedule ID or metadata associated with this panel
+    int schedule_id = jsonScheduleItemList[index].schedule_id;
+
+    
+    sendDeleteRequest(schedule_id);
+
+    lv_obj_clear_flag(ui_PanelLoadingScheduleScreen, LV_OBJ_FLAG_HIDDEN);
+    _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
+    lv_task_handler();
+    TaskHandle_t schedule_task = xTaskGetHandle("schedule_task");
+    if(schedule_task == NULL)
+    {
+        void *taskStackMemory = heap_caps_malloc(8192, MALLOC_CAP_SPIRAM); // Allocating in PSRAM
+
+        if (taskStackMemory != nullptr) {
+            BaseType_t result = xTaskCreatePinnedToCore(
+                handleScheduleUI,  // Function to execute
+                "schedule_task",   // Task name
+                8192,              // Stack size in bytes
+                NULL,              // Task parameter
+                1,                 // Priority
+                &schedule_task,    // Task handle
+                1                  // Core
+            );
+
+            if (result == pdPASS) {
+                Serial.println("Task created successfully in PSRAM.");
+            } else {
+                Serial.println("Failed to create task.");
+                free(taskStackMemory); // Free memory if task creation failed
+            }
+        } else {
+            Serial.println("Failed to allocate memory for the task stack in PSRAM.");
+        }
+    }
+}
+
+static void ui_event_ButtonRemoveScheduleItemContainer0Clicked(lv_event_t * e)
+{
+    removeButtonHandler(0);
+}
+
+static void ui_event_ButtonRemoveScheduleItemContainer1Clicked(lv_event_t * e)
+{
+    removeButtonHandler(1);
+}
+
+static void ui_event_ButtonRemoveScheduleItemContainer2Clicked(lv_event_t * e)
+{
+    removeButtonHandler(2);
+}
+
+static void ui_event_ButtonRemoveScheduleItemContainer3Clicked(lv_event_t * e)
+{
+    removeButtonHandler(3);
+}
+
+static void ui_event_ButtonRemoveScheduleItemContainer4Clicked(lv_event_t * e)
+{
+    removeButtonHandler(4);
+}
+
 void renderNavigateSchedulePage(int numberOfPage)
 {
     for(int i = 0; i < numberOfPage && i < 3; i++)
@@ -515,6 +626,8 @@ void renderNavigateSchedulePage(int numberOfPage)
         lv_obj_clear_flag(ui_PanelPageItemTitleScheduleScreen[i], LV_OBJ_FLAG_HIDDEN);
     }
     lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[0], lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[1], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[2], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     currentOfElementHeader = 1;
     lv_task_handler();
 }
@@ -592,6 +705,20 @@ void renderScheduleUI(int index, int id, const char * name, const char *time, in
     lv_obj_set_width(jsonScheduleItemList[index].ui_SwitchScheduleItem, 70);
     lv_obj_set_height(jsonScheduleItemList[index].ui_SwitchScheduleItem, 35);
     lv_obj_set_align(jsonScheduleItemList[index].ui_SwitchScheduleItem, LV_ALIGN_CENTER);
+    // lv_obj_add_flag(jsonScheduleItemList[index].ui_SwitchScheduleItem, LV_OBJ_FLAG_HIDDEN);
+
+    jsonScheduleItemList[index].ui_ButtonRemoveScheduleListItem = lv_btn_create(jsonScheduleItemList[index].ui_PanelScheduleItem);
+    lv_obj_set_width(jsonScheduleItemList[index].ui_ButtonRemoveScheduleListItem, 50);
+    lv_obj_set_height(jsonScheduleItemList[index].ui_ButtonRemoveScheduleListItem, 50);
+    lv_obj_set_x(jsonScheduleItemList[index].ui_ButtonRemoveScheduleListItem, 110);
+    lv_obj_set_y(jsonScheduleItemList[index].ui_ButtonRemoveScheduleListItem, 0);
+    lv_obj_set_align(jsonScheduleItemList[index].ui_ButtonRemoveScheduleListItem, LV_ALIGN_CENTER);
+    lv_obj_add_flag(jsonScheduleItemList[index].ui_ButtonRemoveScheduleListItem, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(jsonScheduleItemList[index].ui_ButtonRemoveScheduleListItem, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(jsonScheduleItemList[index].ui_ButtonRemoveScheduleListItem, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(jsonScheduleItemList[index].ui_ButtonRemoveScheduleListItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_img_src(jsonScheduleItemList[index].ui_ButtonRemoveScheduleListItem, &ui_img_trash_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_add_flag(jsonScheduleItemList[index].ui_ButtonRemoveScheduleListItem, LV_OBJ_FLAG_HIDDEN);
 
     jsonScheduleItemList[index].ui_LabelNameScheduleListItem = lv_label_create(jsonScheduleItemList[index].ui_PanelScheduleItemContainer);
     lv_obj_set_width(jsonScheduleItemList[index].ui_LabelNameScheduleListItem, LV_SIZE_CONTENT);   /// 1
@@ -605,30 +732,35 @@ void renderScheduleUI(int index, int id, const char * name, const char *time, in
     {
         lv_obj_add_event_cb(jsonScheduleItemList[0].ui_PanelScheduleItem , ui_event_PanelScheduleItemContainer0Clicked, LV_EVENT_CLICKED, NULL);
         lv_obj_add_event_cb(jsonScheduleItemList[0].ui_SwitchScheduleItem , ui_event_SwitchScheduleItemContainer0Clicked, LV_EVENT_CLICKED, NULL);
+        lv_obj_add_event_cb(jsonScheduleItemList[0].ui_ButtonRemoveScheduleListItem , ui_event_ButtonRemoveScheduleItemContainer0Clicked, LV_EVENT_CLICKED, NULL);
     }
     else
     if(index == 1)
     {
         lv_obj_add_event_cb(jsonScheduleItemList[1].ui_PanelScheduleItem , ui_event_PanelScheduleItemContainer1Clicked, LV_EVENT_CLICKED, NULL);
         lv_obj_add_event_cb(jsonScheduleItemList[1].ui_SwitchScheduleItem , ui_event_SwitchScheduleItemContainer1Clicked, LV_EVENT_CLICKED, NULL);
+        lv_obj_add_event_cb(jsonScheduleItemList[1].ui_ButtonRemoveScheduleListItem , ui_event_ButtonRemoveScheduleItemContainer1Clicked, LV_EVENT_CLICKED, NULL);
     }
     else
     if(index == 2)
     {
         lv_obj_add_event_cb(jsonScheduleItemList[2].ui_PanelScheduleItem , ui_event_PanelScheduleItemContainer2Clicked, LV_EVENT_CLICKED, NULL);
         lv_obj_add_event_cb(jsonScheduleItemList[2].ui_SwitchScheduleItem , ui_event_SwitchScheduleItemContainer2Clicked, LV_EVENT_CLICKED, NULL);
+        lv_obj_add_event_cb(jsonScheduleItemList[2].ui_ButtonRemoveScheduleListItem , ui_event_ButtonRemoveScheduleItemContainer2Clicked, LV_EVENT_CLICKED, NULL);
     }
     else
     if(index == 3)
     {
         lv_obj_add_event_cb(jsonScheduleItemList[3].ui_PanelScheduleItem , ui_event_PanelScheduleItemContainer3Clicked, LV_EVENT_CLICKED, NULL);
         lv_obj_add_event_cb(jsonScheduleItemList[3].ui_SwitchScheduleItem , ui_event_SwitchScheduleItemContainer3Clicked, LV_EVENT_CLICKED, NULL);
+        lv_obj_add_event_cb(jsonScheduleItemList[3].ui_ButtonRemoveScheduleListItem , ui_event_ButtonRemoveScheduleItemContainer3Clicked, LV_EVENT_CLICKED, NULL);
     }
     else
     if(index == 4)
     {
         lv_obj_add_event_cb(jsonScheduleItemList[4].ui_PanelScheduleItem , ui_event_PanelScheduleItemContainer4Clicked, LV_EVENT_CLICKED, NULL);
         lv_obj_add_event_cb(jsonScheduleItemList[4].ui_SwitchScheduleItem , ui_event_SwitchScheduleItemContainer4Clicked, LV_EVENT_CLICKED, NULL);
+        lv_obj_add_event_cb(jsonScheduleItemList[4].ui_ButtonRemoveScheduleListItem , ui_event_ButtonRemoveScheduleItemContainer4Clicked, LV_EVENT_CLICKED, NULL);
     }
 }
 

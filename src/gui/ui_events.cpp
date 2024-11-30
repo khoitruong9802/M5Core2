@@ -483,8 +483,6 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) 
     {
-        char serverURL[150]; // Adjust size if needed based on the URL length
-        snprintf(serverURL, sizeof(serverURL), "%s/%d", web_server, current_schedule_id);
         StaticJsonDocument<1024> jsonPayloadDoc;
         // Get new data to compare with the old data
         int new_status = 1;
@@ -549,170 +547,210 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
         const char * start_date_new = lv_label_get_text(ui_LabelScheduleStartDateScheduleItem);
         const char * end_date_new = lv_label_get_text(ui_LabelScheduleEndDateScheduleItem);
         bool forever_checkbox_new = lv_obj_has_state(ui_CheckboxScheduleEndDateScheduleItem, LV_STATE_CHECKED);
-        using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
-        SpiRamJsonDocument jsonDocGlobal(1048576);
-
-        DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
-        if (error) 
+        int add_flag = 0;
+        if(current_schedule_id == -1)
         {
-        Serial.println(error.c_str());
-        }
-        // Access the JSON array
-        JsonArray jsonArray = jsonDocGlobal.as<JsonArray>();
-        for(JsonObject obj : jsonArray)
-        {
-          int id = obj["id"];
-          if(current_schedule_id == id)
-          {
-            // Extracting other values as you did previously with null checks.
-            // Check if status is not null
-            if(obj["status"].is<int>())
-            {
-              int status = obj["status"];
-              if(status != new_status)
-              {
-                //TODO
-                jsonPayloadDoc["status"] = new_status;
-              }
-            }
-            // Check if schedule_name key is not null
-            if (obj["schedule_name"].is<const char*>()) 
-            {
-              const char* schedule_name = obj["schedule_name"].as<const char*>();
-              if(strcmp(schedule_name, schedule_name_new) != 0)
-              {
-                //TODO
-                jsonPayloadDoc["schedule_name"] = schedule_name_new;
-              }
-            } 
-
-            // Check if description key is not null
-            if (obj["description"].is<const char*>()) 
-            {
-                const char * description = obj["description"].as<const char*>();
-                if(strcmp(description, description_new) != 0)
-                {
-                  //TODO
-                  jsonPayloadDoc["description"] = description_new;
-                }
-            }
-
-            // Extract area
-            if (obj["area"].is<int>()) 
-            {
-                int area = obj["area"].as<int>();
-                if(area != area_new)
-                {
-                  //TODO
-                  jsonPayloadDoc["area"] = area_new;
-                }
-            } 
-
-            // Extract priority
-            if (obj["priority"].is<int>()) 
-            {
-                int priority = obj["priority"].as<uint16_t>();
-                if(priority != priority_new)
-                {
-                  //TODO
-                  jsonPayloadDoc["priority"] = priority_new;
-                }
-            }
-            // Extract water quantity
-            if (obj["water_quantity"].is<int>()) 
-            {
-                int water_quantity_int = obj["water_quantity"].as<int>();
-                if(water_quantity_int != water_quantity_new)
-                {
-                  //TODO
-                  jsonPayloadDoc["water_quantity"] = water_quantity_new;
-                }
-            }
-
-            // Check each element in the schedule to avoid null pointers
-            if (obj["start_time"].is<const char*>()) 
-            {
-                const char * schedule_start_time = obj["start_time"].as<const char*>();
-                if(strcmp(schedule_start_time, start_time_new) != 0)
-                {
-                  //TODO
-                  jsonPayloadDoc["start_time"] = start_time_new;
-                }
-            }
-            if (obj["stop_time"].is<const char*>()) 
-            {
-                const char * schedule_end_time = obj["stop_time"].as<const char*>();
-                if(strcmp(schedule_end_time, end_time_new) != 0)
-                {
-                  //TODO
-                  jsonPayloadDoc["stop_time"] = end_time_new;
-                }
-            }
-
-            if (obj["schedule_type"].is<const char*>()) 
-            {
-                const char * schedule_type = obj["schedule_type"].as<const char*>();
-                if(strcmp(schedule_type, repeat_new) != 0)
-                {
-                  //TODO
-                  jsonPayloadDoc["schedule_type"] = repeat_new;
-                }
-
-            }
-
-            if (obj["start_day"].is<const char*>()) 
-            {
-                const char * schedule_start_day = obj["start_day"].as<const char*>();
-                if(strcmp(schedule_start_day, start_date_new) != 0)
-                {
-                  //TODO
-                  jsonPayloadDoc["start_day"] = start_date_new;
-                }
-            }
-
-            if (obj["end_day"].is<const char*>()) 
-            {
-                const char * schedule_end_day = obj["end_day"].as<const char*>();
-                if(strcmp(schedule_end_day, end_date_new) != 0)
-                {
-                  //TODO
-                  jsonPayloadDoc["end_day"] = end_date_new;
-                }
-            }
-
-            // Extract the "days" array inside the "schedule" object, if it exists
-            if (obj["days"].is<JsonArray>()) 
-            {
-              JsonArray daysArray = obj["days"].as<JsonArray>();
-
-              // Compare each value in the "days" array with `weekday_new`
-              bool days_changed = false;
-              int days_count = 0;
-              for (int day : daysArray) 
-              {
-                  if (day != weekday_new[days_count]) {
-                      days_changed = true;
-                      break;
-                  }
-                  days_count++;
-              }
-
-              if (days_changed || days_count != current_idx) 
-              {
-                  JsonArray newDaysArray = jsonPayloadDoc.createNestedArray("days");
-                  for (int i = 0; i < current_idx; i++) {
-                      newDaysArray.add(weekday_new[i]);
-                  }
-              }
-            }
-            break;  // Exit the loop once the desired object is found.
+          add_flag = 1;
+          current_schedule_id = getMaxScheduleId() + 1;
+          jsonPayloadDoc["status"] = new_status;
+          jsonPayloadDoc["schedule_name"] = schedule_name_new;
+          jsonPayloadDoc["description"] = description_new;
+          jsonPayloadDoc["area"] = area_new;
+          jsonPayloadDoc["priority"] = priority_new;
+          jsonPayloadDoc["water_quantity"] = water_quantity_new;
+          jsonPayloadDoc["start_time"] = start_time_new;
+          jsonPayloadDoc["stop_time"] = end_time_new;
+          jsonPayloadDoc["schedule_type"] = repeat_new;
+          jsonPayloadDoc["start_day"] = start_date_new;
+          jsonPayloadDoc["end_day"] = end_date_new;
+          JsonArray newDaysArray = jsonPayloadDoc.createNestedArray("days");
+          for (int i = 0; i < current_idx; i++) {
+              newDaysArray.add(weekday_new[i]);
           }
         }
+        else
+        {
+          using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
+          SpiRamJsonDocument jsonDocGlobal(1048576);
+
+          DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
+          if (error) 
+          {
+          Serial.println(error.c_str());
+          }
+          // Access the JSON array
+          JsonArray jsonArray = jsonDocGlobal.as<JsonArray>();
+          for(JsonObject obj : jsonArray)
+          {
+            int id = obj["id"];
+            if(current_schedule_id == id)
+            {
+              // Extracting other values as you did previously with null checks.
+              // Check if status is not null
+              if(obj["status"].is<int>())
+              {
+                int status = obj["status"];
+                if(status != new_status)
+                {
+                  //TODO
+                  jsonPayloadDoc["status"] = new_status;
+                }
+              }
+              // Check if schedule_name key is not null
+              if (obj["schedule_name"].is<const char*>()) 
+              {
+                const char* schedule_name = obj["schedule_name"].as<const char*>();
+                if(strcmp(schedule_name, schedule_name_new) != 0)
+                {
+                  //TODO
+                  jsonPayloadDoc["schedule_name"] = schedule_name_new;
+                }
+              } 
+
+              // Check if description key is not null
+              if (obj["description"].is<const char*>()) 
+              {
+                  const char * description = obj["description"].as<const char*>();
+                  if(strcmp(description, description_new) != 0)
+                  {
+                    //TODO
+                    jsonPayloadDoc["description"] = description_new;
+                  }
+              }
+
+              // Extract area
+              if (obj["area"].is<int>()) 
+              {
+                  int area = obj["area"].as<int>();
+                  if(area != area_new)
+                  {
+                    //TODO
+                    jsonPayloadDoc["area"] = area_new;
+                  }
+              } 
+
+              // Extract priority
+              if (obj["priority"].is<int>()) 
+              {
+                  int priority = obj["priority"].as<uint16_t>();
+                  if(priority != priority_new)
+                  {
+                    //TODO
+                    jsonPayloadDoc["priority"] = priority_new;
+                  }
+              }
+              // Extract water quantity
+              if (obj["water_quantity"].is<int>()) 
+              {
+                  int water_quantity_int = obj["water_quantity"].as<int>();
+                  if(water_quantity_int != water_quantity_new)
+                  {
+                    //TODO
+                    jsonPayloadDoc["water_quantity"] = water_quantity_new;
+                  }
+              }
+
+              // Check each element in the schedule to avoid null pointers
+              if (obj["start_time"].is<const char*>()) 
+              {
+                  const char * schedule_start_time = obj["start_time"].as<const char*>();
+                  if(strcmp(schedule_start_time, start_time_new) != 0)
+                  {
+                    //TODO
+                    jsonPayloadDoc["start_time"] = start_time_new;
+                  }
+              }
+              if (obj["stop_time"].is<const char*>()) 
+              {
+                  const char * schedule_end_time = obj["stop_time"].as<const char*>();
+                  if(strcmp(schedule_end_time, end_time_new) != 0)
+                  {
+                    //TODO
+                    jsonPayloadDoc["stop_time"] = end_time_new;
+                  }
+              }
+
+              if (obj["schedule_type"].is<const char*>()) 
+              {
+                  const char * schedule_type = obj["schedule_type"].as<const char*>();
+                  if(strcmp(schedule_type, repeat_new) != 0)
+                  {
+                    //TODO
+                    jsonPayloadDoc["schedule_type"] = repeat_new;
+                  }
+
+              }
+
+              if (obj["start_day"].is<const char*>()) 
+              {
+                  const char * schedule_start_day = obj["start_day"].as<const char*>();
+                  if(strcmp(schedule_start_day, start_date_new) != 0)
+                  {
+                    //TODO
+                    jsonPayloadDoc["start_day"] = start_date_new;
+                  }
+              }
+
+              if (obj["end_day"].is<const char*>()) 
+              {
+                  const char * schedule_end_day = obj["end_day"].as<const char*>();
+                  if(strcmp(schedule_end_day, end_date_new) != 0)
+                  {
+                    //TODO
+                    jsonPayloadDoc["end_day"] = end_date_new;
+                  }
+              }
+
+              // Extract the "days" array inside the "schedule" object, if it exists
+              if (obj["days"].is<JsonArray>()) 
+              {
+                JsonArray daysArray = obj["days"].as<JsonArray>();
+
+                // Compare each value in the "days" array with `weekday_new`
+                bool days_changed = false;
+                int days_count = 0;
+                for (int day : daysArray) 
+                {
+                    if (day != weekday_new[days_count]) {
+                        days_changed = true;
+                        break;
+                    }
+                    days_count++;
+                }
+
+                if (days_changed || days_count != current_idx) 
+                {
+                    JsonArray newDaysArray = jsonPayloadDoc.createNestedArray("days");
+                    for (int i = 0; i < current_idx; i++) {
+                        newDaysArray.add(weekday_new[i]);
+                    }
+                }
+              }
+              break;  // Exit the loop once the desired object is found.
+            }
+          }
+          jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
+          jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible
+            
+        }
+
         if (jsonPayloadDoc.size() > 0) {
             // Convert jsonPayloadDoc to a string and send the PUT request
             String jsonPayload;
             serializeJson(jsonPayloadDoc, jsonPayload);
-            sendPutRequest(serverURL, jsonPayload.c_str());
+            if(add_flag == 1)
+            {
+              char serverURL[150]; // Adjust size if needed based on the URL length
+              snprintf(serverURL, sizeof(serverURL), "%s", web_server);
+              addNewRequest(serverURL, current_schedule_id, jsonPayload.c_str());
+            }
+            else
+            {
+              char serverURL[150]; // Adjust size if needed based on the URL length
+              snprintf(serverURL, sizeof(serverURL), "%s/%d", web_server, current_schedule_id);
+              sendPutRequest(serverURL, jsonPayload.c_str());
+            }
+            
             updatePageScheduleItem(currentOfElementHeader);
             lv_task_handler();
             _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
@@ -721,10 +759,9 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
               Serial.println("No changes detected. Skipping PUT request.");
               _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
           }
-          jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
-          jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible
     }
 }
+
 void ui_event_ButtonCancelHeaderScheduleItem(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -929,6 +966,44 @@ const char* formatDate(uint16_t year, uint16_t month, uint16_t day) {
 }
 
 
+//Function to add a new element
+void addNewRequest(const char* baseServerURL, int schedule_id, const char* jsonPayload) {
+  if (WiFi.status() == WL_CONNECTED) { // Check WiFi connection status
+
+    // Construct the URL with the schedule ID at the end
+    char serverURL[200]; // Ensure the buffer is large enough to hold the complete URL
+    snprintf(serverURL, sizeof(serverURL), "%s/new/%d", baseServerURL, schedule_id);
+
+    HTTPClient http;
+    http.begin(serverURL); // Specify the URL for the PUT request
+    http.addHeader("Content-Type", "application/json"); // Set content type to JSON
+
+    // Make the PUT request
+    int httpResponseCode = http.PUT(jsonPayload);
+
+    // Handle the response
+    if (httpResponseCode > 0) {
+      String response = http.getString();
+      Serial.print("HTTP Response code: ");
+      Serial.println(httpResponseCode);
+      Serial.print("Response from server: ");
+      Serial.println(response);
+      Serial.println("JSON Payload Sent:");
+      Serial.println(jsonPayload);
+
+      // Update the global JSON array if necessary after a successful PUT request
+      updateJsonGlobalArray();
+    } else {
+      Serial.print("Error on sending PUT request: ");
+      Serial.println(http.errorToString(httpResponseCode).c_str());
+    }
+
+    http.end(); // End the HTTP connection
+  } else {
+    Serial.println("WiFi Disconnected");
+  }
+}
+
 // Function to make a PUT request
 void sendPutRequest(const char* serverURL, const char* jsonPayload) {
   if (WiFi.status() == WL_CONNECTED) { // Check WiFi connection status
@@ -957,5 +1032,112 @@ void sendPutRequest(const char* serverURL, const char* jsonPayload) {
     http.end(); // End the HTTP connection
   } else {
     Serial.println("WiFi Disconnected");
+  }
+}
+
+void sendDeleteRequest(int schedule_id) {
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+
+    // Construct the full URL for DELETE request
+    // get web server
+    char serverURL[150]; // Adjust size if needed based on the URL length
+    snprintf(serverURL, sizeof(serverURL), "%s/schedule/%d", web_server_2, schedule_id);
+
+    Serial.print("Making DELETE request to: ");
+    Serial.println(serverURL);
+
+    // Start the DELETE request
+    http.begin(serverURL);
+
+    // Send the DELETE request
+    int httpResponseCode = http.sendRequest("DELETE");
+
+    // Handle the response
+    if (httpResponseCode > 0) {
+      Serial.print("HTTP Response code: ");
+      Serial.println(httpResponseCode);
+      String response = http.getString();
+      Serial.println("Response:");
+      Serial.println(response);
+    } else {
+      Serial.print("Error on sending DELETE request: ");
+      Serial.println(http.errorToString(httpResponseCode).c_str());
+    }
+
+    // Close the connection
+    http.end();
+  } else {
+    Serial.println("WiFi is not connected");
+  }
+}
+
+void ui_event_PanelRemoveOptionHeaderScheduleScreen(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED)
+    {
+        // Get the current image source of the object
+        const void * current_src = lv_img_get_src(ui_ImageRemoveOptionHeaderScheduleScreen);
+
+        // Check if the current image is `ui_img_trash_png`
+        if (current_src == &ui_img_trash_png)
+        {
+            // Change the image to `ui_img_tick_png`
+            lv_img_set_src(ui_ImageRemoveOptionHeaderScheduleScreen, &ui_img_tick_png);
+        }
+        else if (current_src == &ui_img_tick_png)
+        {
+            // If the current image is `ui_img_tick_png`, change it back to `ui_img_trash_png`
+            lv_img_set_src(ui_ImageRemoveOptionHeaderScheduleScreen, &ui_img_trash_png);
+        }
+
+        // Handle focus event
+        for(int i = 0; i < 5; i++)
+        {
+          // Check if the first object is hidden
+          if (lv_obj_has_flag(jsonScheduleItemList[i].ui_SwitchScheduleItem, LV_OBJ_FLAG_HIDDEN)) {
+              // Clear the hidden flag for SwitchScheduleItem
+              lv_obj_clear_flag(jsonScheduleItemList[i].ui_SwitchScheduleItem, LV_OBJ_FLAG_HIDDEN);
+              
+              // Add the hidden flag to ButtonRemoveScheduleListItem
+              lv_obj_add_flag(jsonScheduleItemList[i].ui_ButtonRemoveScheduleListItem, LV_OBJ_FLAG_HIDDEN);
+          } 
+          // If ButtonRemoveScheduleListItem is hidden
+          else if (lv_obj_has_flag(jsonScheduleItemList[i].ui_ButtonRemoveScheduleListItem, LV_OBJ_FLAG_HIDDEN)) {
+              // Clear the hidden flag for ButtonRemoveScheduleListItem
+              lv_obj_clear_flag(jsonScheduleItemList[i].ui_ButtonRemoveScheduleListItem, LV_OBJ_FLAG_HIDDEN);
+              
+              // Add the hidden flag to SwitchScheduleItem
+              lv_obj_add_flag(jsonScheduleItemList[i].ui_SwitchScheduleItem, LV_OBJ_FLAG_HIDDEN);
+          }
+
+        }
+        // Let LVGL handle the changes
+        lv_task_handler();
+    }
+}
+
+void ui_event_AddOptionHeaderScheduleScreen(lv_event_t * e)
+{
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t * target = lv_event_get_target(e);
+  if(event_code == LV_EVENT_CLICKED)
+  {
+    int id_flag = -1; // Initialize id_flag to -1 to create a new item
+    // You could use the schedule ID to pull the detailed information from memory, 
+    // for example, fetching from an array or JSON data stored locally.
+
+    // Call a function to display the detailed information screen
+    lv_obj_clear_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_scroll_to_y(ui_PanelScheduleItemContainerScreen, 0, LV_ANIM_OFF);
+    _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
+    lv_task_handler();
+    TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");
+    if(scheItem_task == NULL)
+    {
+        xTaskCreate(handleScheduleItemUI, "scheItem_task", 8192, (void *)(uintptr_t)id_flag, 1, &scheItem_task);
+    }
   }
 }

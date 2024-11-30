@@ -129,7 +129,7 @@ void ui_ScheduleScreen_screen_init(void)
     lv_obj_clear_flag(ui_PanelPageItemTitleScheduleScreen[2], LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[2], LV_OBJ_FLAG_HIDDEN);
 
-    ui_LabelPageItemTitleScheduleScreen[2] = lv_label_create(ui_PanelPageItemTitleScheduleScreen[2]);
+    ui_LabelPageItemTitleScheduleScreen[2] = lv_label_create(ui_PanelPageItemTitleScheduleScreen[2]); 
     lv_obj_set_width(ui_LabelPageItemTitleScheduleScreen[2], LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_LabelPageItemTitleScheduleScreen[2], LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_LabelPageItemTitleScheduleScreen[2], LV_ALIGN_CENTER);
@@ -148,6 +148,51 @@ void ui_ScheduleScreen_screen_init(void)
     lv_obj_set_align(ui_LabelNextPageItemTitleScheduleScreen, LV_ALIGN_CENTER);
     lv_label_set_text(ui_LabelNextPageItemTitleScheduleScreen, ">");
 
+    ui_OptionHeaderScheduleScreen = lv_obj_create(ui_MainScheduleScreen);
+    lv_obj_set_width(ui_OptionHeaderScheduleScreen, 320);
+    lv_obj_set_height(ui_OptionHeaderScheduleScreen, 56);
+    lv_obj_set_align(ui_OptionHeaderScheduleScreen, LV_ALIGN_CENTER);
+    lv_obj_set_flex_flow(ui_OptionHeaderScheduleScreen, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(ui_OptionHeaderScheduleScreen, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
+    lv_obj_clear_flag(ui_OptionHeaderScheduleScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_OptionHeaderScheduleScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_OptionHeaderScheduleScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_OptionHeaderScheduleScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_OptionHeaderScheduleScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_OptionHeaderScheduleScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_OptionHeaderScheduleScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_OptionHeaderScheduleScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_OptionHeaderScheduleScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_AddOptionHeaderScheduleScreen = lv_obj_create(ui_OptionHeaderScheduleScreen);
+    lv_obj_set_width(ui_AddOptionHeaderScheduleScreen, 150);
+    lv_obj_set_height(ui_AddOptionHeaderScheduleScreen, 50);
+    lv_obj_set_align(ui_AddOptionHeaderScheduleScreen, LV_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_AddOptionHeaderScheduleScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_LabelAddOptionHeaderScheduleScreen = lv_label_create(ui_AddOptionHeaderScheduleScreen);
+    lv_obj_set_width(ui_LabelAddOptionHeaderScheduleScreen, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_LabelAddOptionHeaderScheduleScreen, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_LabelAddOptionHeaderScheduleScreen, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_LabelAddOptionHeaderScheduleScreen, "+");
+    lv_obj_set_style_text_font(ui_LabelAddOptionHeaderScheduleScreen, &lv_font_montserrat_48,
+                               LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_PanelRemoveOptionHeaderScheduleScreen = lv_obj_create(ui_OptionHeaderScheduleScreen);
+    lv_obj_set_width(ui_PanelRemoveOptionHeaderScheduleScreen, 150);
+    lv_obj_set_height(ui_PanelRemoveOptionHeaderScheduleScreen, 50);
+    lv_obj_set_align(ui_PanelRemoveOptionHeaderScheduleScreen, LV_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_PanelRemoveOptionHeaderScheduleScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_ImageRemoveOptionHeaderScheduleScreen = lv_img_create(ui_PanelRemoveOptionHeaderScheduleScreen);
+    lv_img_set_src(ui_ImageRemoveOptionHeaderScheduleScreen, &ui_img_trash_png);
+    lv_obj_set_width(ui_ImageRemoveOptionHeaderScheduleScreen, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_ImageRemoveOptionHeaderScheduleScreen, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_ImageRemoveOptionHeaderScheduleScreen, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_ImageRemoveOptionHeaderScheduleScreen, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
+    lv_obj_clear_flag(ui_ImageRemoveOptionHeaderScheduleScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+
     // Create the scrollable container below the title
     ui_ScheduleContainer = lv_obj_create(ui_MainScheduleScreen);
     lv_obj_clear_flag(ui_ScheduleContainer, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
@@ -164,11 +209,15 @@ void ui_ScheduleScreen_screen_init(void)
     lv_obj_set_style_border_opa(ui_ScheduleContainer, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_DEFAULT);  // Set border opacity to transparent
 
 
+
+
     lv_obj_add_event_cb(ui_PanelPageItemTitleScheduleScreen[0], ui_event_PanelPageItemTitleScheduleScreen0, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_PanelPageItemTitleScheduleScreen[1], ui_event_PanelPageItemTitleScheduleScreen1, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_PanelPageItemTitleScheduleScreen[2], ui_event_PanelPageItemTitleScheduleScreen2, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_ButtonNextPageItemTitleScheduleScreen, ui_event_ButtonNextPageItemTitleScheduleScreen, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_ButtonPreviousPageItemTitleScheduleScreen,ui_event_ButtonPreviousPageItemTitleScheduleScreen, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_AddOptionHeaderScheduleScreen, ui_event_AddOptionHeaderScheduleScreen, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_PanelRemoveOptionHeaderScheduleScreen, ui_event_PanelRemoveOptionHeaderScheduleScreen, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_ScheduleScreen, ui_event_ScheduleScreen, LV_EVENT_ALL, NULL);
 
 

@@ -38,11 +38,13 @@ typedef struct
     lv_obj_t *  ui_LabelScheduleItemTimer;
     lv_obj_t *  ui_SwitchScheduleItem;
     lv_obj_t *  ui_LabelNameScheduleListItem;
+    lv_obj_t *  ui_ButtonRemoveScheduleListItem;
 } jsonScheduleItem;
 
 extern jsonScheduleItem jsonScheduleItemList[5];
 
 extern const char* web_server;
+extern const char * web_server_2;
 extern const char* ota_server;
 
 

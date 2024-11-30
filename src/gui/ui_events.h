@@ -37,6 +37,8 @@ void ui_event_PanelPageItemTitleScheduleScreen1(lv_event_t * e);
 void ui_event_PanelPageItemTitleScheduleScreen2(lv_event_t * e);
 void ui_event_ButtonNextPageItemTitleScheduleScreen(lv_event_t *e);
 void ui_event_ButtonPreviousPageItemTitleScheduleScreen(lv_event_t *e);
+void ui_event_PanelRemoveOptionHeaderScheduleScreen(lv_event_t * e);
+void ui_event_AddOptionHeaderScheduleScreen(lv_event_t * e);
 void printText(const char * text);
 uint16_t get_hour(const char *time_str);
 uint16_t get_minute(const char *time_str);
@@ -49,8 +51,10 @@ uint32_t get_current_day();
 const char* formatTime(uint16_t hour, uint16_t minute);
 const char* formatDate(uint16_t year, uint16_t month, uint16_t day);
 int convertStringToInt(const char* str);
+void addNewRequest(const char* baseServerURL, int schedule_id, const char* jsonPayload);
 void sendPutRequest(const char* serverURL, const char* jsonPayload);
 void updatePageScheduleItem(int indexOfElement);
+void sendDeleteRequest(int schedule_id);
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

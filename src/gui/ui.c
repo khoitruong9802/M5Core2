@@ -238,6 +238,11 @@ lv_obj_t *  ui_ScheduleContainer;
 lv_obj_t *  ui_PanelLoadingScheduleScreen;
 lv_obj_t *  ui_SpinnerLoadingScheduleScreen;
 lv_obj_t *  ui_LabelLoadingScheduleScreen;
+lv_obj_t * ui_OptionHeaderScheduleScreen;
+lv_obj_t * ui_AddOptionHeaderScheduleScreen;
+lv_obj_t * ui_LabelAddOptionHeaderScheduleScreen;
+lv_obj_t * ui_PanelRemoveOptionHeaderScheduleScreen;
+lv_obj_t * ui_ImageRemoveOptionHeaderScheduleScreen;
 
 // SCREEN: ui_scheduleItemScreen
 void ui_ScheduleItemScreen_screen_init(void);
@@ -792,6 +797,8 @@ void ui_event_ScheduleScreen(lv_event_t * e)
     }
 
 }
+
+
 
 
 
