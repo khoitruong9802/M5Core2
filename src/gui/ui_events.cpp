@@ -451,10 +451,10 @@ void updatePageScheduleItem(int indexOfElement)
     jsonScheduleItemList[index].schedule_id = id;
     lv_label_set_text(jsonScheduleItemList[index].ui_LabelNameScheduleListItem, name);
     lv_label_set_text(jsonScheduleItemList[index].ui_LabelScheduleItem, time);
-    char buffer[10];           // Ensure buffer is large enough to hold the string representation
+    char buffer[20];           // Ensure buffer is large enough to hold the string representation
     itoa(water_quantity, buffer, 10);     // Convert the int to a string (base 10)
     const char *str = buffer;  // Now 'str' is a const char* pointing to the string   
-    strcat(buffer, " (ml)");  
+    strcat(buffer, " (l)");  
     lv_label_set_text(jsonScheduleItemList[index].ui_LabelScheduleItemWaterQuantity, str);
     lv_label_set_text(jsonScheduleItemList[index].ui_LabelScheduleItemTimer, schedule_type);
     if(schedule_status == 1)
@@ -838,7 +838,7 @@ void  ui_event_ButtonNextPageItemTitleScheduleScreen(lv_event_t *e)
 
     for(int i = 0; i <= 2 && index <= numberOfPage; i++)
     {
-      char buffer[10];           // Ensure buffer is large enough to hold the string representation
+      char buffer[20];           // Ensure buffer is large enough to hold the string representation
       itoa(index, buffer, 10);     // Convert the int to a string (base 10)
       const char *str = buffer;  // Now 'str' is a const char* pointing to the string
       lv_label_set_text(ui_LabelPageItemTitleScheduleScreen[i], buffer);
@@ -876,7 +876,7 @@ void ui_event_ButtonPreviousPageItemTitleScheduleScreen(lv_event_t *e)
       index = index - 1;
       for(int i = 2; i >= 0; i--)
       {
-        char buffer[10];           // Ensure buffer is large enough to hold the string representation
+        char buffer[20];           // Ensure buffer is large enough to hold the string representation
         itoa(index, buffer, 10);     // Convert the int to a string (base 10)
         const char *str = buffer;  // Now 'str' is a const char* pointing to the string
         lv_label_set_text(ui_LabelPageItemTitleScheduleScreen[i], buffer);

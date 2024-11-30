@@ -92,7 +92,7 @@ void ui_waterQuantity_screen_init(void)
     lv_obj_set_x(ui_LabelUnitWaterQuantityScheduleItem, 121);
     lv_obj_set_y(ui_LabelUnitWaterQuantityScheduleItem, 34);
     lv_obj_set_align(ui_LabelUnitWaterQuantityScheduleItem, LV_ALIGN_TOP_MID);
-    lv_label_set_text(ui_LabelUnitWaterQuantityScheduleItem, "(ml)");
+    lv_label_set_text(ui_LabelUnitWaterQuantityScheduleItem, "(l)");
     lv_obj_set_style_text_color(ui_LabelUnitWaterQuantityScheduleItem, lv_color_hex(0xFFFFFF),
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_LabelUnitWaterQuantityScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
