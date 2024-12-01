@@ -125,6 +125,7 @@ void ui_event_Panel46(lv_event_t * e);
 lv_obj_t * ui_Panel46;
 lv_obj_t * ui_Image4;
 lv_obj_t * ui_Label24;
+void ui_event_Panel47(lv_event_t * e);
 lv_obj_t * ui_Panel47;
 lv_obj_t * ui_Image5;
 lv_obj_t * ui_Label25;
@@ -500,7 +501,7 @@ void ui_event_Panel11(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        schedule_screen_init(e);
+        change_screen_mqtt(e);
     }
 }
 void ui_event_Panel13(lv_event_t * e)
@@ -595,6 +596,15 @@ void ui_event_Panel46(lv_event_t * e)
         _ui_screen_change(&ui_ManualScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ManualScreen_screen_init);
     }
 }
+void ui_event_Panel47(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+            schedule_screen_init(e);
+    }    
+}
+
 void ui_event_SensorsScreen(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);

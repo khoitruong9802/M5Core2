@@ -149,6 +149,7 @@ void ui_MqttScreen_screen_init(void)
 
     lv_obj_add_event_cb(ui_Panel45, ui_event_Panel45, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Panel46, ui_event_Panel46, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Panel47, ui_event_Panel47, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_MqttScreen, ui_event_MqttScreen, LV_EVENT_ALL, NULL);
 
 }

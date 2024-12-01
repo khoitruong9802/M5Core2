@@ -171,6 +171,7 @@ void ui_event_Panel46(lv_event_t * e);
 extern lv_obj_t * ui_Panel46;
 extern lv_obj_t * ui_Image4;
 extern lv_obj_t * ui_Label24;
+void ui_event_Panel47(lv_event_t * e);
 extern lv_obj_t * ui_Panel47;
 extern lv_obj_t * ui_Image5;
 extern lv_obj_t * ui_Label25;
