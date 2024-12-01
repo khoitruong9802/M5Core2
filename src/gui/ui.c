@@ -276,11 +276,25 @@ lv_obj_t * ui_LabelPriorityItem4ScheduleItem;
 lv_obj_t * ui_LabelPriorityItem3ScheduleItem;
 lv_obj_t * ui_LabelPriorityItem2ScheduleItem;
 lv_obj_t * ui_LabelPriorityItem1ScheduleItem;
-lv_obj_t * ui_PanelWaterQuantityContainerScheduleItem;
-lv_obj_t * ui_LabelWaterQuantityTitleScheduleItem;
-void ui_event_PanelWaterQuantityScheduleItem(lv_event_t * e);
-lv_obj_t * ui_PanelWaterQuantityScheduleItem;
-lv_obj_t * ui_LabelWaterQuantityScheduleItem;
+
+lv_obj_t * ui_PanelFlow1ContainerScheduleItem;
+lv_obj_t * ui_LabelFlow1TitleScheduleItem;
+void ui_event_PanelFlow1ScheduleItem(lv_event_t * e);
+lv_obj_t * ui_PanelFlow1ScheduleItem;
+lv_obj_t * ui_LabelFlow1ScheduleItem;
+
+lv_obj_t * ui_PanelFlow2ContainerScheduleItem;
+lv_obj_t * ui_LabelFlow2TitleScheduleItem;
+void ui_event_PanelFlow2ScheduleItem(lv_event_t * e);
+lv_obj_t * ui_PanelFlow2ScheduleItem;
+lv_obj_t * ui_LabelFlow2ScheduleItem;
+
+lv_obj_t * ui_PanelFlow3ContainerScheduleItem;
+lv_obj_t * ui_LabelFlow3TitleScheduleItem;
+void ui_event_PanelFlow3ScheduleItem(lv_event_t * e);
+lv_obj_t * ui_PanelFlow3ScheduleItem;
+lv_obj_t * ui_LabelFlow3ScheduleItem;
+
 lv_obj_t * ui_PanelScheduleContainerScheduleItem;
 lv_obj_t * ui_LabelScheduleTitleScheduleItem;
 lv_obj_t * ui_PanelScheduleInforContainerScheduleItem;
@@ -360,19 +374,47 @@ lv_obj_t * ui_KeyboardDescriptionsScheduleItem;
 lv_obj_t * ui_LabelTitleDescriptionScheduleItem;
 lv_obj_t * ui_PanelTextAreaDescriptionScheduleItem;
 
-// SCREEN: ui_waterQuantity
-void ui_waterQuantity_screen_init(void);
-lv_obj_t * ui_waterQuantity;
-lv_obj_t * ui_WaterQuantityScheduleItemScreen;
-lv_obj_t * ui_LabelTitleWaterQuantityScheduleItem;
-void ui_event_PanelCloseButtonWaterQuantityScheduleItem(lv_event_t * e);
-lv_obj_t * ui_PanelCloseButtonWaterQuantityScheduleItem;
-lv_obj_t * ui_LabelCloseButtonWaterQuantityScheduleItem;
-void ui_event_TextAreaWaterQuantityScheduleItem(lv_event_t * e);
-lv_obj_t * ui_TextAreaWaterQuantityScheduleItem;
-lv_obj_t * ui_KeyboardWaterQuantityScheduleItem;
-lv_obj_t * ui_LabelUnitWaterQuantityScheduleItem;
-lv_obj_t * ui_PanelTextAreaWaterQuantityScheduleItem;
+// SCREEN: ui_Flow1
+void ui_Flow1_screen_init(void);
+lv_obj_t * ui_Flow1;
+lv_obj_t * ui_Flow1ScheduleItemScreen;
+lv_obj_t * ui_LabelTitleFlow1ScheduleItem;
+void ui_event_PanelCloseButtonFlow1ScheduleItem(lv_event_t * e);
+lv_obj_t * ui_PanelCloseButtonFlow1ScheduleItem;
+lv_obj_t * ui_LabelCloseButtonFlow1ScheduleItem;
+void ui_event_TextAreaFlow1ScheduleItem(lv_event_t * e);
+lv_obj_t * ui_TextAreaFlow1ScheduleItem;
+lv_obj_t * ui_KeyboardFlow1ScheduleItem;
+lv_obj_t * ui_LabelUnitFlow1ScheduleItem;
+lv_obj_t * ui_PanelTextAreaFlow1ScheduleItem;
+
+// SCREEN: ui_Flow2
+void ui_Flow2_screen_init(void);
+lv_obj_t * ui_Flow2;
+lv_obj_t * ui_Flow2ScheduleItemScreen;
+lv_obj_t * ui_LabelTitleFlow2ScheduleItem;
+void ui_event_PanelCloseButtonFlow2ScheduleItem(lv_event_t * e);
+lv_obj_t * ui_PanelCloseButtonFlow2ScheduleItem;
+lv_obj_t * ui_LabelCloseButtonFlow2ScheduleItem;
+void ui_event_TextAreaFlow2ScheduleItem(lv_event_t * e);
+lv_obj_t * ui_TextAreaFlow2ScheduleItem;
+lv_obj_t * ui_KeyboardFlow2ScheduleItem;
+lv_obj_t * ui_LabelUnitFlow2ScheduleItem;
+lv_obj_t * ui_PanelTextAreaFlow2ScheduleItem;
+
+// SCREEN: ui_Flow3
+void ui_Flow3_screen_init(void);
+lv_obj_t * ui_Flow3;
+lv_obj_t * ui_Flow3ScheduleItemScreen;
+lv_obj_t * ui_LabelTitleFlow3ScheduleItem;
+void ui_event_PanelCloseButtonFlow3ScheduleItem(lv_event_t * e);
+lv_obj_t * ui_PanelCloseButtonFlow3ScheduleItem;
+lv_obj_t * ui_LabelCloseButtonFlow3ScheduleItem;
+void ui_event_TextAreaFlow3ScheduleItem(lv_event_t * e);
+lv_obj_t * ui_TextAreaFlow3ScheduleItem;
+lv_obj_t * ui_KeyboardFlow3ScheduleItem;
+lv_obj_t * ui_LabelUnitFlow3ScheduleItem;
+lv_obj_t * ui_PanelTextAreaFlow3ScheduleItem;
 
 // SCREEN: ui_startTime
 void ui_startTime_screen_init(void);
@@ -835,17 +877,41 @@ void ui_event_PanelDescriptionScheduleItem(lv_event_t * e)
         _ui_screen_change(&ui_description, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_description_screen_init);
     }
 }
-void ui_event_PanelWaterQuantityScheduleItem(lv_event_t * e)
+
+void ui_event_PanelFlow1ScheduleItem(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        const char * text = lv_label_get_text(ui_LabelWaterQuantityScheduleItem);
-        lv_textarea_set_text(ui_TextAreaWaterQuantityScheduleItem, text);
+        const char * text = lv_label_get_text(ui_LabelFlow1ScheduleItem);
+        lv_textarea_set_text(ui_TextAreaFlow1ScheduleItem, text);
         lv_task_handler();
-        _ui_screen_change(&ui_waterQuantity, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_waterQuantity_screen_init);
+        _ui_screen_change(&ui_Flow1, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_Flow1_screen_init);
     }
 }
+void ui_event_PanelFlow2ScheduleItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        const char * text = lv_label_get_text(ui_LabelFlow2ScheduleItem);
+        lv_textarea_set_text(ui_TextAreaFlow2ScheduleItem, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_Flow2, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_Flow2_screen_init);
+    }
+}
+void ui_event_PanelFlow3ScheduleItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        const char * text = lv_label_get_text(ui_LabelFlow3ScheduleItem);
+        lv_textarea_set_text(ui_TextAreaFlow3ScheduleItem, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_Flow3, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_Flow3_screen_init);
+    }
+}
+
 void ui_event_PanelScheduleStartTimeScheduleItem(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -958,7 +1024,8 @@ void ui_event_TextAreaDescriptionScheduleItem(lv_event_t * e)
     }
 }
 
-void ui_event_PanelCloseButtonWaterQuantityScheduleItem(lv_event_t * e)
+
+void ui_event_PanelCloseButtonFlow1ScheduleItem(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
@@ -967,18 +1034,64 @@ void ui_event_PanelCloseButtonWaterQuantityScheduleItem(lv_event_t * e)
     }
 }
 
-void ui_event_TextAreaWaterQuantityScheduleItem(lv_event_t * e)
+void ui_event_TextAreaFlow1ScheduleItem(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * obj = lv_event_get_target(e);
     if(event_code == LV_EVENT_READY)
     {
         const char * text = lv_textarea_get_text(obj);
-        lv_label_set_text(ui_LabelWaterQuantityScheduleItem, text);
+        lv_label_set_text(ui_LabelFlow1ScheduleItem, text);
         lv_task_handler();
         _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
     }
 }
+
+void ui_event_PanelCloseButtonFlow2ScheduleItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
+    }
+}
+
+void ui_event_TextAreaFlow2ScheduleItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * obj = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY)
+    {
+        const char * text = lv_textarea_get_text(obj);
+        lv_label_set_text(ui_LabelFlow2ScheduleItem, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
+    }
+}
+
+
+void ui_event_PanelCloseButtonFlow3ScheduleItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
+    }
+}
+
+void ui_event_TextAreaFlow3ScheduleItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * obj = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY)
+    {
+        const char * text = lv_textarea_get_text(obj);
+        lv_label_set_text(ui_LabelFlow3ScheduleItem, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
+    }
+}
+
 
 void ui_event_ButtonOKStartTimeScheduleItem(lv_event_t * e)
 {
@@ -1169,7 +1282,9 @@ void ui_init(void)
     ui_ScheduleItemScreen_screen_init();
     ui_name_screen_init();
     ui_description_screen_init();
-    ui_waterQuantity_screen_init();
+    ui_Flow1_screen_init();
+    ui_Flow2_screen_init();
+    ui_Flow3_screen_init();
     ui_startTime_screen_init();
     ui_endTime_screen_init();
     ui_startDate_screen_init();

@@ -250,7 +250,7 @@ void ui_ScheduleItemScreen_screen_init(void)
     lv_obj_set_height(ui_LabelPriorityItem3ScheduleItem, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_x(ui_LabelPriorityItem3ScheduleItem, 117);
     lv_obj_set_y(ui_LabelPriorityItem3ScheduleItem, 61);
-    lv_label_set_text(ui_LabelPriorityItem3ScheduleItem, "Normal");
+    lv_label_set_text(ui_LabelPriorityItem3ScheduleItem, "Medium");
     lv_obj_set_style_text_color(ui_LabelPriorityItem3ScheduleItem, lv_color_hex(0xFFFF00), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_LabelPriorityItem3ScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_LabelPriorityItem3ScheduleItem, &lv_font_montserrat_10, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -275,51 +275,131 @@ void ui_ScheduleItemScreen_screen_init(void)
     lv_obj_set_style_text_opa(ui_LabelPriorityItem1ScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_LabelPriorityItem1ScheduleItem, &lv_font_montserrat_10, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_PanelWaterQuantityContainerScheduleItem = lv_obj_create(ui_PanelScheduleItemContainerScreen);
-    lv_obj_set_width(ui_PanelWaterQuantityContainerScheduleItem, 300);
-    lv_obj_set_height(ui_PanelWaterQuantityContainerScheduleItem, 100);
-    lv_obj_set_x(ui_PanelWaterQuantityContainerScheduleItem, 0);
-    lv_obj_set_y(ui_PanelWaterQuantityContainerScheduleItem, 480);
-    lv_obj_set_align(ui_PanelWaterQuantityContainerScheduleItem, LV_ALIGN_TOP_MID);
-    lv_obj_clear_flag(ui_PanelWaterQuantityContainerScheduleItem, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_PanelWaterQuantityContainerScheduleItem, lv_color_hex(0x000000),
+    ui_PanelFlow1ContainerScheduleItem = lv_obj_create(ui_PanelScheduleItemContainerScreen);
+    lv_obj_set_width(ui_PanelFlow1ContainerScheduleItem, 300);
+    lv_obj_set_height(ui_PanelFlow1ContainerScheduleItem, 100);
+    lv_obj_set_x(ui_PanelFlow1ContainerScheduleItem, 0);
+    lv_obj_set_y(ui_PanelFlow1ContainerScheduleItem, 480);
+    lv_obj_set_align(ui_PanelFlow1ContainerScheduleItem, LV_ALIGN_TOP_MID);
+    lv_obj_clear_flag(ui_PanelFlow1ContainerScheduleItem, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_PanelFlow1ContainerScheduleItem, lv_color_hex(0x000000),
                               LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_PanelWaterQuantityContainerScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_PanelWaterQuantityContainerScheduleItem, lv_color_hex(0x000000),
+    lv_obj_set_style_bg_opa(ui_PanelFlow1ContainerScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_PanelFlow1ContainerScheduleItem, lv_color_hex(0x000000),
                                   LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_PanelWaterQuantityContainerScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_PanelFlow1ContainerScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_LabelWaterQuantityTitleScheduleItem = lv_label_create(ui_PanelWaterQuantityContainerScheduleItem);
-    lv_obj_set_width(ui_LabelWaterQuantityTitleScheduleItem, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_LabelWaterQuantityTitleScheduleItem, LV_SIZE_CONTENT);    /// 1
-    lv_label_set_text(ui_LabelWaterQuantityTitleScheduleItem, "Water Quantity (l)");
-    lv_obj_set_style_text_color(ui_LabelWaterQuantityTitleScheduleItem, lv_color_hex(0xFFFFFF),
+    ui_LabelFlow1TitleScheduleItem = lv_label_create(ui_PanelFlow1ContainerScheduleItem);
+    lv_obj_set_width(ui_LabelFlow1TitleScheduleItem, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_LabelFlow1TitleScheduleItem, LV_SIZE_CONTENT);    /// 1
+    lv_label_set_text(ui_LabelFlow1TitleScheduleItem, "Flow 1 (l)");
+    lv_obj_set_style_text_color(ui_LabelFlow1TitleScheduleItem, lv_color_hex(0xFFFFFF),
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_LabelWaterQuantityTitleScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_LabelFlow1TitleScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_PanelWaterQuantityScheduleItem = lv_obj_create(ui_PanelWaterQuantityContainerScheduleItem);
-    lv_obj_set_width(ui_PanelWaterQuantityScheduleItem, 280);
-    lv_obj_set_height(ui_PanelWaterQuantityScheduleItem, 50);
-    lv_obj_set_x(ui_PanelWaterQuantityScheduleItem, 0);
-    lv_obj_set_y(ui_PanelWaterQuantityScheduleItem, 20);
-    lv_obj_set_align(ui_PanelWaterQuantityScheduleItem, LV_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_PanelWaterQuantityScheduleItem, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_PanelWaterQuantityScheduleItem, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_PanelWaterQuantityScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_PanelFlow1ScheduleItem = lv_obj_create(ui_PanelFlow1ContainerScheduleItem);
+    lv_obj_set_width(ui_PanelFlow1ScheduleItem, 280);
+    lv_obj_set_height(ui_PanelFlow1ScheduleItem, 50);
+    lv_obj_set_x(ui_PanelFlow1ScheduleItem, 0);
+    lv_obj_set_y(ui_PanelFlow1ScheduleItem, 20);
+    lv_obj_set_align(ui_PanelFlow1ScheduleItem, LV_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_PanelFlow1ScheduleItem, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_PanelFlow1ScheduleItem, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_PanelFlow1ScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_LabelWaterQuantityScheduleItem = lv_label_create(ui_PanelWaterQuantityScheduleItem);
-    lv_obj_set_width(ui_LabelWaterQuantityScheduleItem, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_LabelWaterQuantityScheduleItem, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_LabelWaterQuantityScheduleItem, LV_ALIGN_LEFT_MID);
-    lv_label_set_text(ui_LabelWaterQuantityScheduleItem, "1000");
-    lv_obj_set_style_text_color(ui_LabelWaterQuantityScheduleItem, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_LabelWaterQuantityScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_LabelFlow1ScheduleItem = lv_label_create(ui_PanelFlow1ScheduleItem);
+    lv_obj_set_width(ui_LabelFlow1ScheduleItem, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_LabelFlow1ScheduleItem, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_LabelFlow1ScheduleItem, LV_ALIGN_LEFT_MID);
+    lv_label_set_text(ui_LabelFlow1ScheduleItem, "1000");
+    lv_obj_set_style_text_color(ui_LabelFlow1ScheduleItem, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_LabelFlow1ScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_PanelFlow2ContainerScheduleItem = lv_obj_create(ui_PanelScheduleItemContainerScreen);
+    lv_obj_set_width(ui_PanelFlow2ContainerScheduleItem, 300);
+    lv_obj_set_height(ui_PanelFlow2ContainerScheduleItem, 100);
+    lv_obj_set_x(ui_PanelFlow2ContainerScheduleItem, 0);
+    lv_obj_set_y(ui_PanelFlow2ContainerScheduleItem, 600);
+    lv_obj_set_align(ui_PanelFlow2ContainerScheduleItem, LV_ALIGN_TOP_MID);
+    lv_obj_clear_flag(ui_PanelFlow2ContainerScheduleItem, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_PanelFlow2ContainerScheduleItem, lv_color_hex(0x000000),
+                              LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_PanelFlow2ContainerScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_PanelFlow2ContainerScheduleItem, lv_color_hex(0x000000),
+                                  LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_PanelFlow2ContainerScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_LabelFlow2TitleScheduleItem = lv_label_create(ui_PanelFlow2ContainerScheduleItem);
+    lv_obj_set_width(ui_LabelFlow2TitleScheduleItem, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_LabelFlow2TitleScheduleItem, LV_SIZE_CONTENT);    /// 1
+    lv_label_set_text(ui_LabelFlow2TitleScheduleItem, "Flow 2 (l)");
+    lv_obj_set_style_text_color(ui_LabelFlow2TitleScheduleItem, lv_color_hex(0xFFFFFF),
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_LabelFlow2TitleScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_PanelFlow2ScheduleItem = lv_obj_create(ui_PanelFlow2ContainerScheduleItem);
+    lv_obj_set_width(ui_PanelFlow2ScheduleItem, 280);
+    lv_obj_set_height(ui_PanelFlow2ScheduleItem, 50);
+    lv_obj_set_x(ui_PanelFlow2ScheduleItem, 0);
+    lv_obj_set_y(ui_PanelFlow2ScheduleItem, 20);
+    lv_obj_set_align(ui_PanelFlow2ScheduleItem, LV_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_PanelFlow2ScheduleItem, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_PanelFlow2ScheduleItem, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_PanelFlow2ScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_LabelFlow2ScheduleItem = lv_label_create(ui_PanelFlow2ScheduleItem);
+    lv_obj_set_width(ui_LabelFlow2ScheduleItem, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_LabelFlow2ScheduleItem, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_LabelFlow2ScheduleItem, LV_ALIGN_LEFT_MID);
+    lv_label_set_text(ui_LabelFlow2ScheduleItem, "1000");
+    lv_obj_set_style_text_color(ui_LabelFlow2ScheduleItem, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_LabelFlow2ScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_PanelFlow3ContainerScheduleItem = lv_obj_create(ui_PanelScheduleItemContainerScreen);
+    lv_obj_set_width(ui_PanelFlow3ContainerScheduleItem, 300);
+    lv_obj_set_height(ui_PanelFlow3ContainerScheduleItem, 100);
+    lv_obj_set_x(ui_PanelFlow3ContainerScheduleItem, 0);
+    lv_obj_set_y(ui_PanelFlow3ContainerScheduleItem, 720);
+    lv_obj_set_align(ui_PanelFlow3ContainerScheduleItem, LV_ALIGN_TOP_MID);
+    lv_obj_clear_flag(ui_PanelFlow3ContainerScheduleItem, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_PanelFlow3ContainerScheduleItem, lv_color_hex(0x000000),
+                              LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_PanelFlow3ContainerScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_PanelFlow3ContainerScheduleItem, lv_color_hex(0x000000),
+                                  LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_PanelFlow3ContainerScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_LabelFlow3TitleScheduleItem = lv_label_create(ui_PanelFlow3ContainerScheduleItem);
+    lv_obj_set_width(ui_LabelFlow3TitleScheduleItem, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_LabelFlow3TitleScheduleItem, LV_SIZE_CONTENT);    /// 1
+    lv_label_set_text(ui_LabelFlow3TitleScheduleItem, "Flow 3 (l)");
+    lv_obj_set_style_text_color(ui_LabelFlow3TitleScheduleItem, lv_color_hex(0xFFFFFF),
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_LabelFlow3TitleScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_PanelFlow3ScheduleItem = lv_obj_create(ui_PanelFlow3ContainerScheduleItem);
+    lv_obj_set_width(ui_PanelFlow3ScheduleItem, 280);
+    lv_obj_set_height(ui_PanelFlow3ScheduleItem, 50);
+    lv_obj_set_x(ui_PanelFlow3ScheduleItem, 0);
+    lv_obj_set_y(ui_PanelFlow3ScheduleItem, 20);
+    lv_obj_set_align(ui_PanelFlow3ScheduleItem, LV_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_PanelFlow3ScheduleItem, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_PanelFlow3ScheduleItem, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_PanelFlow3ScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_LabelFlow3ScheduleItem = lv_label_create(ui_PanelFlow3ScheduleItem);
+    lv_obj_set_width(ui_LabelFlow3ScheduleItem, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_LabelFlow3ScheduleItem, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_LabelFlow3ScheduleItem, LV_ALIGN_LEFT_MID);
+    lv_label_set_text(ui_LabelFlow3ScheduleItem, "1000");
+    lv_obj_set_style_text_color(ui_LabelFlow3ScheduleItem, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_LabelFlow3ScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_PanelScheduleContainerScheduleItem = lv_obj_create(ui_PanelScheduleItemContainerScreen);
     lv_obj_set_width(ui_PanelScheduleContainerScheduleItem, 300);
     lv_obj_set_height(ui_PanelScheduleContainerScheduleItem, LV_SIZE_CONTENT);
     lv_obj_set_x(ui_PanelScheduleContainerScheduleItem, 0);
-    lv_obj_set_y(ui_PanelScheduleContainerScheduleItem, 600);
+    lv_obj_set_y(ui_PanelScheduleContainerScheduleItem, 840);
     lv_obj_set_align(ui_PanelScheduleContainerScheduleItem, LV_ALIGN_TOP_MID);
     lv_obj_set_flex_flow(ui_PanelScheduleContainerScheduleItem, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_PanelScheduleContainerScheduleItem, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START,
@@ -817,7 +897,9 @@ void ui_ScheduleItemScreen_screen_init(void)
     lv_obj_add_event_cb(ui_ButtonCancelHeaderScheduleItem, ui_event_ButtonCancelHeaderScheduleItem, LV_EVENT_CLICKED, NULL);
     lv_obj_add_event_cb(ui_PanelNameScheduleItem, ui_event_PanelNameScheduleItem, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_PanelDescriptionScheduleItem, ui_event_PanelDescriptionScheduleItem, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_PanelWaterQuantityScheduleItem, ui_event_PanelWaterQuantityScheduleItem, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_PanelFlow1ScheduleItem, ui_event_PanelFlow1ScheduleItem, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_PanelFlow2ScheduleItem, ui_event_PanelFlow2ScheduleItem, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_PanelFlow3ScheduleItem, ui_event_PanelFlow3ScheduleItem, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_PanelScheduleStartTimeScheduleItem, ui_event_PanelScheduleStartTimeScheduleItem, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_PanelScheduleEndTimeScheduleItem, ui_event_PanelScheduleEndTimeScheduleItem, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_PanelScheduleDateScheduleItem, ui_event_PanelScheduleDateScheduleItem, LV_EVENT_ALL, NULL);

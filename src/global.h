@@ -33,8 +33,8 @@ typedef struct
     lv_obj_t *  ui_PanelScheduleItemContainer;
     lv_obj_t *  ui_PanelScheduleItem;
     lv_obj_t *  ui_LabelScheduleItem;
-    lv_obj_t *  ui_PanelScheduleItemIngredientWaterQuantity;
-    lv_obj_t *  ui_LabelScheduleItemWaterQuantity;
+    lv_obj_t *  ui_PanelScheduleItemIngredientPriority;
+    lv_obj_t *  ui_LabelScheduleItemPriority;
     lv_obj_t *  ui_LabelScheduleItemTimer;
     lv_obj_t *  ui_SwitchScheduleItem;
     lv_obj_t *  ui_LabelNameScheduleListItem;
@@ -43,8 +43,9 @@ typedef struct
 
 extern jsonScheduleItem jsonScheduleItemList[5];
 
+extern const char* web_server_official;
 extern const char* web_server;
-extern const char * web_server_2;
+extern const char* web_server_2;
 extern const char* ota_server;
 
 

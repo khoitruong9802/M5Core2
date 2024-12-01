@@ -445,17 +445,14 @@ void updatePageScheduleItem(int indexOfElement)
     const char * name = jsonArray[i]["schedule_name"].as<const char *>();
     int id = jsonArray[i]["id"].as<int>();
     const char *time = jsonArray[i]["start_time"].as<const char *>();
-    int water_quantity = jsonArray[i]["water_quantity"].as<int>();
+    int priority = jsonArray[i]["priority"].as<int>();
     const char * schedule_type = jsonArray[i]["schedule_type"].as<const char *>();
     int schedule_status = jsonArray[i]["status"].as<int>();
     jsonScheduleItemList[index].schedule_id = id;
     lv_label_set_text(jsonScheduleItemList[index].ui_LabelNameScheduleListItem, name);
     lv_label_set_text(jsonScheduleItemList[index].ui_LabelScheduleItem, time);
-    char buffer[20];           // Ensure buffer is large enough to hold the string representation
-    itoa(water_quantity, buffer, 10);     // Convert the int to a string (base 10)
-    const char *str = buffer;  // Now 'str' is a const char* pointing to the string   
-    strcat(buffer, " (l)");  
-    lv_label_set_text(jsonScheduleItemList[index].ui_LabelScheduleItemWaterQuantity, str);
+    const char * priority_ctr = convertPriorityToCstr(priority); 
+    lv_label_set_text(jsonScheduleItemList[index].ui_LabelScheduleItemPriority, priority_ctr);
     lv_label_set_text(jsonScheduleItemList[index].ui_LabelScheduleItemTimer, schedule_type);
     if(schedule_status == 1)
     {
@@ -490,8 +487,12 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
         const char * description_new = lv_label_get_text(ui_LabelDescriptionScheduleItem);
         int area_new = (int)lv_dropdown_get_selected(ui_DropdownAreaScheduleItem) + 1;
         int priority_new = lv_slider_get_value(ui_SliderPriorityScheduleItem) + 1;
-        const char * water_quantity_str = lv_label_get_text(ui_LabelWaterQuantityScheduleItem);
-        int water_quantity_new = convertStringToInt(water_quantity_str);
+        const char * flow1_str = lv_label_get_text(ui_LabelFlow1ScheduleItem);
+        int flow1_new = convertStringToInt(flow1_str);
+        const char * flow2_str = lv_label_get_text(ui_LabelFlow2ScheduleItem);
+        int flow2_new = convertStringToInt(flow2_str);
+        const char * flow3_str = lv_label_get_text(ui_LabelFlow3ScheduleItem);
+        int flow3_new = convertStringToInt(flow3_str);
         const char * start_time_new = lv_label_get_text(ui_LabelScheduleStartTimeScheduleItem);
         const char * end_time_new = lv_label_get_text(ui_LabelScheduleEndTimeScheduleItem);
         char repeat_new[64];
@@ -557,7 +558,9 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
           jsonPayloadDoc["description"] = description_new;
           jsonPayloadDoc["area"] = area_new;
           jsonPayloadDoc["priority"] = priority_new;
-          jsonPayloadDoc["water_quantity"] = water_quantity_new;
+          jsonPayloadDoc["flow1"] = flow1_new;
+          jsonPayloadDoc["flow2"] = flow2_new;
+          jsonPayloadDoc["flow3"] = flow3_new;
           jsonPayloadDoc["start_time"] = start_time_new;
           jsonPayloadDoc["stop_time"] = end_time_new;
           jsonPayloadDoc["schedule_type"] = repeat_new;
@@ -639,14 +642,36 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
                     jsonPayloadDoc["priority"] = priority_new;
                   }
               }
-              // Extract water quantity
-              if (obj["water_quantity"].is<int>()) 
+              // Extract flow 1
+              if (obj["flow1"].is<int>()) 
               {
-                  int water_quantity_int = obj["water_quantity"].as<int>();
-                  if(water_quantity_int != water_quantity_new)
+                  int flow1_int = obj["flow1"].as<int>();
+                  if(flow1_int != flow1_new)
                   {
                     //TODO
-                    jsonPayloadDoc["water_quantity"] = water_quantity_new;
+                    jsonPayloadDoc["flow1"] = flow1_new;
+                  }
+              }
+
+              // Extract flow 2
+              if (obj["flow2"].is<int>()) 
+              {
+                  int flow2_int = obj["flow2"].as<int>();
+                  if(flow2_int != flow2_new)
+                  {
+                    //TODO
+                    jsonPayloadDoc["flow2"] = flow2_new;
+                  }
+              }
+
+              // Extract flow 3
+              if (obj["flow3"].is<int>()) 
+              {
+                  int flow3_int = obj["flow3"].as<int>();
+                  if(flow3_int != flow3_new)
+                  {
+                    //TODO
+                    jsonPayloadDoc["flow3"] = flow3_new;
                   }
               }
 
@@ -1140,4 +1165,32 @@ void ui_event_AddOptionHeaderScheduleScreen(lv_event_t * e)
         xTaskCreate(handleScheduleItemUI, "scheItem_task", 8192, (void *)(uintptr_t)id_flag, 1, &scheItem_task);
     }
   }
+}
+
+const char * convertPriorityToCstr(int priority)
+{
+      if(priority == 1)
+    {
+        return "Very Low";
+    }
+    else if(priority == 2)
+    {
+        return "Low";
+    }
+    else if(priority == 3)
+    {
+        return "Medium";
+    }
+    else if(priority == 4)
+    {
+        return "High";
+    }
+    else if(priority == 5)
+    {
+        return "Very High";
+    }
+    else
+    {
+      return "";
+    }
 }

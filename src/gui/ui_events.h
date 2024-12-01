@@ -51,6 +51,7 @@ uint32_t get_current_day();
 const char* formatTime(uint16_t hour, uint16_t minute);
 const char* formatDate(uint16_t year, uint16_t month, uint16_t day);
 int convertStringToInt(const char* str);
+const char * convertPriorityToCstr(int priority);
 void addNewRequest(const char* baseServerURL, int schedule_id, const char* jsonPayload);
 void sendPutRequest(const char* serverURL, const char* jsonPayload);
 void updatePageScheduleItem(int indexOfElement);
