@@ -776,7 +776,7 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
               sendPutRequest(serverURL, jsonPayload.c_str());
             }
             
-            updatePageScheduleItem(currentOfElementHeader);
+            updatePageScheduleItem(currentPage);
             lv_task_handler();
             _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
             
@@ -804,12 +804,12 @@ void ui_event_PanelPageItemTitleScheduleScreen0(lv_event_t * e)
   if(event_code == LV_EVENT_CLICKED) 
   {
     const char * max_index_c_tr = lv_label_get_text(ui_LabelPageItemTitleScheduleScreen[0]);
-    currentOfElementHeader = atoi(max_index_c_tr);
+    currentPage = atoi(max_index_c_tr);
     lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[0], lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[1], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[2], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    updatePageScheduleItem(currentOfElementHeader);
+    updatePageScheduleItem(currentPage);
     lv_task_handler();
   }
 }
@@ -820,11 +820,11 @@ void ui_event_PanelPageItemTitleScheduleScreen1(lv_event_t * e)
   if(event_code == LV_EVENT_CLICKED) 
   {
     const char * max_index_c_tr = lv_label_get_text(ui_LabelPageItemTitleScheduleScreen[1]);
-    currentOfElementHeader = atoi(max_index_c_tr);
+    currentPage = atoi(max_index_c_tr);
     lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[0], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[1], lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[2], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    updatePageScheduleItem(currentOfElementHeader);
+    updatePageScheduleItem(currentPage);
     lv_task_handler();    
   }
 }
@@ -835,11 +835,11 @@ void ui_event_PanelPageItemTitleScheduleScreen2(lv_event_t * e)
   if(event_code == LV_EVENT_CLICKED) 
   {
     const char * max_index_c_tr = lv_label_get_text(ui_LabelPageItemTitleScheduleScreen[2]);
-    currentOfElementHeader = atoi(max_index_c_tr);
+    currentPage = atoi(max_index_c_tr);
     lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[0], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[1], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[2], lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    updatePageScheduleItem(currentOfElementHeader);
+    updatePageScheduleItem(currentPage);
     lv_task_handler();    
   }
 }
@@ -867,7 +867,7 @@ void  ui_event_ButtonNextPageItemTitleScheduleScreen(lv_event_t *e)
       itoa(index, buffer, 10);     // Convert the int to a string (base 10)
       const char *str = buffer;  // Now 'str' is a const char* pointing to the string
       lv_label_set_text(ui_LabelPageItemTitleScheduleScreen[i], buffer);
-      if(index == currentOfElementHeader)
+      if(index == currentPage)
       {
         lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[i], lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
       }
@@ -905,7 +905,7 @@ void ui_event_ButtonPreviousPageItemTitleScheduleScreen(lv_event_t *e)
         itoa(index, buffer, 10);     // Convert the int to a string (base 10)
         const char *str = buffer;  // Now 'str' is a const char* pointing to the string
         lv_label_set_text(ui_LabelPageItemTitleScheduleScreen[i], buffer);
-        if(index == currentOfElementHeader)
+        if(index == currentPage)
         {
           lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[i], lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
         }
@@ -990,6 +990,12 @@ const char* formatDate(uint16_t year, uint16_t month, uint16_t day) {
     return buffer;  // Return the formatted date string as a const char*
 }
 
+const char* convertTimeToHHMM(const char* time) {
+    static char timeHHMM[6];  // Fixed-size buffer to hold "HH:MM" + null terminator
+    strncpy(timeHHMM, time, 5);
+    timeHHMM[5] = '\0';  // Ensure the string is null-terminated
+    return timeHHMM;
+}
 
 //Function to add a new element
 void addNewRequest(const char* baseServerURL, int schedule_id, const char* jsonPayload) {
@@ -1097,6 +1103,7 @@ void sendDeleteRequest(int schedule_id) {
   }
 }
 
+
 void ui_event_PanelRemoveOptionHeaderScheduleScreen(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -1192,5 +1199,40 @@ const char * convertPriorityToCstr(int priority)
     else
     {
       return "";
+    }
+}
+void updateItemforScheduleScreen(int hidden_all_flag, int number_appear)
+{
+    // Validate number_appear to prevent out-of-bounds access
+    if (number_appear < 0 || number_appear > 5) {
+        return; // Exit early if number_appear is invalid
+    }
+
+    if (hidden_all_flag)
+    {
+        for (int i = 0; i < 5; i++) 
+        {
+            // Check if the pointer is not null before accessing it
+            if (jsonScheduleItemList[i].ui_PanelScheduleItemContainer != NULL)
+            {
+                if (!lv_obj_has_flag(jsonScheduleItemList[i].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN)) {
+                    lv_obj_add_flag(jsonScheduleItemList[i].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
+                }
+            }
+        }
+    }
+    else
+    {
+        for (int i = 0; i < number_appear; i++) 
+        {
+            // Check if the pointer is not null before accessing it
+            if (jsonScheduleItemList[i].ui_PanelScheduleItemContainer != NULL)
+            {
+                if (lv_obj_has_flag(jsonScheduleItemList[i].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN)) 
+                {
+                    lv_obj_clear_flag(jsonScheduleItemList[i].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
+                }
+            }
+        }
     }
 }

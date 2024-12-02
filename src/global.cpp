@@ -11,7 +11,7 @@ const char* ota_server = "http://192.168.0.112:4000";
 
 int numberOfPage;
 int numberOfElement;
-int currentOfElementHeader;
+int currentPage;
 
 int current_schedule_id;
 

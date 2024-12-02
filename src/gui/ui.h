@@ -477,7 +477,22 @@ extern lv_obj_t * ui_CalendarDateScheduleItem;
 void ui_event_ButtonCancelDateScheduleItem(lv_event_t * e);
 extern lv_obj_t * ui_ButtonCancelDateScheduleItem;
 extern lv_obj_t * ui_LabelCancelDateScheduleItem;
-
+// SCREEN: ui_farm
+void ui_farmScreen_screen_init(void);
+extern lv_obj_t * ui_farmScreen;
+extern lv_obj_t * ui_farmScreen_screen;
+extern lv_obj_t * ui_PanelfarmScreen_screen;
+void ui_event_PanelDeviceItemFarmScreen(lv_event_t * e);
+extern lv_obj_t * ui_PanelDeviceItemFarmScreen;
+extern lv_obj_t * ui_ImgDeviceItemFarmScreen;
+extern lv_obj_t * ui_LabelDeviceItemFarmScreen;
+void ui_event_PanelScheduleItemFarmScreen(lv_event_t * e);
+extern lv_obj_t * ui_PanelScheduleItemFarmScreen;
+extern lv_obj_t * ui_ImgScheduleItemFarmScreen;
+extern lv_obj_t * ui_LabelScheduleItemFarmScreen;
+extern lv_obj_t * ui_PanelHistorytemFarmScreen;
+extern lv_obj_t * ui_ImgHistorytemFarmScreen;
+extern lv_obj_t * ui_LabelHistorytemFarmScreen;
 
 
 LV_IMG_DECLARE(ui_img_background_png);    // assets/background.png
@@ -504,6 +519,8 @@ LV_IMG_DECLARE(ui_img_loop_png);
 LV_IMG_DECLARE(ui_img_farm_icon_png);
 LV_IMG_DECLARE(ui_img_trash_png);
 LV_IMG_DECLARE(ui_img_tick_png);
+LV_IMG_DECLARE(ui_img_chart_png);
+LV_IMG_DECLARE(ui_img_device_png);
 
 
 

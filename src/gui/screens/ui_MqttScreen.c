@@ -110,34 +110,6 @@ void ui_MqttScreen_screen_init(void)
     lv_obj_set_style_text_opa(ui_Label24, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Label24, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Panel47 = lv_obj_create(ui_Panel44);
-    lv_obj_set_width(ui_Panel47, 250);
-    lv_obj_set_height(ui_Panel47, 50);
-    lv_obj_set_x(ui_Panel47, 0);
-    lv_obj_set_y(ui_Panel47, 2);
-    lv_obj_set_align(ui_Panel47, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_Panel47, LV_FLEX_FLOW_ROW);
-    lv_obj_set_flex_align(ui_Panel47, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_Panel47, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_Panel47, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_Panel47, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_Panel47, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_Panel47, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_outline_color(ui_Panel47, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_outline_opa(ui_Panel47, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_outline_width(ui_Panel47, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_outline_pad(ui_Panel47, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_Panel47, lv_color_hex(0x353535), LV_PART_MAIN | LV_STATE_PRESSED);
-    lv_obj_set_style_bg_opa(ui_Panel47, 255, LV_PART_MAIN | LV_STATE_PRESSED);
-
-    ui_Image5 = lv_img_create(ui_Panel47);
-    lv_img_set_src(ui_Image5, &ui_img_scheduler_icon_png);
-    lv_obj_set_width(ui_Image5, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_Image5, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_Image5, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_Image5, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
-    lv_obj_clear_flag(ui_Image5, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-
     ui_Label25 = lv_label_create(ui_Panel47);
     lv_obj_set_width(ui_Label25, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Label25, LV_SIZE_CONTENT);    /// 1
@@ -149,7 +121,6 @@ void ui_MqttScreen_screen_init(void)
 
     lv_obj_add_event_cb(ui_Panel45, ui_event_Panel45, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Panel46, ui_event_Panel46, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_Panel47, ui_event_Panel47, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_MqttScreen, ui_event_MqttScreen, LV_EVENT_ALL, NULL);
 
 }

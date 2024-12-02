@@ -493,6 +493,24 @@ lv_obj_t * ui_ButtonCancelDateScheduleItem;
 lv_obj_t * ui_LabelCancelDateScheduleItem;
 
 
+// SCREEN: ui_farm
+void ui_farmScreen_screen_init(void);
+lv_obj_t * ui_farmScreen;
+lv_obj_t * ui_farmScreen_screen;
+lv_obj_t * ui_PanelfarmScreen_screen;
+void ui_event_PanelDeviceItemFarmScreen(lv_event_t * e);
+lv_obj_t * ui_PanelDeviceItemFarmScreen;
+lv_obj_t * ui_ImgDeviceItemFarmScreen;
+lv_obj_t * ui_LabelDeviceItemFarmScreen;
+void ui_event_PanelScheduleItemFarmScreen(lv_event_t * e);
+lv_obj_t * ui_PanelScheduleItemFarmScreen;
+lv_obj_t * ui_ImgScheduleItemFarmScreen;
+lv_obj_t * ui_LabelScheduleItemFarmScreen;
+lv_obj_t * ui_PanelHistorytemFarmScreen;
+lv_obj_t * ui_ImgHistorytemFarmScreen;
+lv_obj_t * ui_LabelHistorytemFarmScreen;
+
+
 ///////////////////// TEST LVGL SETTINGS ////////////////////
 #if LV_COLOR_DEPTH != 16
     #error "LV_COLOR_DEPTH should be 16bit to match SquareLine Studio's settings"
@@ -543,7 +561,8 @@ void ui_event_Panel11(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        change_screen_mqtt(e);
+        _ui_screen_change(&ui_farmScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_farmScreen_screen_init);
+        // schedule_screen_init(e);
     }
 }
 void ui_event_Panel13(lv_event_t * e)
@@ -619,7 +638,7 @@ void ui_event_MqttScreen(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) {
         lv_indev_wait_release(lv_indev_get_act());
-        _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_AppScreen_screen_init);
+        _ui_screen_change(&ui_farmScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_farmScreen_screen_init);
     }
 }
 void ui_event_Panel45(lv_event_t * e)
@@ -645,6 +664,26 @@ void ui_event_Panel47(lv_event_t * e)
     if(event_code == LV_EVENT_CLICKED) {
             schedule_screen_init(e);
     }    
+}
+
+void ui_event_PanelDeviceItemFarmScreen(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) 
+    {
+            change_screen_mqtt(e);
+    }         
+}
+
+void ui_event_PanelScheduleItemFarmScreen(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) 
+    {
+            schedule_screen_init(e);
+    }      
 }
 
 void ui_event_SensorsScreen(lv_event_t * e)
@@ -845,7 +884,7 @@ void ui_event_ScheduleScreen(lv_event_t * e)
         lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[2], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);        
         lv_task_handler();
         lv_indev_wait_release(lv_indev_get_act());
-        _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_AppScreen_screen_init);
+        _ui_screen_change(&ui_farmScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_farmScreen_screen_init);
     }
 
 }
@@ -1290,6 +1329,7 @@ void ui_init(void)
     ui_startDate_screen_init();
     ui_EndDate_screen_init();
     ui_date_screen_init();
+    ui_farmScreen_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
     lv_disp_load_scr(ui_MainScreen);
 }

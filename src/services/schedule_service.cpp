@@ -344,12 +344,8 @@ void handleScheduleItemUI(void * parameter)
     }
 }
 
-static void ui_event_PanelScheduleItemContainer0Clicked(lv_event_t * e)
+void ScheduleItemContainerClickedHandler(int schedule_id)
 {
-    lv_obj_t * panel = lv_event_get_target(e);
-    // Get the schedule ID or metadata associated with this panel
-    int schedule_id = jsonScheduleItemList[0].schedule_id;
-
     // You could use the schedule ID to pull the detailed information from memory, 
     // for example, fetching from an array or JSON data stored locally.
 
@@ -363,6 +359,14 @@ static void ui_event_PanelScheduleItemContainer0Clicked(lv_event_t * e)
     {
         xTaskCreate(handleScheduleItemUI, "scheItem_task", 8192, (void *)(uintptr_t)schedule_id, 1, &scheItem_task);
     }
+}
+
+static void ui_event_PanelScheduleItemContainer0Clicked(lv_event_t * e)
+{
+    lv_obj_t * panel = lv_event_get_target(e);
+    // Get the schedule ID or metadata associated with this panel
+    int schedule_id = jsonScheduleItemList[0].schedule_id;
+    ScheduleItemContainerClickedHandler(schedule_id);
 }
 
 static void ui_event_PanelScheduleItemContainer1Clicked(lv_event_t * e)
@@ -371,19 +375,7 @@ static void ui_event_PanelScheduleItemContainer1Clicked(lv_event_t * e)
     // Get the schedule ID or metadata associated with this panel
     int schedule_id = jsonScheduleItemList[1].schedule_id;
 
-    // You could use the schedule ID to pull the detailed information from memory, 
-    // for example, fetching from an array or JSON data stored locally.
-
-    // Call a function to display the detailed information screen
-    lv_obj_clear_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_scroll_to_y(ui_PanelScheduleItemContainerScreen, 0, LV_ANIM_OFF);
-    _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
-    lv_task_handler();
-    TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");
-    if(scheItem_task == NULL)
-    {
-        xTaskCreate(handleScheduleItemUI, "scheItem_task", 8192, (void *)(uintptr_t)schedule_id, 1, &scheItem_task);
-    }
+    ScheduleItemContainerClickedHandler(schedule_id);
 }
 
 static void ui_event_PanelScheduleItemContainer2Clicked(lv_event_t * e)
@@ -392,19 +384,7 @@ static void ui_event_PanelScheduleItemContainer2Clicked(lv_event_t * e)
     // Get the schedule ID or metadata associated with this panel
     int schedule_id = jsonScheduleItemList[2].schedule_id;
 
-    // You could use the schedule ID to pull the detailed information from memory, 
-    // for example, fetching from an array or JSON data stored locally.
-
-    // Call a function to display the detailed information screen
-    lv_obj_clear_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_scroll_to_y(ui_PanelScheduleItemContainerScreen, 0, LV_ANIM_OFF);
-    _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
-    lv_task_handler();
-    TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");
-    if(scheItem_task == NULL)
-    {
-        xTaskCreate(handleScheduleItemUI, "scheItem_task", 8192, (void *)(uintptr_t)schedule_id, 1, &scheItem_task);
-    }
+    ScheduleItemContainerClickedHandler(schedule_id);
 }
 
 static void ui_event_PanelScheduleItemContainer3Clicked(lv_event_t * e)
@@ -413,19 +393,7 @@ static void ui_event_PanelScheduleItemContainer3Clicked(lv_event_t * e)
     // Get the schedule ID or metadata associated with this panel
     int schedule_id = jsonScheduleItemList[3].schedule_id;
 
-    // You could use the schedule ID to pull the detailed information from memory, 
-    // for example, fetching from an array or JSON data stored locally.
-
-    // Call a function to display the detailed information screen
-    lv_obj_clear_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_scroll_to_y(ui_PanelScheduleItemContainerScreen, 0, LV_ANIM_OFF);
-    _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
-    lv_task_handler();
-    TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");
-    if(scheItem_task == NULL)
-    {
-        xTaskCreate(handleScheduleItemUI, "scheItem_task", 8192, (void *)(uintptr_t)schedule_id, 1, &scheItem_task);
-    }
+    ScheduleItemContainerClickedHandler(schedule_id);
 }
 
 static void ui_event_PanelScheduleItemContainer4Clicked(lv_event_t * e)
@@ -434,19 +402,7 @@ static void ui_event_PanelScheduleItemContainer4Clicked(lv_event_t * e)
     // Get the schedule ID or metadata associated with this panel
     int schedule_id = jsonScheduleItemList[4].schedule_id;
 
-    // You could use the schedule ID to pull the detailed information from memory, 
-    // for example, fetching from an array or JSON data stored locally.
-
-    // Call a function to display the detailed information screen
-    lv_obj_clear_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_scroll_to_y(ui_PanelScheduleItemContainerScreen, 0, LV_ANIM_OFF);
-    _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
-    lv_task_handler();
-    TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");
-    if(scheItem_task == NULL)
-    {
-        xTaskCreate(handleScheduleItemUI, "scheItem_task", 8192, (void *)(uintptr_t)schedule_id, 1, &scheItem_task);
-    }
+    ScheduleItemContainerClickedHandler(schedule_id);
 }
 
 static void ui_event_SwitchScheduleItemContainer0Clicked(lv_event_t * e)
@@ -597,10 +553,10 @@ void updateFromScheduleItem (void *parameter)
     numberOfElement = jsonArray.size();
     float numberOfPagefl = ((float)numberOfElement / (float)5);
     numberOfPage = ceil(numberOfPagefl);
-    if(currentOfElementHeader > numberOfPage)
+    if(currentPage > numberOfPage)
     {
-        currentOfElementHeader = numberOfPage;
-        int header_flag = currentOfElementHeader%3;
+        currentPage = numberOfPage;
+        int header_flag = currentPage%3;
         if(header_flag == 0)
         {
             lv_obj_clear_flag(ui_PanelPageItemTitleScheduleScreen[0], LV_OBJ_FLAG_HIDDEN);
@@ -635,7 +591,7 @@ void updateFromScheduleItem (void *parameter)
         // Checking does mutex is available
         if (xSemaphoreTake(lvgl_mutex,  pdMS_TO_TICKS(10)) == pdTRUE)
         {
-            updatePageScheduleItem(currentOfElementHeader);
+            updatePageScheduleItem(currentPage);
             lv_obj_add_flag(ui_PanelLoadingScheduleScreen, LV_OBJ_FLAG_HIDDEN);
             // Cleanup and free resources manually when you're done
             jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
@@ -730,7 +686,7 @@ void renderNavigateSchedulePage(int numberOfPage)
     lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[0], lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[1], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[2], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    currentOfElementHeader = 1;
+    currentPage = 1;
     lv_task_handler();
 }
 
@@ -867,75 +823,67 @@ void renderScheduleUI(int index, int id, const char * name, const char *time, in
 
 void handleScheduleUI(void *parameter)
 {
-    String response = http_get_data(web_server);
-
-    using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
-    jsonString = response;
-    SpiRamJsonDocument jsonDocGlobal(1048576);
-
-    DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
-    if (error) 
-    {
-    Serial.println(error.c_str());
-    }
-
-    // Access the JSON array
-    JsonArray jsonArray = jsonDocGlobal.as<JsonArray>();
-    numberOfElement = jsonArray.size();
-    float numberOfPagefl = ((float)numberOfElement / (float)5);
-    numberOfPage = ceil(numberOfPagefl);
     for(;;)
     {
-        print(PRINTLN, "Schedule UI task is running!"); 
         // Checking does mutex is available
         if (xSemaphoreTake(lvgl_mutex,  pdMS_TO_TICKS(10)) == pdTRUE)
         {
+            String response = http_get_data(web_server_official);
+
+            using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
+            SpiRamJsonDocument jsonDocGlobal(1048576);
+
+            DeserializationError error = deserializeJson(jsonDocGlobal, response);
+            if (error) 
+            {
+            Serial.println(error.c_str());
+            }
+
+            // Access the JSON array
+            JsonArray jsonArray = jsonDocGlobal.as<JsonArray>();
+
+            // Treat `jsonDocGlobal` as a JSON object since `total_pages` is at the top level
+            JsonObject jsonObject = jsonDocGlobal.as<JsonObject>();
+            // numberOfElement = jsonObject["total_count"];
+            // numberOfPage = jsonObject["total_pages"];
             renderNavigateSchedulePage(numberOfPage);
             if(lv_obj_is_valid(ui_ScheduleContainer) == true)
             {
+                JsonArray dataArray = jsonObject["data"].as<JsonArray>();
                 lv_obj_t *child = lv_obj_get_child(ui_ScheduleContainer, 0);
                 if(child == NULL)
                 {
                     int i = 0;
-                    for (JsonObject obj : jsonArray) 
+                    for(JsonObject obj : dataArray)
                     {
-                        if(i < 5)
-                        {
-                            const char * name = obj["schedule_name"].as<const char *>();
-                            int id = obj["id"].as<int>();
-                            const char *time = obj["start_time"].as<const char *>();
-                            int priority = obj["priority"].as<int>();
-                            const char * schedule_type = obj["schedule_type"].as<const char *>();
-                            int schedule_status = obj["status"].as<int>();
-                            //TO DO
-                            renderScheduleUI(i, id, name, time, priority, schedule_type, schedule_status);
-                        }
-                        else
-                        {
-                            break;
-                        }
+                        const char * name = obj["schedule_name"].as<const char *>();
+                        int id = obj["id"].as<int>();
+                        const char *time_draft = obj["start_time"].as<const char *>();
+                        const char * time = convertTimeToHHMM(time_draft);
+                        int priority = obj["priority"].as<int>();
+                        const char * schedule_type = obj["schedule_type"].as<const char *>();
+                        int schedule_status = obj["status"].as<int>();
+                        // TO DO
+                        renderScheduleUI(i, id, name, time, priority, schedule_type, schedule_status);
                         i++;
                     }
                 }
                 else
                 {
-                    lv_obj_add_flag(jsonScheduleItemList[0].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
-                    lv_obj_add_flag(jsonScheduleItemList[1].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
-                    lv_obj_add_flag(jsonScheduleItemList[2].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
-                    lv_obj_add_flag(jsonScheduleItemList[3].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
-                    lv_obj_add_flag(jsonScheduleItemList[4].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
+                    updateItemforScheduleScreen(true, 0);
                     int i = 0;
-                    for (JsonObject obj : jsonArray) 
+                    for(JsonObject obj : dataArray)
                     {
                         if(i < 5)
                         {
                             const char * name = obj["schedule_name"].as<const char *>();
                             int id = obj["id"].as<int>();
-                            const char *time = obj["start_time"].as<const char *>();
+                            const char *time_draft = obj["start_time"].as<const char *>();
+                            const char * time = convertTimeToHHMM(time_draft);
                             int priority = obj["priority"].as<int>();
                             const char * schedule_type = obj["schedule_type"].as<const char *>();
                             int schedule_status = obj["status"].as<int>();
-                            //TO DO
+                            // TO DO
                             jsonScheduleItemList[i].schedule_id = id;
                             lv_label_set_text(jsonScheduleItemList[i].ui_LabelNameScheduleListItem, name);
                             lv_label_set_text(jsonScheduleItemList[i].ui_LabelScheduleItem, time);
@@ -952,15 +900,16 @@ void handleScheduleUI(void *parameter)
                         i++;
                     }
                 }
-                // Cleanup and free resources manually when you're done
-                jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
-                jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible
             }
             else
             {
                 print(PRINTLN, "ui_ScheduleContainer is not valid!");
             }
             lv_obj_add_flag(ui_PanelLoadingScheduleScreen, LV_OBJ_FLAG_HIDDEN);
+            // Cleanup and free resources manually when you're done
+            response.clear();
+            jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
+            jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible
             xSemaphoreGive(lvgl_mutex);
             vTaskDelete(NULL);
         }
