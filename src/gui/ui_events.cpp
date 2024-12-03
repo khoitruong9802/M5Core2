@@ -420,54 +420,64 @@ int convertStringToInt(const char* str) {
 
 void updatePageScheduleItem(int indexOfElement)
 {
-  for(int i = 0; i < 5; i++)
-  {
-    lv_obj_add_flag(jsonScheduleItemList[i].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
-  }
+  updateItemforScheduleScreen(true, 0);
+  char serverURL[150]; // Adjust size if needed based on the URL length
+  snprintf(serverURL, sizeof(serverURL), "%s/api/v1/fertilizer-device/1/schedule?page=%d&limit=3", web_server_official, indexOfElement);
+  currentPage = indexOfElement;
+  Serial.println(serverURL);
+  String response = http_get_data(serverURL);
+  jsonString = response;
 
   using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
   SpiRamJsonDocument jsonDocGlobal(1048576);
 
-  DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
+  DeserializationError error = deserializeJson(jsonDocGlobal, response);
   if (error) 
   {
   Serial.println(error.c_str());
   }
 
-  // Access the JSON array
-  JsonArray jsonArray = jsonDocGlobal.as<JsonArray>();
-  int minOfElement = (indexOfElement - 1) * 5;
-  int maxOfElement = indexOfElement * 5;
-  int index = 0;
-  for(int i = minOfElement; i < maxOfElement && i < jsonArray.size(); i++)
+  // Treat `jsonDocGlobal` as a JSON object since `total_pages` is at the top level
+  JsonObject jsonObject = jsonDocGlobal.as<JsonObject>();
+  numberOfElement = jsonObject["total_count"];
+  numberOfPage = jsonObject["total_pages"];
+  int i = 0;
+  JsonArray dataArray = jsonObject["data"].as<JsonArray>();
+  for(JsonObject obj : dataArray)
   {
-    // lv_obj_clear_flag(jsonScheduleItemList[index].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
-    const char * name = jsonArray[i]["schedule_name"].as<const char *>();
-    int id = jsonArray[i]["id"].as<int>();
-    const char *time = jsonArray[i]["start_time"].as<const char *>();
-    int priority = jsonArray[i]["priority"].as<int>();
-    const char * schedule_type = jsonArray[i]["schedule_type"].as<const char *>();
-    int schedule_status = jsonArray[i]["status"].as<int>();
-    jsonScheduleItemList[index].schedule_id = id;
-    lv_label_set_text(jsonScheduleItemList[index].ui_LabelNameScheduleListItem, name);
-    lv_label_set_text(jsonScheduleItemList[index].ui_LabelScheduleItem, time);
-    const char * priority_ctr = convertPriorityToCstr(priority); 
-    lv_label_set_text(jsonScheduleItemList[index].ui_LabelScheduleItemPriority, priority_ctr);
-    lv_label_set_text(jsonScheduleItemList[index].ui_LabelScheduleItemTimer, schedule_type);
-    if(schedule_status == 1)
-    {
-      lv_obj_add_state(jsonScheduleItemList[index].ui_SwitchScheduleItem, LV_STATE_CHECKED);
-    }
-    else
-    {
-      lv_obj_clear_state(jsonScheduleItemList[index].ui_SwitchScheduleItem, LV_STATE_CHECKED);
-    }
-    
-    
-    lv_obj_clear_flag(jsonScheduleItemList[index].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
-    index++;
+      if(i < 3)
+      {
+          const char * name = obj["schedule_name"].as<const char *>();
+          int id = obj["id"].as<int>();
+          const char *time_draft = obj["start_time"].as<const char *>();
+          const char * time = convertTimeToHHMM(time_draft);
+          int priority = obj["priority"].as<int>();
+          const char * schedule_type = obj["schedule_type"].as<const char *>();
+          int schedule_status = obj["status"].as<int>();
+          // TO DO
+          lv_obj_clear_flag(jsonScheduleItemList[i].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
+          jsonScheduleItemList[i].schedule_id = id;
+          lv_label_set_text(jsonScheduleItemList[i].ui_LabelNameScheduleListItem, name);
+          lv_label_set_text(jsonScheduleItemList[i].ui_LabelScheduleItem, time);
+          const char * priority_ctr = convertPriorityToCstr(priority);  
+          lv_label_set_text(jsonScheduleItemList[i].ui_LabelScheduleItemPriority, priority_ctr);
+          lv_label_set_text(jsonScheduleItemList[i].ui_LabelScheduleItemTimer, schedule_type);
+          lv_obj_clear_flag(jsonScheduleItemList[i].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
+          if(schedule_status == 1)
+          {
+            lv_obj_add_state(jsonScheduleItemList[i].ui_SwitchScheduleItem, LV_STATE_CHECKED);
+          }
+          else
+          {
+            lv_obj_clear_state(jsonScheduleItemList[i].ui_SwitchScheduleItem, LV_STATE_CHECKED);
+          }
+      }
+      else
+      {
+          break;
+      }
+      i++;
   }
-  // Cleanup and free resources manually when you're done
   jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
   jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible
   lv_task_handler();
@@ -552,8 +562,6 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
         if(current_schedule_id == -1)
         {
           add_flag = 1;
-          current_schedule_id = getMaxScheduleId() + 1;
-          jsonPayloadDoc["status"] = new_status;
           jsonPayloadDoc["schedule_name"] = schedule_name_new;
           jsonPayloadDoc["description"] = description_new;
           jsonPayloadDoc["area"] = area_new;
@@ -561,6 +569,8 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
           jsonPayloadDoc["flow1"] = flow1_new;
           jsonPayloadDoc["flow2"] = flow2_new;
           jsonPayloadDoc["flow3"] = flow3_new;
+          jsonPayloadDoc["cycle"] = 3;
+          jsonPayloadDoc["status"] = new_status;
           jsonPayloadDoc["start_time"] = start_time_new;
           jsonPayloadDoc["stop_time"] = end_time_new;
           jsonPayloadDoc["schedule_type"] = repeat_new;
@@ -570,6 +580,7 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
           for (int i = 0; i < current_idx; i++) {
               newDaysArray.add(weekday_new[i]);
           }
+          jsonPayloadDoc["fertilizer_device_id"] = 1;
         }
         else
         {
@@ -582,8 +593,9 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
           Serial.println(error.c_str());
           }
           // Access the JSON array
-          JsonArray jsonArray = jsonDocGlobal.as<JsonArray>();
-          for(JsonObject obj : jsonArray)
+          JsonObject jsonObject = jsonDocGlobal.as<JsonObject>();
+          JsonArray dataArray = jsonObject["data"].as<JsonArray>();
+          for(JsonObject obj : dataArray)
           {
             int id = obj["id"];
             if(current_schedule_id == id)
@@ -766,19 +778,50 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
             if(add_flag == 1)
             {
               char serverURL[150]; // Adjust size if needed based on the URL length
-              snprintf(serverURL, sizeof(serverURL), "%s", web_server);
-              addNewRequest(serverURL, current_schedule_id, jsonPayload.c_str());
+              snprintf(serverURL, sizeof(serverURL), "%s/api/v1/schedule", web_server_official);
+              addNewRequest(serverURL, jsonPayload.c_str());
+              lv_obj_clear_flag(ui_PanelLoadingScheduleScreen, LV_OBJ_FLAG_HIDDEN);
+              _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
+              lv_task_handler();
+              TaskHandle_t schedule_task = xTaskGetHandle("schedule_task");
+              if(schedule_task == NULL)
+              {
+                void *taskStackMemory = heap_caps_malloc(8192, MALLOC_CAP_SPIRAM); // Allocating in PSRAM
+
+                if (taskStackMemory != nullptr) {
+                    BaseType_t result = xTaskCreatePinnedToCore(
+                        handleScheduleUI,  // Function to execute
+                        "schedule_task",   // Task name
+                        8192,              // Stack size in bytes
+                        NULL,              // Task parameter
+                        1,                 // Priority
+                        &schedule_task,    // Task handle
+                        1                  // Core
+                    );
+
+                    if (result == pdPASS) {
+                        Serial.println("Task created successfully in PSRAM.");
+                    } else {
+                        Serial.println("Failed to create task.");
+                        free(taskStackMemory); // Free memory if task creation failed
+                    }
+                } else {
+                    Serial.println("Failed to allocate memory for the task stack in PSRAM.");
+                }
+              }
+              
             }
             else
             {
               char serverURL[150]; // Adjust size if needed based on the URL length
-              snprintf(serverURL, sizeof(serverURL), "%s/%d", web_server, current_schedule_id);
+              snprintf(serverURL, sizeof(serverURL), "%s/api/v1/schedule/%d", web_server_official, current_schedule_id);
               sendPutRequest(serverURL, jsonPayload.c_str());
+              Serial.println(current_schedule_id);
+              updatePageScheduleItem(currentPage);
+              lv_task_handler();
+              _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
             }
-            
-            updatePageScheduleItem(currentPage);
-            lv_task_handler();
-            _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
+
             
           } else {
               Serial.println("No changes detected. Skipping PUT request.");
@@ -861,7 +904,7 @@ void  ui_event_ButtonNextPageItemTitleScheduleScreen(lv_event_t *e)
     const char * max_index_c_tr = lv_label_get_text(ui_LabelPageItemTitleScheduleScreen[2]);
     int index = atoi(max_index_c_tr) + 1;
 
-    for(int i = 0; i <= 2 && index <= numberOfPage; i++)
+    for(int i = 0; i <= 2 && index <= (numberOfPage+1); i++)
     {
       char buffer[20];           // Ensure buffer is large enough to hold the string representation
       itoa(index, buffer, 10);     // Convert the int to a string (base 10)
@@ -998,34 +1041,26 @@ const char* convertTimeToHHMM(const char* time) {
 }
 
 //Function to add a new element
-void addNewRequest(const char* baseServerURL, int schedule_id, const char* jsonPayload) {
+void addNewRequest(const char* serverURL, const char* jsonPayload) {
   if (WiFi.status() == WL_CONNECTED) { // Check WiFi connection status
 
-    // Construct the URL with the schedule ID at the end
-    char serverURL[200]; // Ensure the buffer is large enough to hold the complete URL
-    snprintf(serverURL, sizeof(serverURL), "%s/new/%d", baseServerURL, schedule_id);
-
     HTTPClient http;
-    http.begin(serverURL); // Specify the URL for the PUT request
+
+    http.begin(serverURL);  // Specify the URL for the POST request
     http.addHeader("Content-Type", "application/json"); // Set content type to JSON
 
-    // Make the PUT request
-    int httpResponseCode = http.PUT(jsonPayload);
+    // Make the POST request
+    int httpResponseCode = http.POST(jsonPayload);
 
     // Handle the response
     if (httpResponseCode > 0) {
-      String response = http.getString();
+      String response = http.getString(); // Get the response from the server
       Serial.print("HTTP Response code: ");
       Serial.println(httpResponseCode);
       Serial.print("Response from server: ");
       Serial.println(response);
-      Serial.println("JSON Payload Sent:");
-      Serial.println(jsonPayload);
-
-      // Update the global JSON array if necessary after a successful PUT request
-      updateJsonGlobalArray();
     } else {
-      Serial.print("Error on sending PUT request: ");
+      Serial.print("Error on sending POST request: ");
       Serial.println(http.errorToString(httpResponseCode).c_str());
     }
 
@@ -1033,6 +1068,7 @@ void addNewRequest(const char* baseServerURL, int schedule_id, const char* jsonP
   } else {
     Serial.println("WiFi Disconnected");
   }
+
 }
 
 // Function to make a PUT request
@@ -1073,7 +1109,7 @@ void sendDeleteRequest(int schedule_id) {
     // Construct the full URL for DELETE request
     // get web server
     char serverURL[150]; // Adjust size if needed based on the URL length
-    snprintf(serverURL, sizeof(serverURL), "%s/schedule/%d", web_server_2, schedule_id);
+    snprintf(serverURL, sizeof(serverURL), "%s/api/v1/schedule/%d", web_server_official, schedule_id);
 
     Serial.print("Making DELETE request to: ");
     Serial.println(serverURL);
@@ -1126,7 +1162,7 @@ void ui_event_PanelRemoveOptionHeaderScheduleScreen(lv_event_t * e)
         }
 
         // Handle focus event
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < 3; i++)
         {
           // Check if the first object is hidden
           if (lv_obj_has_flag(jsonScheduleItemList[i].ui_SwitchScheduleItem, LV_OBJ_FLAG_HIDDEN)) {
@@ -1204,13 +1240,13 @@ const char * convertPriorityToCstr(int priority)
 void updateItemforScheduleScreen(int hidden_all_flag, int number_appear)
 {
     // Validate number_appear to prevent out-of-bounds access
-    if (number_appear < 0 || number_appear > 5) {
+    if (number_appear < 0 || number_appear > 3) {
         return; // Exit early if number_appear is invalid
     }
 
     if (hidden_all_flag)
     {
-        for (int i = 0; i < 5; i++) 
+        for (int i = 0; i < 3; i++) 
         {
             // Check if the pointer is not null before accessing it
             if (jsonScheduleItemList[i].ui_PanelScheduleItemContainer != NULL)

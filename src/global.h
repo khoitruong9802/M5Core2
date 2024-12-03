@@ -30,6 +30,7 @@ typedef struct
 {
     /* data */
     int schedule_id;
+    int current_page;
     lv_obj_t *  ui_PanelScheduleItemContainer;
     lv_obj_t *  ui_PanelScheduleItem;
     lv_obj_t *  ui_LabelScheduleItem;
@@ -41,7 +42,7 @@ typedef struct
     lv_obj_t *  ui_ButtonRemoveScheduleListItem;
 } jsonScheduleItem;
 
-extern jsonScheduleItem jsonScheduleItemList[5];
+extern jsonScheduleItem jsonScheduleItemList[3];
 
 extern const char* web_server_official;
 extern const char* web_server;

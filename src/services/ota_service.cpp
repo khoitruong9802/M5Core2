@@ -8,7 +8,7 @@ String getLatestFirmwareFileName(const char* Url)
     HTTPClient http;
     String latestFirmwareFileName = "";
 
-    http.begin(String(Url) + "/upload");
+    http.begin(String(Url) + "/api/v1/OTA/");
     int httpCode = http.GET();
 
     if (httpCode == HTTP_CODE_OK) 

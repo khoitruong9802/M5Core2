@@ -23,7 +23,7 @@ void ui_start(void *parameter) {
 
   for (;;) {
     if (count == 100) {
-      print(PRINTF, "ui handler run on core: %d\n", xPortGetCoreID());
+      // print(PRINTF, "ui handler run on core: %d\n", xPortGetCoreID());
       count = 0;
     }
     count++;

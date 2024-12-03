@@ -53,7 +53,7 @@ const char* formatDate(uint16_t year, uint16_t month, uint16_t day);
 int convertStringToInt(const char* str);
 const char * convertPriorityToCstr(int priority);
 const char* convertTimeToHHMM(const char* time) ;
-void addNewRequest(const char* baseServerURL, int schedule_id, const char* jsonPayload);
+void addNewRequest(const char* serverURL, const char* jsonPayload);
 void sendPutRequest(const char* serverURL, const char* jsonPayload);
 void updatePageScheduleItem(int indexOfElement);
 void sendDeleteRequest(int schedule_id);
