@@ -9,7 +9,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-void change_screen_mqtt(lv_event_t * e);
+void change_screen_mannual_control(lv_event_t * e);
 void scan_network(lv_event_t * e);
 void button1_on(lv_event_t * e);
 void button1_off(lv_event_t * e);
@@ -58,6 +58,7 @@ void sendPutRequest(const char* serverURL, const char* jsonPayload);
 void updatePageScheduleItem(int indexOfElement);
 void sendDeleteRequest(int schedule_id);
 void updateItemforScheduleScreen(int hidden_all_flag, int number_appear);
+void farmer_handle_start();
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

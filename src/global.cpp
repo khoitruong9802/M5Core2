@@ -1,6 +1,6 @@
 #include "global.h"
 
-jsonScheduleItem jsonScheduleItemList[5];
+jsonScheduleItem jsonScheduleItemList[3];
 
 String jsonString;
 

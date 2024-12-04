@@ -48,7 +48,7 @@ void ui_OtaScreen_screen_init(void)
 
     ui_Button11 = lv_btn_create(ui_Panel94);
     lv_obj_set_width(ui_Button11, 40);
-    lv_obj_set_height(ui_Button2, 35);
+    lv_obj_set_height(ui_Button11, 35);
     lv_obj_set_x(ui_Button11, 97);
     lv_obj_set_y(ui_Button11, 0);
     lv_obj_set_align(ui_Button11, LV_ALIGN_CENTER);

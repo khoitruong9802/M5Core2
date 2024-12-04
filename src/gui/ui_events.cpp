@@ -53,7 +53,7 @@ void change_brightness(lv_event_t *e) {
   set_brightness(brightness);
 }
 
-void change_screen_mqtt(lv_event_t *e) {
+void change_screen_mannual_control(lv_event_t *e) {
   // Your code here
   lv_event_code_t event_code = lv_event_get_code(e);
   lv_obj_t *target = lv_event_get_target(e);
@@ -64,10 +64,10 @@ void change_screen_mqtt(lv_event_t *e) {
       TaskHandle_t mqtt_task = xTaskGetHandle("mqtt_service");
       if (mqtt_task != NULL) {
         print(PRINTLN, "Mqtt has created");
-        _ui_screen_change(&ui_MqttScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_MqttScreen_screen_init);
+        _ui_screen_change(&ui_ManualScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ManualScreen_screen_init);
       } else {
         xTaskCreate(mqtt_service, "mqtt_service", 4096, NULL, 1, NULL);
-        _ui_flag_modify(ui_Panel40, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_PanelLoadingFarmScreen, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
       }
     }
   }
@@ -78,7 +78,7 @@ void cancel_start_mqtt(lv_event_t *e) {
   lv_event_code_t event_code = lv_event_get_code(e);
   lv_obj_t *target = lv_event_get_target(e);
   if (event_code == LV_EVENT_CLICKED) {
-    _ui_flag_modify(ui_Panel40, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+    _ui_flag_modify(ui_PanelLoadingFarmScreen, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
     TaskHandle_t mqtt_task = xTaskGetHandle("mqtt_service");
     vTaskDelete(mqtt_task);
   }
@@ -1271,4 +1271,16 @@ void updateItemforScheduleScreen(int hidden_all_flag, int number_appear)
             }
         }
     }
+}
+
+void farmer_handle_start()
+{
+  if (WiFi.status() != WL_CONNECTED)
+  {
+    _ui_flag_modify(ui_Panel29, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+  }
+  else
+  {
+    _ui_screen_change(&ui_farmScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_farmScreen_screen_init);
+  }
 }

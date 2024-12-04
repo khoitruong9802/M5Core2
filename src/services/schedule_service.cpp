@@ -570,13 +570,7 @@ void updateFromScheduleItem (void *parameter)
             {
                 if(numberOfPage - currentPage < 1)
                 {
-                    lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[1], LV_OBJ_FLAG_HIDDEN);
-                    lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[2], LV_OBJ_FLAG_HIDDEN);
-                    for(int i = currentPage; i <= numberOfPage; i++)
-                    {
-                        int index = (i % 3) - 1;
-                        lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[index], LV_OBJ_FLAG_HIDDEN);
-                    }                
+                    lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[2], LV_OBJ_FLAG_HIDDEN);             
                 }                
             }
         }

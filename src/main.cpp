@@ -92,11 +92,11 @@ void setup()
 
 void loop()
 {
-//   monitorHealth();
-  Serial.println("======================================================================");
+  monitorHealth();
+  // Serial.println("======================================================================");
 //   Serial.println(jsonString);
-  Serial.println(currentPage);
-  Serial.println("======================================================================");
+  // Serial.println(currentPage);
+  // Serial.println("======================================================================");
   delay(1000);
 //   vTaskDelete(NULL);
 }
