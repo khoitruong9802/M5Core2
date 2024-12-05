@@ -15,6 +15,9 @@ int currentPage;
 
 int current_schedule_id;
 
+int currentWateringHistoryPage;
+int totalWateringHistoryPage;
+
 uint16_t current_year;
 uint16_t current_month;
 uint16_t current_day;

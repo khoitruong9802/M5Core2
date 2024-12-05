@@ -513,7 +513,9 @@ extern lv_obj_t * ui_PanelNotificationItem4;
 extern lv_obj_t * ui_LabelNotificationItem4;
 extern lv_obj_t * ui_PanelNotificationItem5;
 extern lv_obj_t * ui_LabelNotificationItem5;
-
+extern lv_obj_t * ui_PanelLoadingNotificationScreen;
+extern lv_obj_t * ui_SpinnerLoadingNotificationScreen;
+extern lv_obj_t * ui_LabelLoadingNotificationScreen;
 
 // SCREEN: ui_wateringHistory
 void ui_wateringHistory_screen_init(void);
@@ -563,6 +565,14 @@ extern lv_obj_t * ui_PanelEndTimeWateringHistoryItem3;
 extern lv_obj_t * ui_LabelEndTimeWateringHistoryItem3;
 extern lv_obj_t * ui_PanelWateringQuantityWateringHistoryItem3;
 extern lv_obj_t * ui_LabelWateringQuantityWateringHistoryItem3;
+extern lv_obj_t * ui_PanelLoadingWateringHistoryScreen;
+extern lv_obj_t * ui_SpinnerLoadingWateringHistoryScreen;
+extern lv_obj_t * ui_LabelLoadingWateringHistoryScreen;
+void ui_event_PanelItem1HeaderWateringHistory(lv_event_t * e);
+void ui_event_PanelItem2HeaderWateringHistory(lv_event_t * e);
+void ui_event_PanelItem3HeaderWateringHistory(lv_event_t * e);
+void ui_event_ButtonPreviousHeaderWateringHistory(lv_event_t * e);
+void ui_event_ButtonNextHeaderWateringHistory(lv_event_t * e);
 
 //SCREEN: ui_SensorsArea
 void ui_SensorsAreaScreen_screen_init(void);

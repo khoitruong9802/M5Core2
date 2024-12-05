@@ -108,6 +108,8 @@ void ui_wateringHistory_screen_init(void)
     lv_obj_clear_flag(ui_PanelItem1HeaderWateringHistory, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_bg_color(ui_PanelItem1HeaderWateringHistory, lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_PanelItem1HeaderWateringHistory, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_add_flag(ui_PanelItem1HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+
 
     ui_LabelItem1HeaderWateringHistory = lv_label_create(ui_PanelItem1HeaderWateringHistory);
     lv_obj_set_width(ui_LabelItem1HeaderWateringHistory, LV_SIZE_CONTENT);   /// 1
@@ -120,6 +122,7 @@ void ui_wateringHistory_screen_init(void)
     lv_obj_set_height(ui_PanelItem2HeaderWateringHistory, 35);
     lv_obj_set_align(ui_PanelItem2HeaderWateringHistory, LV_ALIGN_CENTER);
     lv_obj_clear_flag(ui_PanelItem2HeaderWateringHistory, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_add_flag(ui_PanelItem2HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
 
     ui_LabelItem2HeaderWateringHistory = lv_label_create(ui_PanelItem2HeaderWateringHistory);
     lv_obj_set_width(ui_LabelItem2HeaderWateringHistory, LV_SIZE_CONTENT);   /// 1
@@ -132,6 +135,7 @@ void ui_wateringHistory_screen_init(void)
     lv_obj_set_height(ui_PanelItem3HeaderWateringHistory, 35);
     lv_obj_set_align(ui_PanelItem3HeaderWateringHistory, LV_ALIGN_CENTER);
     lv_obj_clear_flag(ui_PanelItem3HeaderWateringHistory, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_add_flag(ui_PanelItem3HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
 
     ui_LabelItem3HeaderWateringHistory = lv_label_create(ui_PanelItem3HeaderWateringHistory);
     lv_obj_set_width(ui_LabelItem3HeaderWateringHistory, LV_SIZE_CONTENT);   /// 1
@@ -226,25 +230,6 @@ void ui_wateringHistory_screen_init(void)
     lv_obj_set_style_text_font(ui_LabelEndTimeWateringHistoryItem1, &lv_font_montserrat_10,
                                LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_PanelWateringQuantityWateringHistoryItem1 = lv_obj_create(ui_PanelWateringHistoryItem1);
-    lv_obj_set_width(ui_PanelWateringQuantityWateringHistoryItem1, 40);
-    lv_obj_set_height(ui_PanelWateringQuantityWateringHistoryItem1, 20);
-    lv_obj_set_x(ui_PanelWateringQuantityWateringHistoryItem1, 250);
-    lv_obj_set_y(ui_PanelWateringQuantityWateringHistoryItem1, -5);
-    lv_obj_set_align(ui_PanelWateringQuantityWateringHistoryItem1, LV_ALIGN_BOTTOM_LEFT);
-    lv_obj_clear_flag(ui_PanelWateringQuantityWateringHistoryItem1, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_PanelWateringQuantityWateringHistoryItem1, lv_color_hex(0x4264FF),
-                              LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_PanelWateringQuantityWateringHistoryItem1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_LabelWateringQuantityWateringHistoryItem1 = lv_label_create(ui_PanelWateringQuantityWateringHistoryItem1);
-    lv_obj_set_width(ui_LabelWateringQuantityWateringHistoryItem1, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_LabelWateringQuantityWateringHistoryItem1, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_LabelWateringQuantityWateringHistoryItem1, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_LabelWateringQuantityWateringHistoryItem1, "10(l)");
-    lv_obj_set_style_text_font(ui_LabelWateringQuantityWateringHistoryItem1, &lv_font_montserrat_10,
-                               LV_PART_MAIN | LV_STATE_DEFAULT);
-
     ui_PanelWateringHistoryItem2 = lv_obj_create(ui_wateringHistoryScreen);
     lv_obj_set_width(ui_PanelWateringHistoryItem2, 310);
     lv_obj_set_height(ui_PanelWateringHistoryItem2, 70);
@@ -317,25 +302,6 @@ void ui_wateringHistory_screen_init(void)
     lv_obj_set_align(ui_LabelEndTimeWateringHistoryItem2, LV_ALIGN_CENTER);
     lv_label_set_text(ui_LabelEndTimeWateringHistoryItem2, "2024-08-01 04:00");
     lv_obj_set_style_text_font(ui_LabelEndTimeWateringHistoryItem2, &lv_font_montserrat_10,
-                               LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_PanelWateringQuantityWateringHistoryItem2 = lv_obj_create(ui_PanelWateringHistoryItem2);
-    lv_obj_set_width(ui_PanelWateringQuantityWateringHistoryItem2, 40);
-    lv_obj_set_height(ui_PanelWateringQuantityWateringHistoryItem2, 20);
-    lv_obj_set_x(ui_PanelWateringQuantityWateringHistoryItem2, 250);
-    lv_obj_set_y(ui_PanelWateringQuantityWateringHistoryItem2, -5);
-    lv_obj_set_align(ui_PanelWateringQuantityWateringHistoryItem2, LV_ALIGN_BOTTOM_LEFT);
-    lv_obj_clear_flag(ui_PanelWateringQuantityWateringHistoryItem2, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_PanelWateringQuantityWateringHistoryItem2, lv_color_hex(0x4264FF),
-                              LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_PanelWateringQuantityWateringHistoryItem2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_LabelWateringQuantityWateringHistoryItem2 = lv_label_create(ui_PanelWateringQuantityWateringHistoryItem2);
-    lv_obj_set_width(ui_LabelWateringQuantityWateringHistoryItem2, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_LabelWateringQuantityWateringHistoryItem2, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_LabelWateringQuantityWateringHistoryItem2, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_LabelWateringQuantityWateringHistoryItem2, "10(l)");
-    lv_obj_set_style_text_font(ui_LabelWateringQuantityWateringHistoryItem2, &lv_font_montserrat_10,
                                LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_PanelWateringHistoryItem3 = lv_obj_create(ui_wateringHistoryScreen);
@@ -412,23 +378,36 @@ void ui_wateringHistory_screen_init(void)
     lv_obj_set_style_text_font(ui_LabelEndTimeWateringHistoryItem3, &lv_font_montserrat_10,
                                LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_PanelWateringQuantityWateringHistoryItem3 = lv_obj_create(ui_PanelWateringHistoryItem3);
-    lv_obj_set_width(ui_PanelWateringQuantityWateringHistoryItem3, 40);
-    lv_obj_set_height(ui_PanelWateringQuantityWateringHistoryItem3, 20);
-    lv_obj_set_x(ui_PanelWateringQuantityWateringHistoryItem3, 250);
-    lv_obj_set_y(ui_PanelWateringQuantityWateringHistoryItem3, -5);
-    lv_obj_set_align(ui_PanelWateringQuantityWateringHistoryItem3, LV_ALIGN_BOTTOM_LEFT);
-    lv_obj_clear_flag(ui_PanelWateringQuantityWateringHistoryItem3, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_PanelWateringQuantityWateringHistoryItem3, lv_color_hex(0x4264FF),
-                              LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_PanelWateringQuantityWateringHistoryItem3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_LabelWateringQuantityWateringHistoryItem3 = lv_label_create(ui_PanelWateringQuantityWateringHistoryItem3);
-    lv_obj_set_width(ui_LabelWateringQuantityWateringHistoryItem3, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_LabelWateringQuantityWateringHistoryItem3, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_LabelWateringQuantityWateringHistoryItem3, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_LabelWateringQuantityWateringHistoryItem3, "10(l)");
-    lv_obj_set_style_text_font(ui_LabelWateringQuantityWateringHistoryItem3, &lv_font_montserrat_10,
-                               LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_PanelLoadingWateringHistoryScreen = lv_obj_create(ui_wateringHistory);
+    lv_obj_set_width(ui_PanelLoadingWateringHistoryScreen, 320);
+    lv_obj_set_height(ui_PanelLoadingWateringHistoryScreen, 240);
+    lv_obj_set_align(ui_PanelLoadingWateringHistoryScreen, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_PanelLoadingWateringHistoryScreen, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_clear_flag(ui_PanelLoadingWateringHistoryScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_PanelLoadingWateringHistoryScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_PanelLoadingWateringHistoryScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_SpinnerLoadingWateringHistoryScreen = lv_spinner_create(ui_PanelLoadingWateringHistoryScreen, 1000, 90);
+    lv_obj_set_width(ui_SpinnerLoadingWateringHistoryScreen, 80);
+    lv_obj_set_height(ui_SpinnerLoadingWateringHistoryScreen, 80);
+    lv_obj_set_align(ui_SpinnerLoadingWateringHistoryScreen, LV_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_SpinnerLoadingWateringHistoryScreen, LV_OBJ_FLAG_CLICKABLE);      /// Flags
+
+    ui_LabelLoadingWateringHistoryScreen = lv_label_create(ui_PanelLoadingWateringHistoryScreen);
+    lv_obj_set_width(ui_LabelLoadingWateringHistoryScreen, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_LabelLoadingWateringHistoryScreen, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_LabelLoadingWateringHistoryScreen, 0);
+    lv_obj_set_y(ui_LabelLoadingWateringHistoryScreen, 75);
+    lv_obj_set_align(ui_LabelLoadingWateringHistoryScreen, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_LabelLoadingWateringHistoryScreen, "Loading...");
+    lv_obj_set_style_text_color(ui_LabelLoadingWateringHistoryScreen, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_LabelLoadingWateringHistoryScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);   
+
     lv_obj_add_event_cb(ui_wateringHistory, ui_event_wateringHistory, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_PanelItem1HeaderWateringHistory, ui_event_PanelItem1HeaderWateringHistory, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_PanelItem2HeaderWateringHistory, ui_event_PanelItem2HeaderWateringHistory, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_PanelItem3HeaderWateringHistory, ui_event_PanelItem3HeaderWateringHistory, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_ButtonPreviousHeaderWateringHistory, ui_event_ButtonPreviousHeaderWateringHistory, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_ButtonNextHeaderWateringHistory, ui_event_ButtonNextHeaderWateringHistory, LV_EVENT_ALL, NULL);
 }

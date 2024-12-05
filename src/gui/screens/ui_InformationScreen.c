@@ -109,6 +109,7 @@ void ui_InformationScreen_screen_init(void)
     lv_obj_set_style_text_color(ui_Label25, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_Label25, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Label25, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
+    
 
     lv_obj_add_event_cb(ui_Panel45, ui_event_Panel45, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Panel47, ui_event_Panel47, LV_EVENT_ALL, NULL);

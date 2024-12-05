@@ -59,6 +59,9 @@ extern int numberOfElement;
 extern int currentPage;
 extern int current_schedule_id;
 
+extern int currentWateringHistoryPage;
+extern int totalWateringHistoryPage;
+
 extern uint16_t current_year;
 extern uint16_t current_month;
 extern uint16_t current_day;

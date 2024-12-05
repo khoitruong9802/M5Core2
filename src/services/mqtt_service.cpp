@@ -122,3 +122,18 @@ void mqtt_service(void *parameter) {
     delay(100);
   }
 }
+
+void mqtt_init(void * parameter)
+{
+  client.setServer(mqtt_server, mqtt_port);
+  client.setCallback(callback);
+
+  connect_mqtt();
+  for(;;)
+  {
+    if (!client.connected()) {
+      connect_mqtt();
+    }
+    client.loop();
+  }
+}

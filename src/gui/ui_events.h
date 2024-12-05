@@ -40,6 +40,7 @@ void ui_event_ButtonPreviousPageItemTitleScheduleScreen(lv_event_t *e);
 void ui_event_PanelRemoveOptionHeaderScheduleScreen(lv_event_t * e);
 void ui_event_AddOptionHeaderScheduleScreen(lv_event_t * e);
 void ui_event_ScheduleScreen(lv_event_t * e);
+void watering_history_screen_init(lv_event_t * e);
 void printText(const char * text);
 uint16_t get_hour(const char *time_str);
 uint16_t get_minute(const char *time_str);
@@ -60,6 +61,11 @@ void updatePageScheduleItem(int indexOfElement);
 void sendDeleteRequest(int schedule_id);
 void updateItemforScheduleScreen(int hidden_all_flag, int number_appear);
 void farmer_handle_start();
+void updatePageWateringHistoryItem(int currentHistoryPage);
+void ui_event_ButtonPreviousHeaderWateringHistory(lv_event_t * e);
+void ui_event_ButtonNextHeaderWateringHistory(lv_event_t * e);
+void ui_event_InformationScreen(lv_event_t * e);
+void notification_task(lv_event_t * e);
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

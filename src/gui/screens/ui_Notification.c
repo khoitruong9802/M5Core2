@@ -118,6 +118,31 @@ void ui_Notification_screen_init(void)
     lv_label_set_text(ui_LabelNotificationItem5, "(2024-12-04 15:00) Schedule 1: 25%");
     lv_obj_set_style_text_font(ui_LabelNotificationItem5, &lv_font_montserrat_12, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    ui_PanelLoadingNotificationScreen = lv_obj_create(ui_Notification);
+    lv_obj_set_width(ui_PanelLoadingNotificationScreen, 320);
+    lv_obj_set_height(ui_PanelLoadingNotificationScreen, 240);
+    lv_obj_set_align(ui_PanelLoadingNotificationScreen, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_PanelLoadingNotificationScreen, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_clear_flag(ui_PanelLoadingNotificationScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_PanelLoadingNotificationScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_PanelLoadingNotificationScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_SpinnerLoadingNotificationScreen = lv_spinner_create(ui_PanelLoadingNotificationScreen, 1000, 90);
+    lv_obj_set_width(ui_SpinnerLoadingNotificationScreen, 80);
+    lv_obj_set_height(ui_SpinnerLoadingNotificationScreen, 80);
+    lv_obj_set_align(ui_SpinnerLoadingNotificationScreen, LV_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_SpinnerLoadingNotificationScreen, LV_OBJ_FLAG_CLICKABLE);      /// Flags
+
+    ui_LabelLoadingNotificationScreen = lv_label_create(ui_PanelLoadingNotificationScreen);
+    lv_obj_set_width(ui_LabelLoadingNotificationScreen, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_LabelLoadingNotificationScreen, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_LabelLoadingNotificationScreen, 0);
+    lv_obj_set_y(ui_LabelLoadingNotificationScreen, 75);
+    lv_obj_set_align(ui_LabelLoadingNotificationScreen, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_LabelLoadingNotificationScreen, "Loading...");
+    lv_obj_set_style_text_color(ui_LabelLoadingNotificationScreen, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_LabelLoadingNotificationScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT); 
+
     lv_obj_add_event_cb(ui_Notification, ui_event_Notification, LV_EVENT_ALL, NULL);
 
 }

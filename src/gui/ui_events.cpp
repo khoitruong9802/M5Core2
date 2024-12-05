@@ -9,6 +9,8 @@
 #include "../services/mqtt_service.h"
 #include "../services/wifi_service.h"
 #include "../services/schedule_service.h"
+#include "../services/schedule_history.h"
+#include "../services/notification_service.h"
 #include "global.h"
 #include "services/ota_service.h"
 #include "ui.h"
@@ -1304,5 +1306,226 @@ void farmer_handle_start()
   else
   {
     _ui_screen_change(&ui_farmScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_farmScreen_screen_init);
+  }
+}
+
+void watering_history_screen_init(lv_event_t * e)
+{
+  lv_obj_add_flag(ui_PanelItem1HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(ui_PanelItem2HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(ui_PanelItem3HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_clear_flag(ui_PanelLoadingWateringHistoryScreen, LV_OBJ_FLAG_HIDDEN);
+  lv_task_handler();
+  _ui_screen_change(&ui_wateringHistory, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_wateringHistory_screen_init);    
+  TaskHandle_t history_task = xTaskGetHandle("waterhistory");
+  if(history_task == NULL)
+  {
+    void *taskStackMemory = heap_caps_malloc(8192, MALLOC_CAP_SPIRAM); // Allocating in PSRAM
+
+    if (taskStackMemory != nullptr) {
+        BaseType_t result = xTaskCreatePinnedToCore(
+            HistoryUI,  // Function to execute
+            "waterhistory",   // Task name
+            8192,              // Stack size in bytes
+            NULL,              // Task parameter
+            1,                 // Priority
+            &history_task,    // Task handle
+            1                  // Core
+        );
+
+        if (result == pdPASS) {
+            Serial.println("Task created successfully in PSRAM.");
+        } else {
+            Serial.println("Failed to create task.");
+            free(taskStackMemory); // Free memory if task creation failed
+        }
+    } else {
+        Serial.println("Failed to allocate memory for the task stack in PSRAM.");
+    }
+  }
+}
+
+void updatePageWateringHistoryItem(int currentHistoryPage)
+{
+    //TODO
+
+    char serverURL[150]; // Adjust size if needed based on the URL length
+    currentWateringHistoryPage = currentHistoryPage;
+    snprintf(serverURL, sizeof(serverURL), "%s/api/v1/schedule-history?page=%d&limit=3", web_server_official, currentWateringHistoryPage);
+    Serial.println(serverURL); 
+    String response = http_get_data(serverURL);
+    jsonString = response;
+    Serial.println(response); 
+    using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
+    SpiRamJsonDocument jsonDocGlobal(1048576);
+
+    DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
+    if (error) 
+    {
+        Serial.println(error.c_str());
+    }
+
+    // Treat `jsonDocGlobal` as a JSON object since `total_pages` is at the top level
+    JsonObject jsonObject = jsonDocGlobal.as<JsonObject>();
+    JsonArray dataArray = jsonObject["data"].as<JsonArray>();
+    int i = 0;
+    for(JsonObject obj:dataArray)
+    {
+        const char * schedule_name = obj["schedule_name"].as<const char *>();
+        const char *start_time = obj["start_time"].as<const char *>();
+        const char *stop_time = obj["stop_time"].as<const char *>();
+        int result = obj["result"].as<int>();
+        const char * Area = obj["area"].as<const char *>();
+        if(i == 0)
+        {
+            updateItem0(schedule_name, result, Area, start_time, stop_time);
+            lv_obj_clear_flag(ui_PanelWateringHistoryItem1, LV_OBJ_FLAG_HIDDEN);
+        }
+        else if(i == 1)
+        {
+            updateItem1(schedule_name, result, Area, start_time, stop_time);
+            lv_obj_clear_flag(ui_PanelWateringHistoryItem2, LV_OBJ_FLAG_HIDDEN);
+        }
+        else if(i == 2)
+        {
+            updateItem2(schedule_name, result, Area, start_time, stop_time);
+            lv_obj_clear_flag(ui_PanelWateringHistoryItem3, LV_OBJ_FLAG_HIDDEN);
+        }
+        i++;
+    }
+    lv_task_handler();
+
+    jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
+    jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible     
+
+}
+
+void ui_event_ButtonPreviousHeaderWateringHistory(lv_event_t * e)
+{
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t * target = lv_event_get_target(e);
+  if(event_code == LV_EVENT_CLICKED)
+  {
+    lv_obj_add_flag(ui_PanelItem1HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(ui_PanelItem2HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(ui_PanelItem3HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_set_style_bg_color(ui_PanelItem1HeaderWateringHistory, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelItem2HeaderWateringHistory, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelItem3HeaderWateringHistory, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    const char * min_index_c_tr = lv_label_get_text(ui_LabelItem1HeaderWateringHistory);
+    int index = atoi(min_index_c_tr) - 1;
+
+    for(int i = 0; i <= 2 && index > 0; i++)
+    {
+      char buffer[20];           // Ensure buffer is large enough to hold the string representation
+      itoa(index, buffer, 10);     // Convert the int to a string (base 10)
+      const char *str = buffer;  // Now 'str' is a const char* pointing to the string
+      if( i == 0)
+      {
+        lv_label_set_text(ui_LabelItem3HeaderWateringHistory, buffer);
+        lv_obj_clear_flag(ui_PanelItem3HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+      }
+      else if(i == 1)
+      {
+        lv_label_set_text(ui_LabelItem2HeaderWateringHistory, buffer);
+        lv_obj_clear_flag(ui_PanelItem2HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+      }
+      else if(i == 2)
+      {
+        lv_label_set_text(ui_LabelItem1HeaderWateringHistory, buffer);
+        lv_obj_clear_flag(ui_PanelItem1HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+      }
+      index = index - 1;
+    }  
+    lv_task_handler();
+  }
+}
+void ui_event_ButtonNextHeaderWateringHistory(lv_event_t * e)
+{
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t * target = lv_event_get_target(e);
+  if(event_code == LV_EVENT_CLICKED)
+  {
+    lv_obj_add_flag(ui_PanelItem1HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(ui_PanelItem2HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(ui_PanelItem3HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_set_style_bg_color(ui_PanelItem1HeaderWateringHistory, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelItem2HeaderWateringHistory, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelItem3HeaderWateringHistory, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    const char * max_index_c_tr = lv_label_get_text(ui_LabelItem3HeaderWateringHistory);
+    int index = atoi(max_index_c_tr) + 1;
+
+    for(int i = 0; i < 3 && index <= totalWateringHistoryPage; i++)
+    {
+      char buffer[20];           // Ensure buffer is large enough to hold the string representation
+      itoa(index, buffer, 10);     // Convert the int to a string (base 10)
+      const char *str = buffer;  // Now 'str' is a const char* pointing to the string
+      if( i == 0)
+      {
+        lv_label_set_text(ui_LabelItem1HeaderWateringHistory, buffer);
+        lv_obj_clear_flag(ui_PanelItem1HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+      }
+      else if(i == 1)
+      {
+        lv_label_set_text(ui_LabelItem2HeaderWateringHistory, buffer);
+        lv_obj_clear_flag(ui_PanelItem2HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+      }
+      else if(i == 2)
+      {
+        lv_label_set_text(ui_LabelItem3HeaderWateringHistory, buffer);
+        lv_obj_clear_flag(ui_PanelItem3HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+      }
+      index = index + 1;
+    }  
+    lv_task_handler();
+  }
+}
+
+void ui_event_InformationScreen(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) {
+        lv_indev_wait_release(lv_indev_get_act());
+        jsonString.clear();
+        _ui_screen_change(&ui_farmScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_farmScreen_screen_init);
+    }
+}
+
+void notification_task(lv_event_t * e)
+{
+  lv_obj_clear_flag(ui_PanelLoadingNotificationScreen, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(ui_PanelNotificationItem1, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(ui_PanelNotificationItem2, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(ui_PanelNotificationItem3, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(ui_PanelNotificationItem4, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(ui_PanelNotificationItem5, LV_OBJ_FLAG_HIDDEN);
+  lv_task_handler();
+  _ui_screen_change(&ui_Notification, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_Notification_screen_init);    
+  TaskHandle_t notification = xTaskGetHandle("notification");
+  if(notification == NULL)
+  {
+    void *taskStackMemory = heap_caps_malloc(8192, MALLOC_CAP_SPIRAM); // Allocating in PSRAM
+
+    if (taskStackMemory != nullptr) {
+        BaseType_t result = xTaskCreatePinnedToCore(
+            notification_service_init,  // Function to execute
+            "notification",   // Task name
+            8192,              // Stack size in bytes
+            NULL,              // Task parameter
+            1,                 // Priority
+            &notification,    // Task handle
+            1                  // Core
+        );
+
+        if (result == pdPASS) {
+            Serial.println("Task created successfully in PSRAM.");
+        } else {
+            Serial.println("Failed to create task.");
+            free(taskStackMemory); // Free memory if task creation failed
+        }
+    } else {
+        Serial.println("Failed to allocate memory for the task stack in PSRAM.");
+    }
   }
 }

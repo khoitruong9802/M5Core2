@@ -90,16 +90,17 @@ void setup()
     xTaskCreatePinnedToCore(ui_start, "ui_start", 4096, NULL, 5, NULL, tskNO_AFFINITY);
     xTaskCreatePinnedToCore(rtc_service, "rtc_service", 4096, NULL, 5, NULL, tskNO_AFFINITY);
     xTaskCreatePinnedToCore(bottom_button_service, "bottom_button_service", 2048, NULL, 5, NULL, tskNO_AFFINITY);
-    xTaskCreatePinnedToCore(mqtt_service, "mqtt_service", 2048, NULL, 5, NULL, tskNO_AFFINITY);
+    xTaskCreatePinnedToCore(mqtt_init, "mqtt_init", 2048, NULL, 5, NULL, tskNO_AFFINITY);
     // xTaskCreatePinnedToCore(ota_checking_update, "ota_checking_update", 2048, NULL, 5, NULL, tskNO_AFFINITY);
 }
 
 void loop()
 {
-//   monitorHealth();
+  monitorHealth();
   // Serial.println("======================================================================");
 //   Serial.println(touch_enabled);
   // Serial.println(currentPage);
   // Serial.println("======================================================================");
-  vTaskDelete(NULL);
+    delay(1000);
+//   vTaskDelete(NULL);
 }
