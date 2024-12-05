@@ -15,7 +15,8 @@ const int mqtt_port = 1883;
 const char *mqtt_user = "";
 const char *mqtt_password = "";
 
-const char *topic_devices = "khoitruong9802/feeds/devices";
+const char *topic_notification = "18faa0dd7a927906cb3e/feeds/notification";
+const char *topic_devices = "kientranvictory/feeds/cambien1";
 const char *topic_nutnhan1 = "khoitruong9802/feeds/nutnhan1";
 const char *topic_nutnhan2 = "khoitruong9802/feeds/nutnhan2";
 const char *topic_cambien1 = "khoitruong9802/feeds/cambien1";
@@ -35,7 +36,6 @@ void callback(char *topic, uint8_t *payload, unsigned int length) {
   mqtt_payload[length] = '\0';
 
   print(PRINTF, "Message received: %s from %s\n", mqtt_payload, topic);
-
   if (strcmp(topic, "khoitruong9802/feeds/cambien1") == 0) {
     print(PRINTLN, "Update temp!!");
 
@@ -56,8 +56,12 @@ void callback(char *topic, uint8_t *payload, unsigned int length) {
     print(PRINTLN, "Update switch!!");
 
     ui_update_mqtt_device_switch(ui_Switch2, mqtt_payload);
+  } else if (strcmp(topic, "kientranvictory/feeds/cambien1") == 0) {
+    print(PRINTLN, "Update notification!!");
+    buzz_in_second();
   }
 }
+
 
 uint8_t connect_mqtt() {
   unsigned long startTime = millis();  // Get the current time
@@ -67,7 +71,7 @@ uint8_t connect_mqtt() {
     print(PRINTLN, "Connecting to MQTT broker...");
     if (client.connect("ij34j32oj523kn6lk32n6ljoiij", mqtt_user, mqtt_password)) {
       print(PRINTLN, "Connected to MQTT broker!");
-      if (client.subscribe(topic_nutnhan1) && client.subscribe(topic_nutnhan2) && client.subscribe(topic_cambien1) && client.subscribe(topic_cambien2) && client.subscribe(topic_cambien3)) {
+      if (client.subscribe(topic_notification) ) {
         client.setCallback(callback);
         print(PRINTLN, "Subcribe to topic successfully!");
         connect_ok = 1;

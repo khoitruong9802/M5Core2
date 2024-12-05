@@ -19,6 +19,8 @@ uint16_t current_year;
 uint16_t current_month;
 uint16_t current_day;
 
+bool touch_enabled;
+
 void print(uint8_t print_mode, const char* msg, ...) {
     if (DEBUG_MODE == 1) {
         va_list args;
@@ -45,5 +47,17 @@ void print(uint8_t print_mode, const char* msg, ...) {
         }
 
         va_end(args);
+    }
+}
+
+void buzz_in_second()
+{
+    // Rung trong 1 giây
+    if (M5.getBoard() == m5::board_t::board_M5StackCore2) {
+        // Bật rung bằng cách đặt LDO3 ở mức 3.3V
+        M5.Power.Axp192.setLDO3(3300); // Đơn vị: mV
+        delay(1000);                   // Rung trong 1 giây
+        // Tắt rung bằng cách đặt LDO3 về 0V
+        M5.Power.Axp192.setLDO3(0);
     }
 }

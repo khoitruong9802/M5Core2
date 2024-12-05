@@ -2,7 +2,7 @@ screens/ui_MainScreen.c
 screens/ui_AppScreen.c
 screens/ui_SettingsScreen.c
 screens/ui_AboutScreen.c
-screens/ui_IntormationScreen.c
+screens/ui_InformationScreen.c
 screens/ui_SensorsScreen.c
 screens/ui_ManualScreen.c
 screens/ui_DisplayScreen.c

@@ -13,7 +13,6 @@ String http_get_data(const String &server_url) {
   if (http_code > 0) {
     // If the request was successful, get the payload
     payload = http.getString();
-    Serial.println(payload);
   } else {
     Serial.printf("GET request failed: %s\n", http.errorToString(http_code).c_str());
   }

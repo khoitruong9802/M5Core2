@@ -904,7 +904,7 @@ void  ui_event_ButtonNextPageItemTitleScheduleScreen(lv_event_t *e)
     const char * max_index_c_tr = lv_label_get_text(ui_LabelPageItemTitleScheduleScreen[2]);
     int index = atoi(max_index_c_tr) + 1;
 
-    for(int i = 0; i <= 2 && index <= (numberOfPage+1); i++)
+    for(int i = 0; i <= 2 && index <= numberOfPage; i++)
     {
       char buffer[20];           // Ensure buffer is large enough to hold the string representation
       itoa(index, buffer, 10);     // Convert the int to a string (base 10)
@@ -960,6 +960,28 @@ void ui_event_ButtonPreviousPageItemTitleScheduleScreen(lv_event_t *e)
     
   }
 }
+
+void ui_event_ScheduleScreen(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT && lv_obj_has_flag(ui_Panel93, LV_OBJ_FLAG_HIDDEN)) 
+    {
+        jsonString.clear();
+        // deleteObject(ui_ScheduleContainer);
+        lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[0], LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[1], LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[2], LV_OBJ_FLAG_HIDDEN);
+        lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[0], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[1], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[2], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);        
+        lv_task_handler();
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_farmScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_farmScreen_screen_init);
+    }
+
+}
+
 
 void printText(const char * text)
 {

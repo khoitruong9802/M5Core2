@@ -146,10 +146,10 @@ void ui_event_AboutScreen(lv_event_t * e);
 extern lv_obj_t * ui_AboutScreen;
 extern lv_obj_t * ui_Panel19;
 extern lv_obj_t * ui_Label14;
-// SCREEN: ui_IntormationScreen
-void ui_IntormationScreen_screen_init(void);
-void ui_event_IntormationScreen(lv_event_t * e);
-extern lv_obj_t * ui_IntormationScreen;
+// SCREEN: ui_InformationScreen
+void ui_InformationScreen_screen_init(void);
+void ui_event_InformationScreen(lv_event_t * e);
+extern lv_obj_t * ui_InformationScreen;
 extern lv_obj_t * ui_Panel43;
 extern lv_obj_t * ui_Panel44;
 void ui_event_Panel45(lv_event_t * e);
@@ -161,6 +161,7 @@ extern lv_obj_t * ui_Panel46;
 extern lv_obj_t * ui_Image4;
 extern lv_obj_t * ui_Label24;
 void ui_event_PanelHistoryItemFarmScreen(lv_event_t * e);
+void ui_event_Panel47(lv_event_t * e);
 extern lv_obj_t * ui_Panel47;
 extern lv_obj_t * ui_Image5;
 extern lv_obj_t * ui_Label25;
@@ -214,7 +215,6 @@ extern lv_obj_t * ui_Panel26;
 extern lv_obj_t * ui____initial_actions0;
 // SCREEN: ui_ScheduleScreen
 void ui_ScheduleScreen_screen_init(void);
-void ui_event_ScheduleScreen(lv_event_t * e);
 extern lv_obj_t *  ui_ScheduleScreen;
 extern lv_obj_t *  ui_MainScheduleScreen;
 extern lv_obj_t *  ui_HeaderScheduleScreen;
@@ -497,65 +497,6 @@ void ui_event_ButtonCloseHeaderNotification1Farm(lv_event_t * e);
 extern lv_obj_t * ui_ButtonCloseHeaderNotification1Farm;
 extern lv_obj_t * ui_LabelCloseHeaderNotification1Farm;
 
-// SCREEN: ui_waterProcess
-void ui_waterProcess_screen_init(void);
-void ui_event_waterProcess(lv_event_t * e);
-extern lv_obj_t * ui_waterProcess;
-extern lv_obj_t * ui_waterProcessScreen;
-extern lv_obj_t * ui_LabelTitleWaterProcess;
-extern lv_obj_t * ui_PanelWaterProcessItem1;
-extern lv_obj_t * ui_SliderWaterProcessItem1;
-extern lv_obj_t * ui_LabelNameWaterProcessItem1;
-extern lv_obj_t * ui_PanelTimeWaterProcessItem1;
-extern lv_obj_t * ui_LabelStartTimeWaterProcessItem1;
-extern lv_obj_t * ui_LabelBetweenWaterProcessItem1;
-extern lv_obj_t * ui_LabelEndTimeWaterProcessItem1;
-extern lv_obj_t * ui_LabelValue0WaterProcessItem1;
-extern lv_obj_t * ui_LabelValue100WaterProcessItem1;
-extern lv_obj_t * ui_PanelWaterProcessItem2;
-extern lv_obj_t * ui_SliderWaterProcessItem2;
-extern lv_obj_t * ui_LabelNameWaterProcessItem2;
-extern lv_obj_t * ui_PanelTimeWaterProcessItem2;
-extern lv_obj_t * ui_LabelStartTimeWaterProcessItem2;
-extern lv_obj_t * ui_LabelBetweenWaterProcessItem2;
-extern lv_obj_t * ui_LabelEndTimeWaterProcessItem2;
-extern lv_obj_t * ui_LabelValue0WaterProcessItem2;
-extern lv_obj_t * ui_LabelValue100WaterProcessItem2;
-extern lv_obj_t * ui_PanelWaterProcessItem3;
-extern lv_obj_t * ui_SliderWaterProcessItem3;
-extern lv_obj_t * ui_LabelNameWaterProcessItem3;
-extern lv_obj_t * ui_PanelTimeWaterProcessItem3;
-extern lv_obj_t * ui_LabelStartTimeWaterProcessItem3;
-extern lv_obj_t * ui_LabelBetweenWaterProcessItem3;
-extern lv_obj_t * ui_LabelEndTimeWaterProcessItem3;
-extern lv_obj_t * ui_LabelValue0WaterProcessItem3;
-extern lv_obj_t * ui_LabelValue100WaterProcessItem3;
-
-// SCREEN: ui_SoilTemperatureSensor
-void ui_SoilTemperatureSensor_screen_init(void);
-extern lv_obj_t * ui_SoilTemperatureSensor;
-extern lv_obj_t * ui_SoilTemperatureSensorScreen;
-extern lv_obj_t * ui_ChartSoilTemperatureSensor;
-extern lv_obj_t * ui_LabelSoilTemperatureSensor;
-// SCREEN: ui_SoidMoistureSensor
-void ui_SoidMoistureSensor_screen_init(void);
-extern lv_obj_t * ui_SoidMoistureSensor;
-extern lv_obj_t * ui_SoidMoistureSensorScreen;
-extern lv_obj_t * ui_ChartSoidMoistureSensor;
-extern lv_obj_t * ui_LabelTitleSoidMoistureSensor;
-// SCREEN: ui_SoidPH
-void ui_SoidPH_screen_init(void);
-extern lv_obj_t * ui_SoidPH;
-extern lv_obj_t * ui_SoidPHScreen;
-extern lv_obj_t * ui_ChartSoidPH;
-extern lv_obj_t * ui_labelTitleSoidPH;
-// SCREEN: ui_SoidEC
-void ui_SoidEC_screen_init(void);
-extern lv_obj_t * ui_SoidEC;
-extern lv_obj_t * ui_SoidECScreen;
-extern lv_obj_t * ui_ChartSoidEC;
-extern lv_obj_t * ui_LabelSoidEC;
-
 // SCREEN: ui_Notification
 void ui_Notification_screen_init(void);
 void ui_event_Notification(lv_event_t * e);
@@ -574,7 +515,70 @@ extern lv_obj_t * ui_PanelNotificationItem5;
 extern lv_obj_t * ui_LabelNotificationItem5;
 
 
+// SCREEN: ui_wateringHistory
+void ui_wateringHistory_screen_init(void);
+void ui_event_wateringHistory(lv_event_t * e);
+extern lv_obj_t * ui_wateringHistory;
+extern lv_obj_t * ui_wateringHistoryScreen;
+extern lv_obj_t * ui_LabelTitleWateringHistory;
+extern lv_obj_t * ui_PanelHeaderWateringHistoryContainer;
+extern lv_obj_t * ui_ButtonPreviousHeaderWateringHistory;
+extern lv_obj_t * ui_LabelPreviousHeaderWateringHistory;
+extern lv_obj_t * ui_PanelHeaderWateringHistory;
+extern lv_obj_t * ui_PanelItem1HeaderWateringHistory;
+extern lv_obj_t * ui_LabelItem1HeaderWateringHistory;
+extern lv_obj_t * ui_PanelItem2HeaderWateringHistory;
+extern lv_obj_t * ui_LabelItem2HeaderWateringHistory;
+extern lv_obj_t * ui_PanelItem3HeaderWateringHistory;
+extern lv_obj_t * ui_LabelItem3HeaderWateringHistory;
+extern lv_obj_t * ui_ButtonNextHeaderWateringHistory;
+extern lv_obj_t * ui_LabelNextHeaderWateringHistory;
+extern lv_obj_t * ui_PanelWateringHistoryItem1;
+extern lv_obj_t * ui_LabelNameWateringHistoryItem1;
+extern lv_obj_t * ui_LabelAreaWateringHistoryItem1;
+extern lv_obj_t * ui_LabelResultWaterQuantityWateringHistoryItem1;
+extern lv_obj_t * ui_PanelStartTimeWateringHistoryItem1;
+extern lv_obj_t * ui_LabelStartTimeWateringHistoryItem1;
+extern lv_obj_t * ui_PanelEndTimeWateringHistoryItem1;
+extern lv_obj_t * ui_LabelEndTimeWateringHistoryItem1;
+extern lv_obj_t * ui_PanelWateringQuantityWateringHistoryItem1;
+extern lv_obj_t * ui_LabelWateringQuantityWateringHistoryItem1;
+extern lv_obj_t * ui_PanelWateringHistoryItem2;
+extern lv_obj_t * ui_LabelNameWateringHistoryItem2;
+extern lv_obj_t * ui_LabelAreaWateringHistoryItem2;
+extern lv_obj_t * ui_LabelResultWaterQuantityWateringHistoryItem2;
+extern lv_obj_t * ui_PanelStartTimeWateringHistoryItem2;
+extern lv_obj_t * ui_LabelStartTimeWateringHistoryItem2;
+extern lv_obj_t * ui_PanelEndTimeWateringHistoryItem2;
+extern lv_obj_t * ui_LabelEndTimeWateringHistoryItem2;
+extern lv_obj_t * ui_PanelWateringQuantityWateringHistoryItem2;
+extern lv_obj_t * ui_LabelWateringQuantityWateringHistoryItem2;
+extern lv_obj_t * ui_PanelWateringHistoryItem3;
+extern lv_obj_t * ui_LabelNameWateringHistoryItem3;
+extern lv_obj_t * ui_LabelAreaWateringHistoryItem3;
+extern lv_obj_t * ui_LabelResultWaterQuantityWateringHistoryItem3;
+extern lv_obj_t * ui_PanelStartTimeWateringHistoryItem3;
+extern lv_obj_t * ui_LabelStartTimeWateringHistoryItem3;
+extern lv_obj_t * ui_PanelEndTimeWateringHistoryItem3;
+extern lv_obj_t * ui_LabelEndTimeWateringHistoryItem3;
+extern lv_obj_t * ui_PanelWateringQuantityWateringHistoryItem3;
+extern lv_obj_t * ui_LabelWateringQuantityWateringHistoryItem3;
 
+//SCREEN: ui_SensorsArea
+void ui_SensorsAreaScreen_screen_init(void);
+void ui_event_SensorsAreaScreen(lv_event_t * e);
+extern lv_obj_t * ui_SensorsAreaScreen;
+extern lv_obj_t * ui_SensorsAreaScreen_screen;
+extern lv_obj_t * ui_PanelSensorsAreaScreen_screen;
+extern lv_obj_t * ui_PanelArea1SensorsArea;
+extern lv_obj_t * ui_LabelArea1SensorsArea;
+extern lv_obj_t * ui_PanelArea2SensorsArea;
+extern lv_obj_t * ui_LabelArea2SensorsArea;
+extern lv_obj_t * ui_PanelArea3SensorsArea;
+extern lv_obj_t * ui_LabelArea3SensorsArea;
+void ui_event_PanelArea1SensorArea(lv_event_t * e);
+void ui_event_PanelArea2SensorArea(lv_event_t * e);
+void ui_event_PanelArea3SensorArea(lv_event_t * e);
 
 LV_IMG_DECLARE(ui_img_background_png);    // assets/background.png
 LV_IMG_DECLARE(ui_img_125102533);    // assets/bluetooth-sign_icon.png

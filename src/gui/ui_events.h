@@ -39,6 +39,7 @@ void ui_event_ButtonNextPageItemTitleScheduleScreen(lv_event_t *e);
 void ui_event_ButtonPreviousPageItemTitleScheduleScreen(lv_event_t *e);
 void ui_event_PanelRemoveOptionHeaderScheduleScreen(lv_event_t * e);
 void ui_event_AddOptionHeaderScheduleScreen(lv_event_t * e);
+void ui_event_ScheduleScreen(lv_event_t * e);
 void printText(const char * text);
 uint16_t get_hour(const char *time_str);
 uint16_t get_minute(const char *time_str);

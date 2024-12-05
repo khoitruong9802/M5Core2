@@ -56,7 +56,6 @@ void init_scan_wifi_list_element() {
   /*Add 9 list item*/
   if (btn_flag == false) {
     for (int i = 0; i < 9; i++) {
-      print(PRINTLN, "test");
       btn[i] = lv_list_add_btn(custom_ui_ListOfWifi, NULL, "");
       lv_obj_add_event_cb(btn[i], click_wifi_handler, LV_EVENT_CLICKED, NULL);
     }

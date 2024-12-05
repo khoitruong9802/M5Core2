@@ -5,16 +5,16 @@
 
 #include "../ui.h"
 
-void ui_IntormationScreen_screen_init(void)
+void ui_InformationScreen_screen_init(void)
 {
-    ui_IntormationScreen = lv_obj_create(NULL);
-    lv_obj_clear_flag(ui_IntormationScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_IntormationScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_IntormationScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_IntormationScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_IntormationScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_InformationScreen = lv_obj_create(NULL);
+    lv_obj_clear_flag(ui_InformationScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_InformationScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_InformationScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_InformationScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_InformationScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Panel43 = lv_obj_create(ui_IntormationScreen);
+    ui_Panel43 = lv_obj_create(ui_InformationScreen);
     lv_obj_set_width(ui_Panel43, 320);
     lv_obj_set_height(ui_Panel43, 240);
     lv_obj_set_align(ui_Panel43, LV_ALIGN_CENTER);
@@ -105,13 +105,13 @@ void ui_IntormationScreen_screen_init(void)
     lv_obj_set_width(ui_Label25, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Label25, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_Label25, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Label25, "Water Process");
+    lv_label_set_text(ui_Label25, "Water History");
     lv_obj_set_style_text_color(ui_Label25, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_Label25, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Label25, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_add_event_cb(ui_Panel45, ui_event_Panel45, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_Panel47, ui_event_PanelHistoryItemFarmScreen, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_IntormationScreen, ui_event_IntormationScreen, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Panel47, ui_event_Panel47, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_InformationScreen, ui_event_InformationScreen, LV_EVENT_ALL, NULL);
 
 }

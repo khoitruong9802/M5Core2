@@ -175,7 +175,7 @@ void ui_ScheduleItemScreen_screen_init(void)
     lv_obj_set_style_text_opa(ui_LabelAreaTitleScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_DropdownAreaScheduleItem = lv_dropdown_create(ui_PanelAreaContainerScheduleItem);
-    lv_dropdown_set_options(ui_DropdownAreaScheduleItem, "Area 1\nArea 2\nArea 3\nArea 4\nArea 5");
+    lv_dropdown_set_options(ui_DropdownAreaScheduleItem, "Area 1\nArea 2\nArea 3");
     lv_obj_set_width(ui_DropdownAreaScheduleItem, 280);
     lv_obj_set_height(ui_DropdownAreaScheduleItem, LV_SIZE_CONTENT);    /// 50
     lv_obj_set_x(ui_DropdownAreaScheduleItem, 0);
@@ -823,20 +823,6 @@ void ui_ScheduleItemScreen_screen_init(void)
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_LabelScheduleEndDateTitleScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_CheckboxScheduleEndDateScheduleItem = lv_checkbox_create(ui_PanelScheduleEndDateContainerScheduleItem);
-    lv_checkbox_set_text(ui_CheckboxScheduleEndDateScheduleItem, "Forever");
-    lv_obj_set_width(ui_CheckboxScheduleEndDateScheduleItem, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_CheckboxScheduleEndDateScheduleItem, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_CheckboxScheduleEndDateScheduleItem, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_CheckboxScheduleEndDateScheduleItem, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
-    lv_obj_set_style_text_color(ui_CheckboxScheduleEndDateScheduleItem, lv_color_hex(0xFFFFFF),
-                                LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_CheckboxScheduleEndDateScheduleItem, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    lv_obj_set_style_bg_color(ui_CheckboxScheduleEndDateScheduleItem, lv_color_hex(0xFFFFFF),
-                              LV_PART_INDICATOR | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_CheckboxScheduleEndDateScheduleItem, 255, LV_PART_INDICATOR | LV_STATE_DEFAULT);
-
     ui_PanelScheduleEndDateScheduleItem = lv_obj_create(ui_PanelScheduleEndDateContainerScheduleItem);
     lv_obj_set_width(ui_PanelScheduleEndDateScheduleItem, 260);
     lv_obj_set_height(ui_PanelScheduleEndDateScheduleItem, 50);
@@ -885,7 +871,6 @@ void ui_ScheduleItemScreen_screen_init(void)
     lv_obj_set_style_text_opa(ui_LabelLoadingScheduleItemScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);    
 
     lv_obj_add_event_cb(ui_DropdownScheduleRepeatScheduleItem, ui_event_DropdownClickedScheduleRepeatScheduleItem, LV_EVENT_VALUE_CHANGED, NULL);
-    lv_obj_add_event_cb(ui_CheckboxScheduleEndDateScheduleItem, ui_event_CheckboxScheduleEndDateScheduleItem, LV_EVENT_VALUE_CHANGED , NULL);
     lv_obj_add_event_cb(ui_PanelScheduleWeekItemMondayScheduleItem, ui_event_PanelScheduleWeekItemMondayScheduleItem, LV_EVENT_CLICKED, NULL);
     lv_obj_add_event_cb(ui_PanelScheduleWeekItemTuesdayScheduleItem, ui_event_PanelScheduleWeekItemTuesdayScheduleItem, LV_EVENT_CLICKED, NULL);
     lv_obj_add_event_cb(ui_PanelScheduleWeekItemWednesdayScheduleItem, ui_event_PanelScheduleWeekItemWednesdayScheduleItem, LV_EVENT_CLICKED, NULL);

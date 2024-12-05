@@ -1,5 +1,5 @@
 #include "lvgl_port.h"
-
+#include "global.h"
 #include <M5Unified.h>
 #include <lvgl.h>
 
@@ -25,6 +25,11 @@ void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color
 
 /*Read the touchpad*/
 void my_touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data) {
+  if (!touch_enabled) {
+    data->state = LV_INDEV_STATE_REL;
+    return;
+  }
+
   if (!M5.Display.touch()) {
     Serial.println("Touch not found.");
     return;
@@ -41,6 +46,14 @@ void my_touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data) {
     data->point.x = touchX;
     data->point.y = touchY;
   }
+}
+
+void disable_touch() {
+  touch_enabled = false;
+}
+
+void enable_touch() {
+  touch_enabled = true;
 }
 
 // void my_log(const char *buf)

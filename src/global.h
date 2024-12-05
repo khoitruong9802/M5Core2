@@ -63,6 +63,8 @@ extern uint16_t current_year;
 extern uint16_t current_month;
 extern uint16_t current_day;
 
+extern bool touch_enabled;  // Flag to control whether touch is enabled
+
 #define PRINT   1
 #define PRINTLN 2
 #define PRINTF  3
@@ -71,4 +73,4 @@ extern uint16_t current_day;
 
 
 void print(uint8_t print_mode,  const char* msg, ...);
-
+void buzz_in_second();
