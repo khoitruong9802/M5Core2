@@ -51,7 +51,7 @@ void ui_SensorsScreen_screen_init(void)
     lv_obj_set_x(ui_Label20, 0);
     lv_obj_set_y(ui_Label20, 27);
     lv_obj_set_align(ui_Label20, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Label20, "Soid PH:");
+    lv_label_set_text(ui_Label20, "Nitro:");
     lv_obj_set_style_text_color(ui_Label20, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_Label20, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Label20, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -62,7 +62,7 @@ void ui_SensorsScreen_screen_init(void)
     lv_obj_set_x(ui_Label21, -24);
     lv_obj_set_y(ui_Label21, -10);
     lv_obj_set_align(ui_Label21, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Label21, "Soid Moisture:");
+    lv_label_set_text(ui_Label21, "Soid humidity:");
     lv_obj_set_style_text_color(ui_Label21, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_Label21, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Label21, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -106,7 +106,7 @@ void ui_SensorsScreen_screen_init(void)
     lv_obj_set_x(ui_Label15, 0);
     lv_obj_set_y(ui_Label15, 62);
     lv_obj_set_align(ui_Label15, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Label15, "Soid EC:");
+    lv_label_set_text(ui_Label15, "Photpho:");
     lv_obj_set_style_text_color(ui_Label15, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_Label15, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Label15, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -121,6 +121,28 @@ void ui_SensorsScreen_screen_init(void)
     lv_obj_set_style_text_color(ui_Label16, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_Label16, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Label16, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_Label155 = lv_label_create(ui_Panel33);
+    lv_obj_set_width(ui_Label155, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Label155, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Label155, 0);
+    lv_obj_set_y(ui_Label155, 102);
+    lv_obj_set_align(ui_Label155, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Label155, "Kali:");
+    lv_obj_set_style_text_color(ui_Label155, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_Label155, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_Label155, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_Label166 = lv_label_create(ui_Panel33);
+    lv_obj_set_width(ui_Label166, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Label166, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Label166, 108);
+    lv_obj_set_y(ui_Label166, 102);
+    lv_obj_set_align(ui_Label166, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Label166, "2.1");
+    lv_obj_set_style_text_color(ui_Label166, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_Label166, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_Label166, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_add_event_cb(ui_SensorsScreen, ui_event_SensorsScreen, LV_EVENT_ALL, NULL);
 

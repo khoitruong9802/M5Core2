@@ -25,6 +25,8 @@ extern "C" {
 #include "ui_helpers.h"
 #include "ui_events.h"
 
+
+
 // SCREEN: ui_MainScreen
 void ui_MainScreen_screen_init(void);
 extern lv_obj_t * ui_MainScreen;
@@ -179,6 +181,8 @@ extern lv_obj_t * ui_Label26;
 extern lv_obj_t * ui_Label27;
 extern lv_obj_t * ui_Label15;
 extern lv_obj_t * ui_Label16;
+extern lv_obj_t * ui_Label155;
+extern lv_obj_t * ui_Label166;
 // SCREEN: ui_ManualScreen
 void ui_ManualScreen_screen_init(void);
 void ui_event_ManualScreen(lv_event_t * e);
@@ -213,6 +217,9 @@ void ui_event_WifiScreen(lv_event_t * e);
 extern lv_obj_t * ui_WifiScreen;
 extern lv_obj_t * ui_Panel26;
 extern lv_obj_t * ui____initial_actions0;
+extern lv_obj_t * wifiLoading;
+extern lv_obj_t * wifiSpinnerLoading;
+extern lv_obj_t * wifiLabelLoading;
 // SCREEN: ui_ScheduleScreen
 void ui_ScheduleScreen_screen_init(void);
 extern lv_obj_t *  ui_ScheduleScreen;
@@ -590,6 +597,105 @@ void ui_event_PanelArea1SensorArea(lv_event_t * e);
 void ui_event_PanelArea2SensorArea(lv_event_t * e);
 void ui_event_PanelArea3SensorArea(lv_event_t * e);
 
+
+// SCREEN: ui_SoilTemperatureSensor
+void ui_SoilTemperatureSensor_screen_init(void);
+void ui_event_SoilTemperatureSensor(lv_event_t * e);
+extern lv_obj_t * ui_SoilTemperatureSensor;
+extern lv_obj_t * ui_SoilTemperatureSensorScreen;
+extern lv_obj_t * ui_ChartSoilTemperatureSensor;
+extern lv_obj_t * ui_LabelSoilTemperatureSensor;
+// SCREEN: ui_SoidHumiditySensor
+void ui_SoidHumiditySensor_screen_init(void);
+void ui_event_SoidHumiditySensor(lv_event_t * e);
+extern lv_obj_t * ui_SoidHumiditySensor;
+extern lv_obj_t * ui_SoidHumiditySensorScreen;
+extern lv_obj_t * ui_ChartSoidHumiditySensor;
+extern lv_obj_t * ui_LabelTitleSoidHumiditySensor;
+// SCREEN: ui_SoidNitro
+void ui_SoidNitro_screen_init(void);
+void ui_event_SoidNitro(lv_event_t * e);
+extern lv_obj_t * ui_SoidNitro;
+extern lv_obj_t * ui_SoidNitroScreen;
+extern lv_obj_t * ui_ChartSoidNitro;
+extern lv_obj_t * ui_labelTitleSoidNitro;
+// SCREEN: ui_SoidKali
+void ui_SoidKali_screen_init(void);
+void ui_event_SoidKali(lv_event_t * e);
+extern lv_obj_t * ui_SoidKali;
+extern lv_obj_t * ui_SoidKaliScreen;
+extern lv_obj_t * ui_ChartSoidKali;
+extern lv_obj_t * ui_LabelSoidKali;
+extern lv_obj_t * ui____initial_actions0;
+// SCREEN: ui_SoidPhotpho
+void ui_SoidPhotpho_screen_init(void);
+void ui_event_SoidPhotpho(lv_event_t * e);
+extern lv_obj_t * ui_SoidPhotpho;
+extern lv_obj_t * ui_SoidPhotphoScreen;
+extern lv_obj_t * ui_ChartSoidPhotpho;
+extern lv_obj_t * ui_labelTitleSoidPhotpho;
+// SCREEN: ui_DevicesScreen
+void ui_DevicesAreaScreen_screen_init(void);
+extern lv_obj_t * ui_DevicesAreaScreen;
+extern lv_obj_t * ui_DevicesAreaScreen_screen;
+extern lv_obj_t * ui_PanelDevicesAreaScreen_screen;
+extern lv_obj_t * ui_PanelArea1DevicesArea;
+extern lv_obj_t * ui_LabelArea1DevicesArea;
+extern lv_obj_t * ui_PanelArea2DevicesArea;
+extern lv_obj_t * ui_LabelArea2DevicesArea;
+extern lv_obj_t * ui_PanelArea3DevicesArea;
+extern lv_obj_t * ui_LabelArea3DevicesArea;
+void ui_event_DevicesAreaScreen(lv_event_t * e);
+void ui_event_PanelArea1DevicesArea(lv_event_t * e);
+void ui_event_PanelArea2DevicesArea(lv_event_t * e);
+void ui_event_PanelArea3DevicesArea(lv_event_t * e);
+//SCREEN: ui_SensorsLogArea
+void ui_SensorsLogAreaScreen_screen_init(void);
+void ui_event_SensorsLogAreaScreen(lv_event_t * e);
+extern lv_obj_t * ui_SensorsLogAreaScreen;
+extern lv_obj_t * ui_SensorsLogAreaScreen_screen;
+extern lv_obj_t * ui_PanelSensorsLogAreaScreen_screen;
+extern lv_obj_t * ui_PanelArea1SensorsLogArea;
+extern lv_obj_t * ui_LabelArea1SensorsLogArea;
+extern lv_obj_t * ui_PanelArea2SensorsLogArea;
+extern lv_obj_t * ui_LabelArea2SensorsLogArea;
+extern lv_obj_t * ui_PanelArea3SensorsLogArea;
+extern lv_obj_t * ui_LabelArea3SensorsLogArea;
+
+
+//SCREEN: ui_SensorsLogList
+void ui_SensorsLogListScreen_screen_init(void);
+void ui_event_SensorsLogListScreen(lv_event_t * e);
+extern lv_obj_t * ui_SensorsLogListScreen;
+extern lv_obj_t * ui_SensorsLogListScreen_screen;
+extern lv_obj_t * ui_PanelSensorsLogListScreen_screen;
+extern lv_obj_t * ui_PanelItem1SensorsLogList;
+extern lv_obj_t * ui_LabelItem1SensorsLogList;
+extern lv_obj_t * ui_PanelItem2SensorsLogList;
+extern lv_obj_t * ui_LabelItem2SensorsLogList;
+extern lv_obj_t * ui_PanelItem3SensorsLogList;
+extern lv_obj_t * ui_LabelItem3SensorsLogList;
+extern lv_obj_t * ui_PanelItem4SensorsLogList;
+extern lv_obj_t * ui_LabelItem4SensorsLogList;
+extern lv_obj_t * ui_PanelItem5SensorsLogList;
+extern lv_obj_t * ui_LabelItem5SensorsLogList;
+extern lv_obj_t * ui_PanelSensorsLogScheduleItemScreen;
+extern lv_obj_t * ui_SpinnerSensorsLogScheduleItemScreen;
+extern lv_obj_t * ui_LabelSensorsLogScheduleItemScreen;
+
+//SCREEN: ui_LoadingScreen
+void ui_Loading_screen_init(void);
+extern lv_obj_t * ui_Loading;
+extern lv_obj_t * ui_PanelLoadingLoadingScreen;
+extern lv_obj_t * ui_SpinnerLoadingLoadingScreen;
+extern lv_obj_t * ui_LabelLoadingLoadingScreen;
+
+extern lv_chart_series_t * ui_ChartSoilTemperatureSensor_series_1;
+extern lv_chart_series_t * ui_ChartSoidHumiditySensor_series_1;
+extern lv_chart_series_t * ui_ChartSoidKali_series_1;
+extern lv_chart_series_t * ui_ChartSoidNitro_series_1;
+extern lv_chart_series_t * ui_ChartSoidPhotpho_series_1;
+
 LV_IMG_DECLARE(ui_img_background_png);    // assets/background.png
 LV_IMG_DECLARE(ui_img_125102533);    // assets/bluetooth-sign_icon.png
 LV_IMG_DECLARE(ui_img_wifi_icon_png);    // assets/wifi_icon.png
@@ -618,6 +724,7 @@ LV_IMG_DECLARE(ui_img_chart_png);
 LV_IMG_DECLARE(ui_img_device_png);
 LV_IMG_DECLARE(ui_img_process_png);
 LV_IMG_DECLARE(ui_img_bell_png);
+LV_IMG_DECLARE(ui_img_history_png);
 
 
 

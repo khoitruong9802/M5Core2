@@ -39,6 +39,7 @@ SET(SOURCES screens/ui_MainScreen.c
     images/ui_img_chart_png.c
     images/ui_img_device_png.c
     img/ui_img_process_png.c
-    img/ui_img_bell_png.c)
+    img/ui_img_bell_png.c
+    img/ui_img_history_png.c)
 
 add_library(ui ${SOURCES})

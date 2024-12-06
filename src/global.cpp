@@ -22,8 +22,28 @@ uint16_t current_year;
 uint16_t current_month;
 uint16_t current_day;
 
+bool convert_mqtt_task = 0;
 bool touch_enabled;
 
+const char *str_topic_temp1;
+const char *str_topic_humi1;
+const char *str_topic_kali1;
+const char *str_topic_nito1;
+const char *str_topic_photpho1;
+const char *str_topic_temp2;
+const char *str_topic_humi2;
+const char *str_topic_kali2;
+const char *str_topic_nito2;
+const char *str_topic_photpho2;
+const char *str_topic_temp3;
+const char *str_topic_humi3;
+const char *str_topic_kali3;
+const char *str_topic_nito3;
+const char *str_topic_photpho3;
+
+//GENERAL
+int current_area_for_sensors_log;
+int current_area_for_sensors;
 void print(uint8_t print_mode, const char* msg, ...) {
     if (DEBUG_MODE == 1) {
         va_list args;

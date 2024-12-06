@@ -57,21 +57,12 @@ void change_brightness(lv_event_t *e) {
 
 void change_screen_mannual_control(lv_event_t *e) {
   // Your code here
-  lv_event_code_t event_code = lv_event_get_code(e);
-  lv_obj_t *target = lv_event_get_target(e);
-  if (event_code == LV_EVENT_CLICKED) {
-    if (WiFi.status() != WL_CONNECTED) {
-      _ui_flag_modify(ui_Panel29, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-    } else {
-      TaskHandle_t mqtt_task = xTaskGetHandle("mqtt_service");
-      if (mqtt_task != NULL) {
-        print(PRINTLN, "Mqtt has created");
-        _ui_screen_change(&ui_ManualScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ManualScreen_screen_init);
-      } else {
-        xTaskCreate(mqtt_service, "mqtt_service", 4096, NULL, 1, NULL);
-        _ui_flag_modify(ui_PanelLoadingFarmScreen, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-      }
-    }
+  if (WiFi.status() != WL_CONNECTED) {
+    _ui_flag_modify(ui_PanelLoadingFarmScreen, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    delay(100);
+  } else {
+    _ui_screen_change(&ui_ManualScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ManualScreen_screen_init);
+    _ui_flag_modify(ui_PanelLoadingFarmScreen, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
   }
 }
 
@@ -91,6 +82,7 @@ void scan_network(lv_event_t *e) {
   lv_event_code_t event_code = lv_event_get_code(e);
   lv_obj_t *target = lv_event_get_target(e);
   if (event_code == LV_EVENT_CLICKED) {
+    lv_obj_clear_flag(wifiLoading, LV_OBJ_FLAG_HIDDEN);
     TaskHandle_t scan_wifi_task = xTaskGetHandle("scan_wifi");
     if (scan_wifi_task != NULL) {
       print(PRINTLN, "scan_wifi has created");
@@ -141,9 +133,11 @@ void change_screen_ota(lv_event_t *e) {
           _ui_flag_modify(ui_Panel104, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
           print(PRINTLN, "No change!");
         }
+        lv_obj_add_flag(ui_PanelLoadingLoadingScreen, LV_OBJ_FLAG_HIDDEN);
       }
     }
   }
+  
 }
 
 void handle_out_ota_page() {
@@ -203,13 +197,13 @@ void schedule_screen_init(lv_event_t * e)
               );
 
               if (result == pdPASS) {
-                  Serial.println("Task created successfully in PSRAM.");
+                  print(PRINTLN,"Task created successfully in PSRAM.");
               } else {
-                  Serial.println("Failed to create task.");
+                  print(PRINTLN,"Failed to create task.");
                   free(taskStackMemory); // Free memory if task creation failed
               }
           } else {
-              Serial.println("Failed to allocate memory for the task stack in PSRAM.");
+              print(PRINTLN,"Failed to allocate memory for the task stack in PSRAM.");
           }
         }
     }
@@ -271,12 +265,12 @@ void ui_event_CheckboxScheduleEndDateScheduleItem(lv_event_t * e)
   lv_obj_t * checkbox = lv_event_get_target(e);
   bool is_checked = lv_obj_has_state(checkbox, LV_STATE_CHECKED);
   if (is_checked) {
-    Serial.println("checked!!!");
+    print(PRINTLN,"checked!!!");
     lv_obj_add_flag(ui_PanelScheduleEndDateScheduleItem, LV_OBJ_FLAG_HIDDEN); 
   }
   else
   {
-    Serial.println("uncheck!!");
+    print(PRINTLN,"uncheck!!");
     lv_obj_clear_flag(ui_PanelScheduleEndDateScheduleItem, LV_OBJ_FLAG_HIDDEN); 
   }
   lv_task_handler();
@@ -290,13 +284,13 @@ void ui_event_PanelScheduleWeekItemMondayScheduleItem(lv_event_t * e)
   if (bg_color.full == target_color.full) {
       // If it matches, set it to the new color
       lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemMondayScheduleItem, new_color, LV_PART_MAIN | LV_STATE_DEFAULT);
-      Serial.println("Color changed to 0xFFFFFF");
+      print(PRINTLN,"Color changed to 0xFFFFFF");
   } else if (bg_color.full == new_color.full) {
       // If the color is already the new color, change it back to the target color
       lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemMondayScheduleItem, target_color, LV_PART_MAIN | LV_STATE_DEFAULT);
-      Serial.println("Color changed back to 0x4264FF");
+      print(PRINTLN,"Color changed back to 0x4264FF");
   } else {
-      Serial.println("No color change was required.");
+      print(PRINTLN,"No color change was required.");
   }
   lv_task_handler();
 }
@@ -308,12 +302,12 @@ void ui_event_PanelScheduleWeekItemTuesdayScheduleItem(lv_event_t * e)
     lv_color_t bg_color = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemTuesdayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
     if (bg_color.full == target_color.full) {
         lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemTuesdayScheduleItem, new_color, LV_PART_MAIN | LV_STATE_DEFAULT);
-        Serial.println("Color changed to 0xFFFFFF");
+        print(PRINTLN,"Color changed to 0xFFFFFF");
     } else if (bg_color.full == new_color.full) {
         lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemTuesdayScheduleItem, target_color, LV_PART_MAIN | LV_STATE_DEFAULT);
-        Serial.println("Color changed back to 0x4264FF");
+        print(PRINTLN,"Color changed back to 0x4264FF");
     } else {
-        Serial.println("No color change was required.");
+        print(PRINTLN,"No color change was required.");
     }
     lv_task_handler();
 }
@@ -325,12 +319,12 @@ void ui_event_PanelScheduleWeekItemWednesdayScheduleItem(lv_event_t * e)
     lv_color_t bg_color = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemWednesdayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
     if (bg_color.full == target_color.full) {
         lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemWednesdayScheduleItem, new_color, LV_PART_MAIN | LV_STATE_DEFAULT);
-        Serial.println("Color changed to 0xFFFFFF");
+        print(PRINTLN,"Color changed to 0xFFFFFF");
     } else if (bg_color.full == new_color.full) {
         lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemWednesdayScheduleItem, target_color, LV_PART_MAIN | LV_STATE_DEFAULT);
-        Serial.println("Color changed back to 0x4264FF");
+        print(PRINTLN,"Color changed back to 0x4264FF");
     } else {
-        Serial.println("No color change was required.");
+        print(PRINTLN,"No color change was required.");
     }
     lv_task_handler();
 }
@@ -342,12 +336,12 @@ void ui_event_PanelScheduleWeekItemThursdayScheduleItem(lv_event_t * e)
     lv_color_t bg_color = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemThursdayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
     if (bg_color.full == target_color.full) {
         lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemThursdayScheduleItem, new_color, LV_PART_MAIN | LV_STATE_DEFAULT);
-        Serial.println("Color changed to 0xFFFFFF");
+        print(PRINTLN,"Color changed to 0xFFFFFF");
     } else if (bg_color.full == new_color.full) {
         lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemThursdayScheduleItem, target_color, LV_PART_MAIN | LV_STATE_DEFAULT);
-        Serial.println("Color changed back to 0x4264FF");
+        print(PRINTLN,"Color changed back to 0x4264FF");
     } else {
-        Serial.println("No color change was required.");
+        print(PRINTLN,"No color change was required.");
     }
     lv_task_handler();
 }
@@ -359,12 +353,12 @@ void ui_event_PanelScheduleWeekItemFridayScheduleItem(lv_event_t * e)
     lv_color_t bg_color = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemFridayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
     if (bg_color.full == target_color.full) {
         lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemFridayScheduleItem, new_color, LV_PART_MAIN | LV_STATE_DEFAULT);
-        Serial.println("Color changed to 0xFFFFFF");
+        print(PRINTLN,"Color changed to 0xFFFFFF");
     } else if (bg_color.full == new_color.full) {
         lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemFridayScheduleItem, target_color, LV_PART_MAIN | LV_STATE_DEFAULT);
-        Serial.println("Color changed back to 0x4264FF");
+        print(PRINTLN,"Color changed back to 0x4264FF");
     } else {
-        Serial.println("No color change was required.");
+        print(PRINTLN,"No color change was required.");
     }
     lv_task_handler();
 }
@@ -376,12 +370,12 @@ void ui_event_PanelScheduleWeekItemSaturdayScheduleItem(lv_event_t * e)
     lv_color_t bg_color = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemSaturdayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
     if (bg_color.full == target_color.full) {
         lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemSaturdayScheduleItem, new_color, LV_PART_MAIN | LV_STATE_DEFAULT);
-        Serial.println("Color changed to 0xFFFFFF");
+        print(PRINTLN,"Color changed to 0xFFFFFF");
     } else if (bg_color.full == new_color.full) {
         lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemSaturdayScheduleItem, target_color, LV_PART_MAIN | LV_STATE_DEFAULT);
-        Serial.println("Color changed back to 0x4264FF");
+        print(PRINTLN,"Color changed back to 0x4264FF");
     } else {
-        Serial.println("No color change was required.");
+        print(PRINTLN,"No color change was required.");
     }
     lv_task_handler();
 }
@@ -393,12 +387,12 @@ void ui_event_PanelScheduleWeekItemSundayScheduleItem(lv_event_t * e)
     lv_color_t bg_color = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemSundayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
     if (bg_color.full == target_color.full) {
         lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemSundayScheduleItem, new_color, LV_PART_MAIN | LV_STATE_DEFAULT);
-        Serial.println("Color changed to 0xFFFFFF");
+        print(PRINTLN,"Color changed to 0xFFFFFF");
     } else if (bg_color.full == new_color.full) {
         lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemSundayScheduleItem, target_color, LV_PART_MAIN | LV_STATE_DEFAULT);
-        Serial.println("Color changed back to 0x4264FF");
+        print(PRINTLN,"Color changed back to 0x4264FF");
     } else {
-        Serial.println("No color change was required.");
+        print(PRINTLN,"No color change was required.");
     }
     lv_task_handler();
 }
@@ -426,7 +420,7 @@ void updatePageScheduleItem(int indexOfElement)
   char serverURL[150]; // Adjust size if needed based on the URL length
   snprintf(serverURL, sizeof(serverURL), "%s/api/v1/fertilizer-device/1/schedule?page=%d&limit=3", web_server_official, indexOfElement);
   currentPage = indexOfElement;
-  Serial.println(serverURL);
+  print(PRINTLN,serverURL);
   String response = http_get_data(serverURL);
   jsonString = response;
 
@@ -436,7 +430,7 @@ void updatePageScheduleItem(int indexOfElement)
   DeserializationError error = deserializeJson(jsonDocGlobal, response);
   if (error) 
   {
-  Serial.println(error.c_str());
+  print(PRINTLN,error.c_str());
   }
 
   // Treat `jsonDocGlobal` as a JSON object since `total_pages` is at the top level
@@ -559,7 +553,6 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
         const char * date_new = lv_label_get_text(ui_LabelScheduleDateScheduleItem);
         const char * start_date_new = lv_label_get_text(ui_LabelScheduleStartDateScheduleItem);
         const char * end_date_new = lv_label_get_text(ui_LabelScheduleEndDateScheduleItem);
-        bool forever_checkbox_new = lv_obj_has_state(ui_CheckboxScheduleEndDateScheduleItem, LV_STATE_CHECKED);
         int add_flag = 0;
         if(current_schedule_id == -1)
         {
@@ -592,7 +585,7 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
           DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
           if (error) 
           {
-          Serial.println(error.c_str());
+          print(PRINTLN,error.c_str());
           }
           // Access the JSON array
           JsonObject jsonObject = jsonDocGlobal.as<JsonObject>();
@@ -802,13 +795,13 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
                     );
 
                     if (result == pdPASS) {
-                        Serial.println("Task created successfully in PSRAM.");
+                        print(PRINTLN,"Task created successfully in PSRAM.");
                     } else {
-                        Serial.println("Failed to create task.");
+                        print(PRINTLN,"Failed to create task.");
                         free(taskStackMemory); // Free memory if task creation failed
                     }
                 } else {
-                    Serial.println("Failed to allocate memory for the task stack in PSRAM.");
+                    print(PRINTLN,"Failed to allocate memory for the task stack in PSRAM.");
                 }
               }
               
@@ -818,7 +811,6 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
               char serverURL[150]; // Adjust size if needed based on the URL length
               snprintf(serverURL, sizeof(serverURL), "%s/api/v1/schedule/%d", web_server_official, current_schedule_id);
               sendPutRequest(serverURL, jsonPayload.c_str());
-              Serial.println(current_schedule_id);
               updatePageScheduleItem(currentPage);
               lv_task_handler();
               _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
@@ -826,7 +818,7 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
 
             
           } else {
-              Serial.println("No changes detected. Skipping PUT request.");
+              print(PRINTLN,"No changes detected. Skipping PUT request.");
               _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
           }
     }
@@ -987,7 +979,7 @@ void ui_event_ScheduleScreen(lv_event_t * e)
 
 void printText(const char * text)
 {
-  Serial.println(text);
+  print(PRINTLN,text);
 }
 
 uint16_t get_hour(const char *time_str) 
@@ -1090,7 +1082,7 @@ void addNewRequest(const char* serverURL, const char* jsonPayload) {
 
     http.end(); // End the HTTP connection
   } else {
-    Serial.println("WiFi Disconnected");
+    print(PRINTLN,"WiFi Disconnected");
   }
 
 }
@@ -1122,7 +1114,7 @@ void sendPutRequest(const char* serverURL, const char* jsonPayload) {
 
     http.end(); // End the HTTP connection
   } else {
-    Serial.println("WiFi Disconnected");
+    print(PRINTLN,"WiFi Disconnected");
   }
 }
 
@@ -1136,7 +1128,7 @@ void sendDeleteRequest(int schedule_id) {
     snprintf(serverURL, sizeof(serverURL), "%s/api/v1/schedule/%d", web_server_official, schedule_id);
 
     Serial.print("Making DELETE request to: ");
-    Serial.println(serverURL);
+    print(PRINTLN,serverURL);
 
     // Start the DELETE request
     http.begin(serverURL);
@@ -1159,7 +1151,7 @@ void sendDeleteRequest(int schedule_id) {
     // Close the connection
     http.end();
   } else {
-    Serial.println("WiFi is not connected");
+    print(PRINTLN,"WiFi is not connected");
   }
 }
 
@@ -1334,13 +1326,13 @@ void watering_history_screen_init(lv_event_t * e)
         );
 
         if (result == pdPASS) {
-            Serial.println("Task created successfully in PSRAM.");
+            print(PRINTLN,"Task created successfully in PSRAM.");
         } else {
-            Serial.println("Failed to create task.");
+            print(PRINTLN,"Failed to create task.");
             free(taskStackMemory); // Free memory if task creation failed
         }
     } else {
-        Serial.println("Failed to allocate memory for the task stack in PSRAM.");
+        print(PRINTLN,"Failed to allocate memory for the task stack in PSRAM.");
     }
   }
 }
@@ -1352,7 +1344,7 @@ void updatePageWateringHistoryItem(int currentHistoryPage)
     char serverURL[150]; // Adjust size if needed based on the URL length
     currentWateringHistoryPage = currentHistoryPage;
     snprintf(serverURL, sizeof(serverURL), "%s/api/v1/schedule-history?page=%d&limit=3", web_server_official, currentWateringHistoryPage);
-    Serial.println(serverURL); 
+    print(PRINTLN,serverURL); 
     String response = http_get_data(serverURL);
     jsonString = response;
     Serial.println(response); 
@@ -1519,13 +1511,264 @@ void notification_task(lv_event_t * e)
         );
 
         if (result == pdPASS) {
-            Serial.println("Task created successfully in PSRAM.");
+            print(PRINTLN,"Task created successfully in PSRAM.");
         } else {
-            Serial.println("Failed to create task.");
+            print(PRINTLN,"Failed to create task.");
             free(taskStackMemory); // Free memory if task creation failed
         }
     } else {
-        Serial.println("Failed to allocate memory for the task stack in PSRAM.");
+        print(PRINTLN,"Failed to allocate memory for the task stack in PSRAM.");
     }
   }
+}
+
+void handlerUIForSensorsLog(int current_area_for_sensors_log, int type)
+{
+  char serverURL[150]; // Adjust size if needed based on the URL length
+  const char * type_cstr;
+  if(type == 1)
+  {
+    type_cstr = "temp";
+    
+  }
+  else if(type == 2)
+  {
+    type_cstr = "humi";
+
+  }
+  else if(type == 3)
+  {
+    type_cstr = "nito";
+
+  }
+  else if(type == 4)
+  {
+    type_cstr = "kali";
+
+  }
+  else if(type == 5)
+  {
+    type_cstr = "photpho";
+    
+  }
+
+  snprintf(serverURL, sizeof(serverURL), "%s/api/v1/sensor-data/%s/%d", web_server_official, type_cstr, current_area_for_sensors_log);
+  Serial.println(serverURL); 
+  String response = http_get_data(serverURL);
+  jsonString = response;
+  using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
+  SpiRamJsonDocument jsonDocGlobal(1048576);
+  
+  DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
+  if (error) 
+  {
+      Serial.println(error.c_str());
+  }
+  if (jsonDocGlobal.is<JsonArray>()) 
+  {
+      JsonArray dataArray = jsonDocGlobal.as<JsonArray>();
+
+      // Create a C++ array to hold the data
+      const size_t arraySize = dataArray.size(); // Determine array size
+      float values[arraySize]; // Define the C++ array
+
+      // Fill the C++ array with values from the JSON array
+      size_t index = 0;
+      for (float value : dataArray) 
+      {
+          values[index++] = value;
+      }
+      // Convert float values to `lv_coord_t` type
+      lv_coord_t* chartData = new lv_coord_t[arraySize]; // Allocate array dynamically
+      for (size_t i = 0; i < arraySize; i++) {
+          chartData[i] = static_cast<lv_coord_t>(values[i]); // Scale if necessary
+      }
+
+      if(type == 1)
+      {
+        lv_chart_set_ext_y_array(ui_ChartSoilTemperatureSensor, ui_ChartSoilTemperatureSensor_series_1, chartData);
+        lv_task_handler();
+        _ui_screen_change(&ui_SoilTemperatureSensor, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_SoilTemperatureSensor_screen_init);
+      }
+      else if(type == 2)
+      {
+        lv_chart_set_ext_y_array(ui_ChartSoidHumiditySensor, ui_ChartSoidHumiditySensor_series_1, chartData);
+        lv_task_handler();
+        _ui_screen_change(&ui_SoidHumiditySensor, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_SoidHumiditySensor_screen_init);
+      }
+      else if(type == 3)
+      {
+        lv_chart_set_ext_y_array(ui_ChartSoidNitro, ui_ChartSoidNitro_series_1, chartData);
+        lv_task_handler();
+        _ui_screen_change(&ui_SoidNitro, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_SoidNitro_screen_init);
+      }
+      else if(type == 4)
+      {
+        lv_chart_set_ext_y_array(ui_ChartSoidKali, ui_ChartSoidKali_series_1, chartData);
+        lv_task_handler();
+        _ui_screen_change(&ui_SoidKali, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_SoidKali_screen_init);
+      }
+      else if(type == 5)
+      {
+        lv_chart_set_ext_y_array(ui_ChartSoidPhotpho, ui_ChartSoidPhotpho_series_1, chartData);
+        lv_task_handler();
+        _ui_screen_change(&ui_SoidPhotpho, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_SoidPhotpho_screen_init);
+      }
+
+  } 
+  else 
+  {
+      Serial.println("JSON data is not an array!");
+  }
+
+  // Cleanup and free resources manually when you're done
+  jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
+  jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible
+  lv_obj_add_flag(ui_PanelSensorsLogScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
+  lv_task_handler();
+}
+
+void ui_event_PanelArea1SensorArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) 
+    {
+        current_area_for_sensors = 1;
+        lv_label_set_text(ui_Label22, str_topic_temp1);
+        lv_label_set_text(ui_Label27, str_topic_humi1);
+        lv_label_set_text(ui_Label166, str_topic_kali1);
+        lv_label_set_text(ui_Label26, str_topic_nito1);
+        lv_label_set_text(ui_Label16, str_topic_photpho1);
+        _ui_screen_change(&ui_SensorsScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_SensorsScreen_screen_init);
+    }
+
+}
+void ui_event_PanelArea2SensorArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) 
+    {
+        current_area_for_sensors = 2;
+        lv_label_set_text(ui_Label22, str_topic_temp2);
+        lv_label_set_text(ui_Label27, str_topic_humi2);
+        lv_label_set_text(ui_Label166, str_topic_kali2);
+        lv_label_set_text(ui_Label26, str_topic_nito2);
+        lv_label_set_text(ui_Label16, str_topic_photpho2);
+        _ui_screen_change(&ui_SensorsScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_SensorsScreen_screen_init);
+    }
+
+}
+void ui_event_PanelArea3SensorArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) 
+    {
+        current_area_for_sensors = 3;
+        lv_label_set_text(ui_Label22, str_topic_temp3);
+        lv_label_set_text(ui_Label27, str_topic_humi3);
+        lv_label_set_text(ui_Label166, str_topic_kali3);
+        lv_label_set_text(ui_Label26, str_topic_nito3);
+        lv_label_set_text(ui_Label16, str_topic_photpho3);
+        _ui_screen_change(&ui_SensorsScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_SensorsScreen_screen_init);
+    }
+}
+
+void ui_event_SensorsScreen(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) {
+        current_area_for_sensors = 0;
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_SensorsAreaScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_SensorsAreaScreen_screen_init);
+    }
+}
+
+void ui_event_PanelArea1SensorsLogArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED)
+    {
+        current_area_for_sensors_log = 1;
+        _ui_screen_change(&ui_SensorsLogListScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_SensorsLogListScreen_screen_init);
+    }
+}
+void ui_event_PanelArea2SensorsLogArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED)
+    {
+        current_area_for_sensors_log = 2;
+        _ui_screen_change(&ui_SensorsLogListScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_SensorsLogListScreen_screen_init);
+    }
+}
+void ui_event_PanelArea3SensorsLogArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED)
+    {
+        current_area_for_sensors_log = 3;
+        _ui_screen_change(&ui_SensorsLogListScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_SensorsLogListScreen_screen_init);
+    }
+}
+
+void ui_event_PanelItem1SensorItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_obj_clear_flag(ui_PanelSensorsLogScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
+        lv_task_handler();
+        handlerUIForSensorsLog(current_area_for_sensors_log, 1);
+        
+    }
+}
+void ui_event_PanelItem2SensorItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_obj_clear_flag(ui_PanelSensorsLogScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
+        lv_task_handler();
+        handlerUIForSensorsLog(current_area_for_sensors_log, 2);
+        
+    }
+}
+void ui_event_PanelItem3SensorItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_obj_clear_flag(ui_PanelSensorsLogScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
+        lv_task_handler();
+        handlerUIForSensorsLog(current_area_for_sensors_log, 3);
+        
+    }
+}
+void ui_event_PanelItem4SensorItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_obj_clear_flag(ui_PanelSensorsLogScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
+        lv_task_handler();
+        handlerUIForSensorsLog(current_area_for_sensors_log, 4);
+    }
+}
+
+void ui_event_PanelItem5SensorItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_obj_clear_flag(ui_PanelSensorsLogScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
+        lv_task_handler();
+        handlerUIForSensorsLog(current_area_for_sensors_log, 5);
+    }    
 }

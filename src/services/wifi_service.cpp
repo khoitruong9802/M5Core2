@@ -38,7 +38,7 @@ void wifi_service(void *parameter) {
       uint8_t connect_ok = connect_wifi(wifiCredentials->username, wifiCredentials->password);
       vTaskDelete(NULL);
     }
-    delay(1000);
+    vTaskDelay(pdMS_TO_TICKS(1000));
   }
 }
 
@@ -84,9 +84,6 @@ void scan_wifi(void *parameter) {
   // {
   //   print(PRINTF,"%s\n", list_of_wifi->name_of_wifi[i]);
   // }
-  print(PRINTLN, "Begin send event!");
-  // lv_event_send(ui_WifiScreen, (lv_event_code_t)MY_LV_EVENT_SCAN_WIFI, (void *)list_of_wifi);
-  print(PRINTLN, "End send event!");
-
+  lv_obj_add_flag(wifiLoading, LV_OBJ_FLAG_HIDDEN);
   vTaskDelete(NULL);
 }

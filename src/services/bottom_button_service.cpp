@@ -8,7 +8,7 @@
 void bottom_button_service(void *parameter) {
   for (;;) {
     M5.update();
-    delay(20);
+    vTaskDelay(pdMS_TO_TICKS(1000));
 
     if (M5.BtnPWR.wasClicked()) {
       print(PRINTLN, "Btn PWR");

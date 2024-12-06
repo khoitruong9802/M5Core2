@@ -135,7 +135,7 @@ void ota_checking_update(void *paramter)
             }
             print(PRINTLN,"changed!");
         }
-        delay(3000);
+        vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
 

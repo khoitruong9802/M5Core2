@@ -67,7 +67,27 @@ extern uint16_t current_month;
 extern uint16_t current_day;
 
 extern bool touch_enabled;  // Flag to control whether touch is enabled
+extern bool convert_mqtt_task;
 
+extern const char *str_topic_temp1;
+extern const char *str_topic_humi1;
+extern const char *str_topic_kali1;
+extern const char *str_topic_nito1;
+extern const char *str_topic_photpho1;
+extern const char *str_topic_temp2;
+extern const char *str_topic_humi2;
+extern const char *str_topic_kali2;
+extern const char *str_topic_nito2;
+extern const char *str_topic_photpho2;
+extern const char *str_topic_temp3;
+extern const char *str_topic_humi3;
+extern const char *str_topic_kali3;
+extern const char *str_topic_nito3;
+extern const char *str_topic_photpho3;
+
+//GENERAL
+extern int current_area_for_sensors_log;
+extern int current_area_for_sensors;
 #define PRINT   1
 #define PRINTLN 2
 #define PRINTF  3

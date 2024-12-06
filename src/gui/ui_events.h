@@ -66,6 +66,16 @@ void ui_event_ButtonPreviousHeaderWateringHistory(lv_event_t * e);
 void ui_event_ButtonNextHeaderWateringHistory(lv_event_t * e);
 void ui_event_InformationScreen(lv_event_t * e);
 void notification_task(lv_event_t * e);
+void handlerUIForSensorsLog(int current_area_for_sensors_log, int type);
+void ui_event_SensorsScreen(lv_event_t * e);
+void ui_event_PanelItem5SensorItem(lv_event_t * e);
+void ui_event_PanelItem1SensorItem(lv_event_t * e);
+void ui_event_PanelItem2SensorItem(lv_event_t * e);
+void ui_event_PanelItem3SensorItem(lv_event_t * e);
+void ui_event_PanelItem4SensorItem(lv_event_t * e);
+void ui_event_PanelArea1SensorsLogArea(lv_event_t * e);
+void ui_event_PanelArea2SensorsLogArea(lv_event_t * e);
+void ui_event_PanelArea3SensorsLogArea(lv_event_t * e);
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

@@ -53,9 +53,9 @@ void my_log_cb(const char * buf)
 void setup()
 {
     touch_enabled = true;
-    // WiFi.begin("kien", "11111111");
+    WiFi.begin("kien", "11111111");
     // WiFi.begin("BiBo 2", "260NTB33");
-    WiFi.begin("RD-SEAI_2.4G", "");
+    // WiFi.begin("RD-SEAI_2.4G", "");
     // lv_log_register_print_cb(my_log_cb);
 
     lvgl_mutex = xSemaphoreCreateMutex();
@@ -91,16 +91,15 @@ void setup()
     xTaskCreatePinnedToCore(rtc_service, "rtc_service", 4096, NULL, 5, NULL, tskNO_AFFINITY);
     xTaskCreatePinnedToCore(bottom_button_service, "bottom_button_service", 2048, NULL, 5, NULL, tskNO_AFFINITY);
     xTaskCreatePinnedToCore(mqtt_init, "mqtt_init", 2048, NULL, 5, NULL, tskNO_AFFINITY);
-    // xTaskCreatePinnedToCore(ota_checking_update, "ota_checking_update", 2048, NULL, 5, NULL, tskNO_AFFINITY);
 }
 
 void loop()
 {
   monitorHealth();
-  // Serial.println("======================================================================");
+//   Serial.println("======================================================================");
 //   Serial.println(touch_enabled);
-  // Serial.println(currentPage);
-  // Serial.println("======================================================================");
+//   Serial.println(currentPage);
+//   Serial.println("======================================================================");
     delay(1000);
 //   vTaskDelete(NULL);
 }

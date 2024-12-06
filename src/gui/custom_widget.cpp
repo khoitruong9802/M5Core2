@@ -12,7 +12,6 @@ lv_obj_t *enter_password_panel;
 lv_obj_t *wifi_name_label;
 lv_obj_t *esc_btn;
 lv_obj_t *esc_label;
-lv_obj_t *sinking_label;
 static void ui_event_esc_btn(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -43,11 +42,6 @@ void enter_password_widget_init(void) {
   lv_obj_set_pos(pwd_ta, 5, 15);
   lv_obj_add_event_cb(pwd_ta, ta_event_cb, LV_EVENT_ALL, NULL);
 
-  /* Create the "sinking" label as a child of the textarea */
-  sinking_label = lv_label_create(pwd_ta);
-  lv_label_set_text(sinking_label, "Enter Password");
-  lv_obj_set_style_text_color(sinking_label, lv_palette_main(LV_PALETTE_GREY), 0); // Optional: change color
-  lv_obj_align(sinking_label, LV_ALIGN_TOP_LEFT, 5, 8);  // Initial position inside textarea
 
   /*Create a label and position it above the text box*/
   lv_obj_t *pwd_label = lv_label_create(enter_password_panel);
@@ -97,7 +91,6 @@ static void ta_event_cb(lv_event_t *e) {
   lv_obj_t *ta = lv_event_get_target(e);
   if (code == LV_EVENT_CLICKED || code == LV_EVENT_FOCUSED) {
     /*Focus on the clicked text area*/
-    lv_obj_add_flag(sinking_label, LV_OBJ_FLAG_HIDDEN);
     if (kb != NULL) lv_keyboard_set_textarea(kb, ta);
   }
 
@@ -113,6 +106,8 @@ static void ta_event_cb(lv_event_t *e) {
     xTaskCreatePinnedToCore(wifi_service, "wifi_service", 2048, (void *)wifiCredentials, 5, NULL, tskNO_AFFINITY);
     lv_textarea_set_text(ta, "");
     _ui_flag_modify(enter_password_panel, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+    _ui_screen_change(&ui_MainScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_MainScreen_screen_init);
+    
   }
 }
 

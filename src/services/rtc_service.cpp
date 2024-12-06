@@ -49,7 +49,7 @@ void rtc_service(void *parameter) {
   update_time_from_server();
 
   for (;;) {
-    delay(1000);
+    vTaskDelay(pdMS_TO_TICKS(1000));
 
     auto dt = M5.Rtc.getDateTime();
     // print(PRINTF,"RTC:%04d/%s/%02d (%s)  %02d:%02d:%02d\r\n", dt.date.year, mon[dt.date.month], dt.date.date, wd[dt.date.weekDay], dt.time.hours, dt.time.minutes, dt.time.seconds);
