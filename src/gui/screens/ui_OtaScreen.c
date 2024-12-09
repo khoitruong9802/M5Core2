@@ -225,7 +225,7 @@ void ui_OtaScreen_screen_init(void)
     lv_obj_set_x(ui_LabelLoadingLoadingScreen, 0);
     lv_obj_set_y(ui_LabelLoadingLoadingScreen, 75);
     lv_obj_set_align(ui_LabelLoadingLoadingScreen, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_LabelLoadingLoadingScreen, "Loading...");
+    lv_label_set_text(ui_LabelLoadingLoadingScreen, "");
     lv_obj_set_style_text_color(ui_LabelLoadingLoadingScreen, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_LabelLoadingLoadingScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);  
 

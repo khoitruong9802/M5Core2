@@ -454,7 +454,7 @@ void SwitchScheduleItemHandler(int idx)
     // get web server
     char serverURL[150]; // Adjust size if needed based on the URL length
     snprintf(serverURL, sizeof(serverURL), "%s/api/v1/schedule/%d", web_server_official, schedule_id);
-    Serial.println(serverURL);
+    // Serial.println(serverURL);
     
     String jsonPayload;
     serializeJson(jsonPayloadDoc, jsonPayload);
@@ -807,10 +807,11 @@ void handleScheduleUI(void *parameter)
         // Checking does mutex is available
         if (xSemaphoreTake(lvgl_mutex,  pdMS_TO_TICKS(10)) == pdTRUE)
         {
+
             currentPage = 1;
             char serverURL[150]; // Adjust size if needed based on the URL length
             snprintf(serverURL, sizeof(serverURL), "%s/api/v1/fertilizer-device/1/schedule?page=%d&limit=3", web_server_official, currentPage);
-            Serial.println(serverURL);
+            // Serial.println(serverURL);
             String response = http_get_data(serverURL);
             jsonString = response;
 

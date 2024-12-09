@@ -33,7 +33,6 @@ const char *topic_kali3 = "18faa0dd7a927906cb3e/feeds/area3/kali";
 const char *topic_nito3 = "18faa0dd7a927906cb3e/feeds/area3/nito";
 const char *topic_photpho3 = "18faa0dd7a927906cb3e/feeds/area3/photpho";
 
-
 // Initialize the WiFi and MQTT clients
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -48,7 +47,7 @@ void callback(const char* topic, uint8_t* payload, unsigned int length) {
     // printf("Message received: %s from %s\n", mqtt_payload, topic);
     // Assign the value to the corresponding variable based on the topic
     if(current_area_for_sensors == 1)
-    {
+    {     
       if (strcmp(topic, topic_temp1) == 0) {
           lv_label_set_text(ui_Label22, mqtt_payload);
           str_topic_temp1 = lv_label_get_text(ui_Label22);
@@ -186,14 +185,117 @@ void mqtt_service(void *parameter) {
   }
 }
 
+uint8_t connect_mqtt(int status) {
+  unsigned long startTime = millis();  // Get the current time
+  uint8_t connect_ok = 1;
+  client.setServer(mqtt_server, mqtt_port);
+  while (millis() - startTime < MQTT_TIMEOUT && !client.connected()) {
+    print(PRINTLN, "Connecting to MQTT broker...");
+    if (client.connect("ij34j32oj523kn6lk32n6ljoiij", mqtt_user, mqtt_password)) {
+      print(PRINTLN, "Start to unsubscribe entire topic");
+      client.unsubscribe(topic_temp1);
+      client.unsubscribe(topic_humi1);
+      client.unsubscribe(topic_kali1);
+      client.unsubscribe(topic_nito1);
+      client.unsubscribe(topic_photpho1);
+      client.unsubscribe(topic_temp2);
+      client.unsubscribe(topic_humi2);
+      client.unsubscribe(topic_kali2);
+      client.unsubscribe(topic_nito2);
+      client.unsubscribe(topic_photpho2);
+      client.unsubscribe(topic_temp3);
+      client.unsubscribe(topic_humi3);
+      client.unsubscribe(topic_kali3);
+      client.unsubscribe(topic_nito3);
+      client.unsubscribe(topic_photpho3);
+      print(PRINTLN, "Connected to MQTT broker!");
+      // Check subscribe of topic notification
+      if (client.subscribe(topic_notification, 1))
+      {
+        print(PRINTLN, "topic_notification was subscribed!");
+      }
+      else
+      {
+        if ( client.subscribe(topic_notification) )
+        {
+          print(PRINTLN, "topic_notification was subscribed!");
+        }
+        else
+        {
+          print(PRINTLN, "topic_notification was not subscribed!");
+        }
+      }
+      if(status == 1)
+      {
+        if (client.subscribe(topic_temp1)
+        && client.subscribe(topic_humi1)
+        && client.subscribe(topic_kali1)
+        && client.subscribe(topic_nito1)
+        && client.subscribe(topic_photpho1)
+        )
+       {
+          client.setCallback(callback);
+          print(PRINTLN, "Subcribe to topic1 successfully!");
+          connect_ok = 1;
+        } else {
+          print(PRINTLN, "Subcribe fail!");
+          connect_ok = 0;
+        }
+      }
+      if(status == 2)
+      {
+        if (client.subscribe(topic_temp2)
+        && client.subscribe(topic_humi2)
+        && client.subscribe(topic_kali2)
+        && client.subscribe(topic_nito2)
+        && client.subscribe(topic_photpho2)
+        )
+       {
+          client.setCallback(callback);
+          print(PRINTLN, "Subcribe to topic2 successfully!");
+          connect_ok = 1;
+        } else {
+          print(PRINTLN, "Subcribe fail!");
+          connect_ok = 0;
+        }
+      }
+      if(status == 3)
+      {
+        if (client.subscribe(topic_temp3)
+        && client.subscribe(topic_humi3)
+        && client.subscribe(topic_kali3)
+        && client.subscribe(topic_nito3)
+        && client.subscribe(topic_photpho3)
+        )
+       {
+          client.setCallback(callback);
+          print(PRINTLN, "Subcribe to topic3 successfully!");
+          connect_ok = 1;
+        } else {
+          print(PRINTLN, "Subcribe fail!");
+          connect_ok = 0;
+        }
+      }
+    } else {
+      print(PRINT, "Failed with state ");
+      print(PRINTLN, std::to_string(client.state()).c_str());
+      delay(500);
+    }
+  }
+  if (!client.connected()) {
+    connect_ok = 0;
+  }
+  return connect_ok;
+}
+
 void mqtt_init(void * parameter)
 {
-
+  int status = 0;
   for(;;)
   {
     if (WiFi.status() != WL_CONNECTED) 
     {
-      Serial.println("waiting for wifi connected...");
+      print(PRINTLN, "waiting for wifi connected...");
       vTaskDelay(pdMS_TO_TICKS(1000));
     }
     else
@@ -201,7 +303,7 @@ void mqtt_init(void * parameter)
       client.setServer(mqtt_server, mqtt_port);
       client.setCallback(callback);
 
-      uint8_t connect_mqtt_res = connect_mqtt();
+      uint8_t connect_mqtt_res = connect_mqtt(status);
       if(connect_mqtt_res == 0)
       {
         print(PRINTLN, "MQTT task has been deleted!!");
@@ -219,7 +321,13 @@ void mqtt_init(void * parameter)
     else
     {
       if (!client.connected()) {
-        connect_mqtt();
+        connect_mqtt(status);
+      }
+      if(status != current_area_for_sensors)
+      {
+        client.disconnect();
+        status = current_area_for_sensors;
+        connect_mqtt(status);
       }
       client.loop();
       vTaskDelay(pdMS_TO_TICKS(1000));

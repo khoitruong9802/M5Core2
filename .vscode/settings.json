@@ -74,7 +74,10 @@
         "lv_calendar.h": "c",
         "lv_calendar_header_arrow.h": "c",
         "custom_widget.h": "c",
-        "arduinojson.h": "c"
+        "arduinojson.h": "c",
+        "profiler.h": "c",
+        "timeprofiler.h": "c",
+        "arxcontainer.h": "c"
     },
     "window.zoomLevel": -1
 }

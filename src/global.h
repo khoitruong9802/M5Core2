@@ -10,7 +10,7 @@
 #include <lvgl.h>
 #include <ArduinoJson.h>
 #include <cmath>
-
+#include <TimeProfiler.h>
 struct SpiRamAllocator {
   void* allocate(size_t size) {
     return heap_caps_malloc(size, MALLOC_CAP_SPIRAM);
@@ -41,7 +41,6 @@ typedef struct
     lv_obj_t *  ui_LabelNameScheduleListItem;
     lv_obj_t *  ui_ButtonRemoveScheduleListItem;
 } jsonScheduleItem;
-
 extern jsonScheduleItem jsonScheduleItemList[3];
 
 extern const char* web_server_official;
@@ -92,7 +91,7 @@ extern int current_area_for_sensors;
 #define PRINTLN 2
 #define PRINTF  3
 
-#define DEBUG_MODE  1 // Enable it to print all message
+#define DEBUG_MODE  0 // Enable it to print all message
 
 
 void print(uint8_t print_mode,  const char* msg, ...);

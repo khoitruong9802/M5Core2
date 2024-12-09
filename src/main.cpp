@@ -12,12 +12,18 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 SemaphoreHandle_t lvgl_mutex;
+void taskToProfile() {
+    SCOPED_TIMEPROFILE(Task); // Automatically measures the execution time of this function
+
+    // Code to profile
+    delay(300);  // Simulated workload
+}
 void printHeapInfo() {
     // Get PSRAM and SRAM information
     size_t free_psram = heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
     size_t free_sram = heap_caps_get_free_size(MALLOC_CAP_INTERNAL);
     Serial.println("=========================================================");
-    Serial.printf("Free PSRAM: %u bytes\n", free_psram);
+    // Serial.printf("Free PSRAM: %u bytes\n", free_psram);
     Serial.printf("Free SRAM : %u bytes\n", free_sram);
 
     // Print detailed information about the heap
@@ -39,7 +45,7 @@ void monitorHealth() {
     Serial.printf("Free heap memory: %u bytes\n", ESP.getFreeHeap());
 
     // Print heap information
-    printHeapInfo();
+    // printHeapInfo();
 
     // Print detailed heap information
     // printDetailedHeapInfo();
@@ -53,8 +59,8 @@ void my_log_cb(const char * buf)
 void setup()
 {
     touch_enabled = true;
-    WiFi.begin("kien", "11111111");
-    // WiFi.begin("BiBo 2", "260NTB33");
+    // WiFi.begin("kien", "11111111");
+    WiFi.begin("BiBo 2", "260NTB33");
     // WiFi.begin("RD-SEAI_2.4G", "");
     // lv_log_register_print_cb(my_log_cb);
 
@@ -96,6 +102,7 @@ void setup()
 void loop()
 {
   monitorHealth();
+//   Serial.println(current_area_for_sensors);
 //   Serial.println("======================================================================");
 //   Serial.println(touch_enabled);
 //   Serial.println(currentPage);

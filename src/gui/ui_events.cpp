@@ -6,11 +6,11 @@
 #include <M5Unified.h>
 
 #include "../m5helper/brightness.h"
-#include "../services/mqtt_service.h"
 #include "../services/wifi_service.h"
 #include "../services/schedule_service.h"
 #include "../services/schedule_history.h"
 #include "../services/notification_service.h"
+#include "../services/mqtt_service.h"
 #include "global.h"
 #include "services/ota_service.h"
 #include "ui.h"
@@ -564,7 +564,7 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
           jsonPayloadDoc["flow1"] = flow1_new;
           jsonPayloadDoc["flow2"] = flow2_new;
           jsonPayloadDoc["flow3"] = flow3_new;
-          jsonPayloadDoc["cycle"] = 3;
+          jsonPayloadDoc["cycle"] = 4;
           jsonPayloadDoc["status"] = new_status;
           jsonPayloadDoc["start_time"] = start_time_new;
           jsonPayloadDoc["stop_time"] = end_time_new;
@@ -1553,7 +1553,7 @@ void handlerUIForSensorsLog(int current_area_for_sensors_log, int type)
   }
 
   snprintf(serverURL, sizeof(serverURL), "%s/api/v1/sensor-data/%s/%d", web_server_official, type_cstr, current_area_for_sensors_log);
-  Serial.println(serverURL); 
+  // Serial.println(serverURL); 
   String response = http_get_data(serverURL);
   jsonString = response;
   using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;

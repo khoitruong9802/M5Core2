@@ -15,7 +15,7 @@ void notification_service_init(void *parameter)
             char serverURL[150]; // Adjust size if needed based on the URL length
             currentWateringHistoryPage = 1;
             snprintf(serverURL, sizeof(serverURL), "%s/api/v1/notification", web_server_official);
-            Serial.println(serverURL); 
+            // Serial.println(serverURL); 
             String response = http_get_data(serverURL);
             jsonString = response;
             using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
