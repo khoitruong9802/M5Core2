@@ -59,8 +59,8 @@ void my_log_cb(const char * buf)
 void setup()
 {
     touch_enabled = true;
-    // WiFi.begin("kien", "11111111");
-    WiFi.begin("BiBo 2", "260NTB33");
+    WiFi.begin("kien", "11111111");
+    // WiFi.begin("BiBo 2", "260NTB33");
     // WiFi.begin("RD-SEAI_2.4G", "");
     // lv_log_register_print_cb(my_log_cb);
 
@@ -101,12 +101,28 @@ void setup()
 
 void loop()
 {
-  monitorHealth();
+//   monitorHealth();
 //   Serial.println(current_area_for_sensors);
 //   Serial.println("======================================================================");
 //   Serial.println(touch_enabled);
 //   Serial.println(currentPage);
 //   Serial.println("======================================================================");
-    delay(1000);
+    // delay(1000);
+    vTaskDelay(pdMS_TO_TICKS(1000));
+    check_sleep();
+    float batteryLevel = M5.Power.getBatteryLevel();
+    float batteryVoltage = M5.Power.getBatteryVoltage();
+
+    // Convert the float values to integers for display
+    int batteryLevelInt = (int)(batteryLevel * 100);  // Convert to percentage with 2 decimals
+    int batteryVoltageInt = (int)(batteryVoltage * 100);  // Multiply to preserve 2 decimals
+
+    lv_slider_set_value(ui_Slider2, (batteryLevelInt / 100), LV_ANIM_OFF);
+    char buffer[20];  // Ensure buffer is large enough to hold the string with % sign
+    snprintf(buffer, sizeof(buffer), "%d %%", (batteryLevelInt / 100));  // Format as "value %"
+    const char *str = buffer;  // Now 'str' is a const char* pointing to the string
+    lv_label_set_text(ui_LabelBattery, str);
+
+
 //   vTaskDelete(NULL);
 }

@@ -11,6 +11,7 @@
 #include <ArduinoJson.h>
 #include <cmath>
 #include <TimeProfiler.h>
+#include "gui/porting/lvgl_port.h"
 struct SpiRamAllocator {
   void* allocate(size_t size) {
     return heap_caps_malloc(size, MALLOC_CAP_SPIRAM);
@@ -87,11 +88,13 @@ extern const char *str_topic_photpho3;
 //GENERAL
 extern int current_area_for_sensors_log;
 extern int current_area_for_sensors;
+
+extern bool is_touching;
 #define PRINT   1
 #define PRINTLN 2
 #define PRINTF  3
 
-#define DEBUG_MODE  0 // Enable it to print all message
+#define DEBUG_MODE  1 // Enable it to print all message
 
 
 void print(uint8_t print_mode,  const char* msg, ...);

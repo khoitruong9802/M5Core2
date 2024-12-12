@@ -24,6 +24,8 @@ lv_obj_t * ui_Label3;
 lv_obj_t * ui_Label4;
 void ui_event_Panel4(lv_event_t * e);
 lv_obj_t * ui_Panel4;
+lv_obj_t * ui_PanelBattery;
+lv_obj_t * ui_LabelBattery;
 
 
 // SCREEN: ui_AppScreen
@@ -1693,47 +1695,3 @@ void ui_event_PanelArea3DevicesArea(lv_event_t * e)
 }
 ///////////////////// SCREENS ////////////////////
 
-void ui_init(void)
-{
-    lv_disp_t * dispp = lv_disp_get_default();
-    lv_theme_t * theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
-                                               false, LV_FONT_DEFAULT);
-    lv_disp_set_theme(dispp, theme);
-    ui_MainScreen_screen_init();
-    ui_AppScreen_screen_init();
-    ui_SettingsScreen_screen_init();
-    ui_AboutScreen_screen_init();
-    ui_InformationScreen_screen_init();
-    ui_SensorsScreen_screen_init();
-    ui_ManualScreen_screen_init();
-    ui_DisplayScreen_screen_init();
-    ui_WifiScreen_screen_init();
-    ui_OtaScreen_screen_init();
-    ui_ScheduleScreen_screen_init();
-    ui_ScheduleItemScreen_screen_init();
-    ui_name_screen_init();
-    ui_description_screen_init();
-    ui_Flow1_screen_init();
-    ui_Flow2_screen_init();
-    ui_Flow3_screen_init();
-    ui_startTime_screen_init();
-    ui_endTime_screen_init();
-    ui_startDate_screen_init();
-    ui_EndDate_screen_init();
-    ui_date_screen_init();
-    ui_farmScreen_screen_init();
-    ui_Notification_screen_init();
-    ui_wateringHistory_screen_init();
-    ui_SensorsAreaScreen_screen_init();
-    ui_SoilTemperatureSensor_screen_init();
-    ui_SoidHumiditySensor_screen_init();
-    ui_SoidNitro_screen_init();
-    ui_SoidKali_screen_init();
-    ui_SensorsLogAreaScreen_screen_init();
-    ui_SensorsLogListScreen_screen_init();
-    ui_DevicesAreaScreen_screen_init();
-    ui_Loading_screen_init();
-    ui_SoidPhotpho_screen_init();
-    ui____initial_actions0 = lv_obj_create(NULL);
-    lv_disp_load_scr(ui_MainScreen);
-}

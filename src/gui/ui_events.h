@@ -9,6 +9,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+void ui_init(void);
 void change_screen_mannual_control(lv_event_t * e);
 void scan_network(lv_event_t * e);
 void button1_on(lv_event_t * e);

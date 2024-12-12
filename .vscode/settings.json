@@ -77,7 +77,8 @@
         "arduinojson.h": "c",
         "profiler.h": "c",
         "timeprofiler.h": "c",
-        "arxcontainer.h": "c"
+        "arxcontainer.h": "c",
+        "lvgl_port.h": "c"
     },
     "window.zoomLevel": -1
 }

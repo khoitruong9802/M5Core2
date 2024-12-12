@@ -68,7 +68,7 @@ void ui_OtaScreen_screen_init(void)
     lv_obj_set_x(ui_Label90, 0);
     lv_obj_set_y(ui_Label90, 65);
     lv_obj_set_align(ui_Label90, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Label90, "Uploading new version...");
+    lv_label_set_text(ui_Label90, "");
     lv_obj_set_style_text_font(ui_Label90, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Panel102 = lv_obj_create(ui_Panel92);

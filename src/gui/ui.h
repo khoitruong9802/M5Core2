@@ -50,7 +50,8 @@ extern lv_obj_t * ui_Button22;
 extern lv_obj_t * ui_Label101;
 extern lv_obj_t * ui_Label102;
 extern lv_obj_t * ui_Label103;
-
+extern lv_obj_t * ui_PanelBattery;
+extern lv_obj_t * ui_LabelBattery;
 // SCREEN: ui_AppScreen
 void ui_AppScreen_screen_init(void);
 void ui_event_AppScreen(lv_event_t * e);
@@ -729,7 +730,7 @@ LV_IMG_DECLARE(ui_img_history_png);
 
 
 
-void ui_init(void);
+
 
 #ifdef __cplusplus
 } /*extern "C"*/

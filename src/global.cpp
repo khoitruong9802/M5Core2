@@ -44,6 +44,9 @@ const char *str_topic_photpho3;
 //GENERAL
 int current_area_for_sensors_log;
 int current_area_for_sensors;
+
+bool is_touching = false;
+
 void print(uint8_t print_mode, const char* msg, ...) {
     if (DEBUG_MODE == 1) {
         va_list args;

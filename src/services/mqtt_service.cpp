@@ -44,7 +44,7 @@ void callback(const char* topic, uint8_t* payload, unsigned int length) {
     mqtt_payload[length] = '\0';
 
     // Debug print to verify the incoming message
-    // printf("Message received: %s from %s\n", mqtt_payload, topic);
+    printf("Message received: %s from %s\n", mqtt_payload, topic);
     // Assign the value to the corresponding variable based on the topic
     if(current_area_for_sensors == 1)
     {     
@@ -314,23 +314,30 @@ void mqtt_init(void * parameter)
   }
   for(;;)
   {
-    if(convert_mqtt_task == 1)
+    if(WiFi.status() != WL_CONNECTED)
     {
       vTaskDelay(pdMS_TO_TICKS(1000));
     }
     else
     {
-      if (!client.connected()) {
-        connect_mqtt(status);
-      }
-      if(status != current_area_for_sensors)
+      if(convert_mqtt_task == 1)
       {
-        client.disconnect();
-        status = current_area_for_sensors;
-        connect_mqtt(status);
+        vTaskDelay(pdMS_TO_TICKS(1000));
       }
-      client.loop();
-      vTaskDelay(pdMS_TO_TICKS(1000));
+      else
+      {
+        if (!client.connected()) {
+          connect_mqtt(status);
+        }
+        if(status != current_area_for_sensors)
+        {
+          client.disconnect();
+          status = current_area_for_sensors;
+          connect_mqtt(status);
+        }
+        client.loop();
+        vTaskDelay(pdMS_TO_TICKS(1000));
+      }
     }
   }
 }
