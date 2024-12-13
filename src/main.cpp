@@ -58,8 +58,23 @@ void my_log_cb(const char * buf)
 
 void setup()
 {
+    preferences.begin("wifi-config", true);
+    String wifi_username = preferences.getString("wifi_user"); // Giá trị mặc định nếu không có
+    String wifi_password = preferences.getString("wifi_pass");
+    preferences.end();
+    WiFi.begin(wifi_username, wifi_password); // Thay bằng SSID và mật khẩu của bạn
+    unsigned long startTime = millis();  // Get the current time
+    while (millis() - startTime < 4000 && WiFi.status() != WL_CONNECTED) 
+    {
+    delay(500);
+    print(PRINTLN, "connecting....");
+    }
+    if (WiFi.status() != WL_CONNECTED) 
+    {
+    WiFi.disconnect();
+    }
     touch_enabled = true;
-    WiFi.begin("kien", "11111111");
+    // WiFi.begin("kien", "11111111");
     // WiFi.begin("BiBo 2", "260NTB33");
     // WiFi.begin("RD-SEAI_2.4G", "");
     // lv_log_register_print_cb(my_log_cb);
@@ -101,7 +116,7 @@ void setup()
 
 void loop()
 {
-  monitorHealth();
+//   monitorHealth();
 //   Serial.println(current_area_for_sensors);
 //   Serial.println("======================================================================");
 //   Serial.println(touch_enabled);

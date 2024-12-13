@@ -110,89 +110,53 @@ void setup_wakeup_pin() {
 }
 
 void check_sleep() {
-  uint32_t current_time = millis();
+  if(ota_running_flag == false)
+  {
+    uint32_t current_time = millis();
 
-  if (current_time - last_touch_time > sleep_timeout_2) {
-    if(!is_light_sleeping)
-    {
-      print(PRINTLN,"Entering Light Sleep...");
-      is_light_sleeping = true;
-      enable_light_flag = false;
-      is_modem_sleeping = false;
-      set_brightness(0);
-      esp_sleep_enable_ext0_wakeup((gpio_num_t)TOUCH_WAKEUP_PIN, 0);
-      // Bắt đầu Light Sleep
-      esp_light_sleep_start(); // Chuyển vào chế độ Light Sleep
-    }
-    
-  }
-  else if (current_time - last_touch_time > modem_sleep_timeout) {
-    if (!is_modem_sleeping) {
-      is_modem_sleeping = true;
-      enable_light_flag = false;
-      set_brightness(10);
-
-      // Bật chế độ Modem Sleep
-      WiFi.disconnect();
-      print(PRINTLN,"Entering Modem Sleep...");
-    }
-  }
-  else if (current_time - last_touch_time > sleep_timeout_1) {
-    if (!is_modem_sleeping) { // Giữ Wi-Fi nếu chưa vào Modem Sleep
-      enable_light_flag = false;
-      set_brightness(30);
-    }
-  }
-  else {
-    if (is_modem_sleeping) {
-      print(PRINTLN,"Exiting Modem Sleep, Wi-Fi Reconnected...");
-      is_modem_sleeping = false;
-      // Khôi phục Wi-Fi sau khi Modem Sleep
-      WiFi.mode(WIFI_MODE_STA); // Bật Wi-Fi trở lại
-      preferences.begin("wifi-config", true);
-      String wifi_username = preferences.getString("wifi_user"); // Giá trị mặc định nếu không có
-      String wifi_password = preferences.getString("wifi_pass");
-      preferences.end();
-      WiFi.begin(wifi_username, wifi_password); // Thay bằng SSID và mật khẩu của bạn
-      unsigned long startTime = millis();  // Get the current time
-      while (millis() - startTime < WIFI_TIMEOUT && WiFi.status() != WL_CONNECTED) 
+    if (current_time - last_touch_time > sleep_timeout_2) {
+      if(!is_light_sleeping)
       {
-        delay(500);
-        print(PRINTLN, "connecting....");
-      }
-      if (WiFi.status() != WL_CONNECTED) 
-      {
-        WiFi.disconnect();
+        print(PRINTLN,"Entering Light Sleep...");
+        is_light_sleeping = true;
+        enable_light_flag = false;
+        is_modem_sleeping = false;
+        set_brightness(0);
+        esp_sleep_enable_ext0_wakeup((gpio_num_t)TOUCH_WAKEUP_PIN, 0);
+        // Bắt đầu Light Sleep
+        esp_light_sleep_start(); // Chuyển vào chế độ Light Sleep
       }
       
-    } 
-    else if(is_light_sleeping)
-    {
-      print(PRINTLN,"Exiting Light Sleep, Wi-Fi Reconnected...");  
-      is_light_sleeping = false;
-      // Khôi phục Wi-Fi sau khi Modem Sleep
-      WiFi.mode(WIFI_MODE_STA); // Bật Wi-Fi trở lại
-      preferences.begin("wifi-config", true);
-      String wifi_username = preferences.getString("wifi_user"); // Giá trị mặc định nếu không có
-      String wifi_password = preferences.getString("wifi_pass");
-      preferences.end();
-      WiFi.begin(wifi_username, wifi_password); // Thay bằng SSID và mật khẩu của bạn
-      unsigned long startTime = millis();  // Get the current time
-      while (millis() - startTime < WIFI_TIMEOUT && WiFi.status() != WL_CONNECTED) 
-      {
-        delay(500);
-        print(PRINTLN, "connecting....");
-      }
-      if (WiFi.status() != WL_CONNECTED) 
-      {
-        WiFi.disconnect();
-      }  
     }
-
-    if (enable_light_flag == false) 
-    {
-      enable_light_flag = true;
-      set_brightness(80);
+    else {
+      if (enable_light_flag == false) 
+      {
+        enable_light_flag = true;
+        set_brightness(80);
+      }
+      else if(is_light_sleeping)
+      {
+        print(PRINTLN,"Exiting Light Sleep, Wi-Fi Reconnected...");  
+        is_light_sleeping = false;
+        // Khôi phục Wi-Fi sau khi Modem Sleep
+        WiFi.mode(WIFI_MODE_STA); // Bật Wi-Fi trở lại
+        preferences.begin("wifi-config", true);
+        String wifi_username = preferences.getString("wifi_user"); // Giá trị mặc định nếu không có
+        String wifi_password = preferences.getString("wifi_pass");
+        preferences.end();
+        WiFi.begin(wifi_username, wifi_password); // Thay bằng SSID và mật khẩu của bạn
+        unsigned long startTime = millis();  // Get the current time
+        while (millis() - startTime < WIFI_TIMEOUT && WiFi.status() != WL_CONNECTED) 
+        {
+          delay(500);
+          print(PRINTLN, "connecting....");
+        }
+        if (WiFi.status() != WL_CONNECTED) 
+        {
+          WiFi.disconnect();
+        }  
+      }
     }
   }
+
 }

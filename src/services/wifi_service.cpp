@@ -40,6 +40,9 @@ void wifi_service(void *parameter) {
       uint8_t connect_ok = connect_wifi(wifiCredentials->username, wifiCredentials->password);
       vTaskDelete(NULL);
     }
+    else {
+      WiFi.disconnect();
+    }
     vTaskDelay(pdMS_TO_TICKS(1000));
   }
 }

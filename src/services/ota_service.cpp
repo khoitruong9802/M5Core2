@@ -45,6 +45,7 @@ void ota_update(void *parameter)
         if (canBegin)
         {
             print(PRINTLN, "Begin OTA update");
+            ota_running_flag = true;
             lv_label_set_text(ui_Label90, "OTA update in progress...");
             WiFiClient *client = http.getStreamPtr();
 
@@ -55,6 +56,7 @@ void ota_update(void *parameter)
             {
                 if (WiFi.status() != WL_CONNECTED)
                 {
+                    ota_running_flag = false;
                     wifiLost = true;
                     print(PRINTLN, "WiFi lost during OTA update!");
                     lv_label_set_text(ui_Label90, "WiFi lost. Aborting OTA...");
@@ -82,7 +84,8 @@ void ota_update(void *parameter)
             {
                 // Xử lý mất WiFi
                 print(PRINTLN, "OTA update aborted due to WiFi disconnection.");
-                lv_label_set_text(ui_Label90, "WiFi Disconnection. OTA was killed...");
+                lv_label_set_text(ui_Label90, "WiFi was disconnection...");
+                ota_running_flag = false;
                 vTaskDelete(NULL);
                 return; // Kết thúc
             }
@@ -96,6 +99,7 @@ void ota_update(void *parameter)
             else
             {
                 // print(PRINTF, "OTA update failed. Written %d / %d bytes\n", written, contentLength);
+                ota_running_flag = false;
                 lv_label_set_text(ui_Label90, "OTA update failed!");
             }
 
@@ -110,28 +114,33 @@ void ota_update(void *parameter)
                 else
                 {
                     print(PRINTLN, "Update not finished. Something went wrong.");
+                    ota_running_flag = false;
                     lv_label_set_text(ui_Label90, "Update not finished. Something went wrong.");
                 }
             }
             else
             {
                 print(PRINTF, "Update failed. Error #: %d\n", Update.getError());
+                ota_running_flag = false;
                 lv_label_set_text_fmt(ui_Label90, "Update failed. Error #: %d", Update.getError());
             }
         }
         else
         {
             print(PRINTLN, "Not enough space to start OTA update");
+            ota_running_flag = false;
             lv_label_set_text(ui_Label90, "Not enough space for OTA update.");
         }
     }
     else
     {
         print(PRINTF, "Failed to download firmware, error code: %d\n", httpCode);
+        ota_running_flag = false;
         lv_label_set_text_fmt(ui_Label90, "Failed to download firmware. Error: %d", httpCode);
     }
 
     http.end();
+    ota_running_flag = false;
     print(PRINTLN, "End OTA");
     lv_label_set_text(ui_Label90, "End OTA update.");
 }

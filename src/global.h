@@ -44,9 +44,10 @@ typedef struct
     lv_obj_t *  ui_ButtonRemoveScheduleListItem;
 } jsonScheduleItem;
 
-extern Preferences preferences;
 
-extern jsonScheduleItem jsonScheduleItemList[3];
+extern Preferences preferences; // To Storage to NvM
+
+extern jsonScheduleItem jsonScheduleItemList[3]; // To Storage entire Schedule Item List
 
 extern const char* web_server_official;
 extern const char* web_server;
@@ -93,13 +94,20 @@ extern const char *str_topic_photpho3;
 extern int current_area_for_sensors_log;
 extern int current_area_for_sensors;
 
+// OTA Mode
+extern bool ota_running_flag;
 
+// Sleep mode
 extern bool is_touching;
+
+
+// Debug mode
 #define PRINT   1
 #define PRINTLN 2
 #define PRINTF  3
 
-#define DEBUG_MODE  1 // Enable it to print all message
+
+#define DEBUG_MODE  0 // Enable it to print all message
 
 
 void print(uint8_t print_mode,  const char* msg, ...);

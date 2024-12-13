@@ -118,26 +118,6 @@ void ui_MainScreen_screen_init(void)
     lv_obj_set_style_text_opa(ui_Label2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Label2, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Label3 = lv_label_create(ui_Panel2);
-    lv_obj_set_width(ui_Label3, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_Label3, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_Label3, 18);
-    lv_obj_set_y(ui_Label3, -61);
-    lv_obj_set_align(ui_Label3, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Label3, "AM");
-    lv_obj_set_style_text_color(ui_Label3, lv_color_hex(0x41C2FF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_Label3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_Label4 = lv_label_create(ui_Panel2);
-    lv_obj_set_width(ui_Label4, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_Label4, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_Label4, 18);
-    lv_obj_set_y(ui_Label4, -40);
-    lv_obj_set_align(ui_Label4, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Label4, "PM");
-    lv_obj_set_style_text_color(ui_Label4, lv_color_hex(0xDBDBDB), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_Label4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-
     ui_Panel4 = lv_obj_create(ui_Panel2);
     lv_obj_set_width(ui_Panel4, 70);
     lv_obj_set_height(ui_Panel4, 70);
