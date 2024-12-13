@@ -35,6 +35,7 @@ void wifi_service(void *parameter) {
       // Connect to wifi
 
       ui_update_wifi_status(0);
+      save_wifi_credentials(wifiCredentials->username, wifiCredentials->password);
       uint8_t connect_ok = connect_wifi(wifiCredentials->username, wifiCredentials->password);
       vTaskDelete(NULL);
     }
@@ -86,4 +87,22 @@ void scan_wifi(void *parameter) {
   // }
   lv_obj_add_flag(wifiLoading, LV_OBJ_FLAG_HIDDEN);
   vTaskDelete(NULL);
+}
+void save_wifi_credentials(const char* username, const char* password) {
+  preferences.begin("wifi-config", false); // Mở namespace "wifi-config" ở chế độ ghi
+  preferences.putString("wifi_user", username); // Lưu username
+  preferences.putString("wifi_pass", password); // Lưu password
+  preferences.end();
+}
+
+void check_wifi_icon()
+{
+  if(WiFi.isConnected())
+  {
+    _ui_flag_modify(ui_Image2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+  }
+  else
+  {
+    _ui_flag_modify(ui_Image2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+  }
 }

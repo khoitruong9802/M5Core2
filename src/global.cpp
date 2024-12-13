@@ -1,5 +1,7 @@
 #include "global.h"
 
+Preferences preferences;
+
 jsonScheduleItem jsonScheduleItemList[3];
 
 String jsonString;

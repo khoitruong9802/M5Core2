@@ -101,7 +101,7 @@ void setup()
 
 void loop()
 {
-//   monitorHealth();
+  monitorHealth();
 //   Serial.println(current_area_for_sensors);
 //   Serial.println("======================================================================");
 //   Serial.println(touch_enabled);
@@ -110,6 +110,7 @@ void loop()
     // delay(1000);
     vTaskDelay(pdMS_TO_TICKS(1000));
     check_sleep();
+    check_wifi_icon();
     float batteryLevel = M5.Power.getBatteryLevel();
     float batteryVoltage = M5.Power.getBatteryVoltage();
 

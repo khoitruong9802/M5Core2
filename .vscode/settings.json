@@ -78,7 +78,8 @@
         "profiler.h": "c",
         "timeprofiler.h": "c",
         "arxcontainer.h": "c",
-        "lvgl_port.h": "c"
+        "lvgl_port.h": "c",
+        "preferences.h": "c"
     },
     "window.zoomLevel": -1
 }

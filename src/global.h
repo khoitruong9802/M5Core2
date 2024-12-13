@@ -12,6 +12,7 @@
 #include <cmath>
 #include <TimeProfiler.h>
 #include "gui/porting/lvgl_port.h"
+#include <Preferences.h>
 struct SpiRamAllocator {
   void* allocate(size_t size) {
     return heap_caps_malloc(size, MALLOC_CAP_SPIRAM);
@@ -42,6 +43,9 @@ typedef struct
     lv_obj_t *  ui_LabelNameScheduleListItem;
     lv_obj_t *  ui_ButtonRemoveScheduleListItem;
 } jsonScheduleItem;
+
+extern Preferences preferences;
+
 extern jsonScheduleItem jsonScheduleItemList[3];
 
 extern const char* web_server_official;
@@ -88,6 +92,7 @@ extern const char *str_topic_photpho3;
 //GENERAL
 extern int current_area_for_sensors_log;
 extern int current_area_for_sensors;
+
 
 extern bool is_touching;
 #define PRINT   1
