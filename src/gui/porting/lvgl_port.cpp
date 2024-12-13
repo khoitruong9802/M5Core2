@@ -7,6 +7,7 @@
 
 
 #define TOUCH_WAKEUP_PIN 39 // Chân INT của CST816S
+#define WIFI_TIMEOUT 4000  // ms
 
 /*Change to your screen resolution*/
 static uint32_t last_touch_time = 0; // Lưu thời điểm cuối cùng có chạm
@@ -144,8 +145,8 @@ void check_sleep() {
   }
   else {
     if (is_modem_sleeping) {
+      print(PRINTLN,"Exiting Modem Sleep, Wi-Fi Reconnected...");
       is_modem_sleeping = false;
-
       // Khôi phục Wi-Fi sau khi Modem Sleep
       WiFi.mode(WIFI_MODE_STA); // Bật Wi-Fi trở lại
       preferences.begin("wifi-config", true);
@@ -153,9 +154,21 @@ void check_sleep() {
       String wifi_password = preferences.getString("wifi_pass");
       preferences.end();
       WiFi.begin(wifi_username, wifi_password); // Thay bằng SSID và mật khẩu của bạn
-      print(PRINTLN,"Exiting Modem Sleep, Wi-Fi Reconnected...");
-    } else if(is_light_sleeping)
+      unsigned long startTime = millis();  // Get the current time
+      while (millis() - startTime < WIFI_TIMEOUT && WiFi.status() != WL_CONNECTED) 
+      {
+        delay(500);
+        print(PRINTLN, "connecting....");
+      }
+      if (WiFi.status() != WL_CONNECTED) 
+      {
+        WiFi.disconnect();
+      }
+      
+    } 
+    else if(is_light_sleeping)
     {
+      print(PRINTLN,"Exiting Light Sleep, Wi-Fi Reconnected...");  
       is_light_sleeping = false;
       // Khôi phục Wi-Fi sau khi Modem Sleep
       WiFi.mode(WIFI_MODE_STA); // Bật Wi-Fi trở lại
@@ -164,10 +177,20 @@ void check_sleep() {
       String wifi_password = preferences.getString("wifi_pass");
       preferences.end();
       WiFi.begin(wifi_username, wifi_password); // Thay bằng SSID và mật khẩu của bạn
-      print(PRINTLN,"Exiting Light Sleep, Wi-Fi Reconnected...");      
+      unsigned long startTime = millis();  // Get the current time
+      while (millis() - startTime < WIFI_TIMEOUT && WiFi.status() != WL_CONNECTED) 
+      {
+        delay(500);
+        print(PRINTLN, "connecting....");
+      }
+      if (WiFi.status() != WL_CONNECTED) 
+      {
+        WiFi.disconnect();
+      }  
     }
 
-    if (enable_light_flag == false) {
+    if (enable_light_flag == false) 
+    {
       enable_light_flag = true;
       set_brightness(80);
     }

@@ -20,6 +20,7 @@ uint8_t connect_wifi(const char *ssid, const char *password) {
     print(PRINT, ".");
   }
   if (WiFi.status() != WL_CONNECTED) {
+    WiFi.disconnect();
     return 0;
   }
   print(PRINTF, "\nWiFi connected");
