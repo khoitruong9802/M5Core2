@@ -61,10 +61,17 @@ lv_obj_t * ui_Panel39;
 void ui_event_Button1(lv_event_t * e);
 lv_obj_t * ui_Button1;
 lv_obj_t * ui_Label31;
-void ui_event_Panel90(lv_event_t * e);
+
 lv_obj_t * ui_Panel90;
 lv_obj_t * ui_Panel91;
 lv_obj_t * ui_Label90;
+lv_obj_t * ui_Panel40;
+lv_obj_t * ui_Spinner1;
+lv_obj_t * ui_Panel41;
+lv_obj_t * ui_Button2;
+lv_obj_t * ui_Label35;
+lv_obj_t * ui_Label34;
+void ui_event_Button2(lv_event_t * e);
 // SCREEN: ui_SettingsScreen
 void ui_SettingsScreen_screen_init(void);
 void ui_event_SettingsScreen(lv_event_t * e);
@@ -784,15 +791,7 @@ void ui_event_Panel13(lv_event_t * e)
 }
 
 
-void ui_event_Panel90(lv_event_t * e
-){
-    lv_event_code_t  event_code = lv_event_get_code(e);
-    lv_obj_t * target =  lv_event_get_target(e);
-    if(event_code == LV_EVENT_CLICKED) {
-        lv_obj_clear_flag(ui_PanelLoadingLoadingScreen, LV_OBJ_FLAG_HIDDEN);
-        change_screen_ota(e);
-    }
-}
+
 
 void ui_event_Button1(lv_event_t * e)
 {
@@ -1669,28 +1668,12 @@ void ui_event_DevicesAreaScreen(lv_event_t * e)
     }  
 }
 
-void ui_event_PanelArea1DevicesArea(lv_event_t * e)
+void ui_event_Button2(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        _ui_screen_change(&ui_ManualScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_ManualScreen_screen_init);
-    }
-}
-void ui_event_PanelArea2DevicesArea(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_CLICKED) {
-        _ui_screen_change(&ui_ManualScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_ManualScreen_screen_init);
-    }
-}
-void ui_event_PanelArea3DevicesArea(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_CLICKED) {
-        _ui_screen_change(&ui_ManualScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_ManualScreen_screen_init);
+       lv_obj_add_flag(ui_Panel40, LV_OBJ_FLAG_HIDDEN);
     }
 }
 ///////////////////// SCREENS ////////////////////

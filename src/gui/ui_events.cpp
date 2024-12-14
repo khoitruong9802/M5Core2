@@ -17,6 +17,7 @@
 #include "../utils/http.h"
 #include<stdio.h>
 
+TaskHandle_t check_wifi_ota = xTaskGetHandle("wifiOTA");
 
 void ui_init(void)
 {
@@ -74,7 +75,19 @@ const char *get_json_device(uint8_t device1_status, uint8_t device2_status) {
 
 void button2_on(lv_event_t *e) {
   // Your code here
-  client.publish("khoitruong9802/feeds/nutnhan2", "1");
+  if(current_area_device == 1)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area1/pump2", "1", true);
+  }
+  else if(current_area_device == 2)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area2/pump2", "1", true);
+  }
+  else if(current_area_device == 3)
+  {
+client.publish("18faa0dd7a927906cb3e/feeds/area3/pump2", "1", true);
+  }
+  
 
   // const char *publish_data = get_json_device(0, 1);
   // print(PRINTLN,publish_data);
@@ -84,17 +97,53 @@ void button2_on(lv_event_t *e) {
 
 void button2_off(lv_event_t *e) {
   // Your code
-  client.publish("khoitruong9802/feeds/nutnhan2", "0");
+  if(current_area_device == 1)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area1/pump2", "0", true);
+  }
+  else if(current_area_device == 2)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area2/pump2", "0", true);
+  }
+  else if(current_area_device == 3)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area3/pump2", "0", true);
+  }
+  
 }
 
 void button1_on(lv_event_t *e) {
   // Your code here
-  client.publish("khoitruong9802/feeds/nutnhan1", "1");
+  if(current_area_device == 1)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area1/pump1", "1", true);
+  }
+  else if(current_area_device == 2)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area2/pump1", "1", true);
+  }
+  else if(current_area_device == 3)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area3/pump1", "1", true);
+  }
+  
 }
 
 void button1_off(lv_event_t *e) {
   // Your code here
-  client.publish("khoitruong9802/feeds/nutnhan1", "0");
+  if(current_area_device == 1)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area1/pump1", "0", true);
+  }
+  else if(current_area_device == 2)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area2/pump1", "0", true);
+  }
+  else if(current_area_device == 3)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area3/pump1", "0", true);
+  }
+  
 }
 
 void change_brightness(lv_event_t *e) {
@@ -142,9 +191,20 @@ void scan_network(lv_event_t *e) {
   }
 }
 
-void change_screen_ota(lv_event_t *e) {
-  lv_event_code_t event_code = lv_event_get_code(e);
-  lv_obj_t *target = lv_event_get_target(e);
+void checkwifiota(void *pvParameter) {
+  for(;;)
+  {
+    if (WiFi.status() != WL_CONNECTED) {
+      lv_label_set_text(ui_Label34, "Please connect to \nwifi to use the app!");
+      lv_obj_clear_flag(ui_Panel40, LV_OBJ_FLAG_HIDDEN);
+      _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_AppScreen_screen_init);
+      vTaskDelete(NULL);
+    }
+    vTaskDelay(1000);
+  }
+}
+
+void change_screen_ota() {
   _ui_screen_change(&ui_OtaScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_OtaScreen_screen_init);
   TaskHandle_t ota_task = xTaskGetHandle("ota_update");
   if (ota_task == NULL) {
@@ -177,12 +237,14 @@ void change_screen_ota(lv_event_t *e) {
           name_of_old_file += line[i];
         }
         if (name_of_new_file != name_of_old_file || name_of_old_file == NULL) {
+          if(check_wifi_ota == NULL) {
+            xTaskCreate(checkwifiota, "wifiOTA", 4096, NULL, 1, &check_wifi_ota);
+          }
           _ui_flag_modify(ui_Panel102, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         } else {
           _ui_flag_modify(ui_Panel104, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
           print(PRINTLN, "No change!");
         }
-        lv_obj_add_flag(ui_PanelLoadingLoadingScreen, LV_OBJ_FLAG_HIDDEN);
       }
     }
   }
@@ -193,6 +255,11 @@ void handle_out_ota_page() {
   TaskHandle_t ota_task = xTaskGetHandle("ota_update");
   if (ota_task != NULL) {
     vTaskDelete(ota_task);
+    ota_task = NULL;
+  }
+  if(check_wifi_ota != NULL) {
+    vTaskDelete(check_wifi_ota);
+    check_wifi_ota = NULL;
   }
   // Handle UI of OTA Page
   if (!lv_obj_has_flag(ui_Panel104, LV_OBJ_FLAG_HIDDEN)) {
@@ -613,7 +680,6 @@ void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
           jsonPayloadDoc["flow1"] = flow1_new;
           jsonPayloadDoc["flow2"] = flow2_new;
           jsonPayloadDoc["flow3"] = flow3_new;
-          jsonPayloadDoc["cycle"] = 4;
           jsonPayloadDoc["status"] = new_status;
           jsonPayloadDoc["start_time"] = start_time_new;
           jsonPayloadDoc["stop_time"] = end_time_new;
@@ -1820,4 +1886,68 @@ void ui_event_PanelItem5SensorItem(lv_event_t * e)
         lv_task_handler();
         handlerUIForSensorsLog(current_area_for_sensors_log, 5);
     }    
+}
+
+void checkConditionOTA(void * parameter)
+{
+  vTaskDelay(1000);
+  float batteryLevel = M5.Power.getBatteryLevel();
+  if (batteryLevel < 35) 
+  {
+    lv_label_set_text(ui_Label34, "Your battery is\n lower than 35%");
+  } else if (!WiFi.isConnected())
+  {
+    lv_label_set_text(ui_Label34, "Please connect to \nwifi to use the app!");
+  }
+  else
+  {
+    change_screen_ota();
+    lv_obj_add_flag(ui_Panel40, LV_OBJ_FLAG_HIDDEN);
+  }
+  vTaskDelete(NULL);
+  lv_task_handler();
+}
+
+void ui_event_Panel90(lv_event_t * e
+){
+    lv_event_code_t  event_code = lv_event_get_code(e);
+    lv_obj_t * target =  lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_obj_clear_flag(ui_Panel40, LV_OBJ_FLAG_HIDDEN);
+        lv_task_handler();
+        TaskHandle_t checkOTA = xTaskGetHandle("checkOTA");
+        if (checkOTA != NULL) {
+          print(PRINTLN, "checkOTA has created");
+        } else {
+          xTaskCreate(checkConditionOTA, "checkOTA", 4096, NULL, 1, &checkOTA);
+        }
+    }
+}
+
+void ui_event_PanelArea1DevicesArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        current_area_device = 1;
+        _ui_screen_change(&ui_ManualScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_ManualScreen_screen_init);
+    }
+}
+void ui_event_PanelArea2DevicesArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        current_area_device = 2;
+        _ui_screen_change(&ui_ManualScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_ManualScreen_screen_init);
+    }
+}
+void ui_event_PanelArea3DevicesArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        current_area_device = 3;
+        _ui_screen_change(&ui_ManualScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_ManualScreen_screen_init);
+    }
 }

@@ -85,10 +85,16 @@ extern lv_obj_t * ui_Panel39;
 void ui_event_Button1(lv_event_t * e);
 extern lv_obj_t * ui_Button1;
 extern lv_obj_t * ui_Label31;
-void ui_event_Panel90(lv_event_t * e);
 extern lv_obj_t * ui_Panel90;
 extern lv_obj_t * ui_Panel91;
 extern lv_obj_t * ui_Label90;
+extern lv_obj_t * ui_Panel40;
+extern lv_obj_t * ui_Spinner1;
+extern lv_obj_t * ui_Panel41;
+extern lv_obj_t * ui_Button2;
+extern lv_obj_t * ui_Label35;
+extern lv_obj_t * ui_Label34;
+void ui_event_Button2(lv_event_t * e);
 // SCREEN: ui_SettingsScreen
 void ui_SettingsScreen_screen_init(void);
 void ui_event_SettingsScreen(lv_event_t * e);
@@ -647,9 +653,6 @@ extern lv_obj_t * ui_LabelArea2DevicesArea;
 extern lv_obj_t * ui_PanelArea3DevicesArea;
 extern lv_obj_t * ui_LabelArea3DevicesArea;
 void ui_event_DevicesAreaScreen(lv_event_t * e);
-void ui_event_PanelArea1DevicesArea(lv_event_t * e);
-void ui_event_PanelArea2DevicesArea(lv_event_t * e);
-void ui_event_PanelArea3DevicesArea(lv_event_t * e);
 //SCREEN: ui_SensorsLogArea
 void ui_SensorsLogAreaScreen_screen_init(void);
 void ui_event_SensorsLogAreaScreen(lv_event_t * e);

@@ -121,6 +121,7 @@ void loop()
 //   Serial.println(currentPage);
 //   Serial.println("======================================================================");
     // delay(1000);
+
     vTaskDelay(pdMS_TO_TICKS(1000));
     check_sleep();
     check_wifi_icon();

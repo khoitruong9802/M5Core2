@@ -17,7 +17,7 @@ void button1_off(lv_event_t * e);
 void button2_on(lv_event_t * e);
 void button2_off(lv_event_t * e);
 void change_brightness(lv_event_t * e);
-void change_screen_ota(lv_event_t * e);
+void change_screen_ota();
 void handle_out_ota_page();
 void handle_start_ota();
 void schedule_screen_init(lv_event_t * e);
@@ -77,6 +77,12 @@ void ui_event_PanelItem4SensorItem(lv_event_t * e);
 void ui_event_PanelArea1SensorsLogArea(lv_event_t * e);
 void ui_event_PanelArea2SensorsLogArea(lv_event_t * e);
 void ui_event_PanelArea3SensorsLogArea(lv_event_t * e);
+void checkConditionOTA(void * parameter);
+void ui_event_Panel90(lv_event_t * e);
+void checkwifiota(void *pvParameter);
+void ui_event_PanelArea1DevicesArea(lv_event_t * e);
+void ui_event_PanelArea2DevicesArea(lv_event_t * e);
+void ui_event_PanelArea3DevicesArea(lv_event_t * e);
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

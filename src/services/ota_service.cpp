@@ -14,7 +14,6 @@ String getLatestFirmwareFileName(const char* Url)
     if (httpCode == HTTP_CODE_OK) 
     {
         String payload = http.getString();
-        Serial.println(payload);
         latestFirmwareFileName = payload;
     } 
     else 

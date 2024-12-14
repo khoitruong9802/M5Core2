@@ -46,6 +46,7 @@ const char *str_topic_photpho3;
 //GENERAL
 int current_area_for_sensors_log;
 int current_area_for_sensors;
+int current_area_device;
 // OTA Mode
 bool ota_running_flag = false;
 
