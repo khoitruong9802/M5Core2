@@ -107,10 +107,8 @@ void setup()
     cfg.led_brightness = 64;      // default= 0. system LED brightness (0=off / 255=max) (※ not NeoPixel)
     M5.begin(cfg);
     M5.Display.setRotation(1);
-
     xTaskCreatePinnedToCore(ui_start, "ui_start", 4096, NULL, 5, NULL, tskNO_AFFINITY);
     xTaskCreatePinnedToCore(rtc_service, "rtc_service", 4096, NULL, 5, NULL, tskNO_AFFINITY);
-    xTaskCreatePinnedToCore(bottom_button_service, "bottom_button_service", 2048, NULL, 5, NULL, tskNO_AFFINITY);
     xTaskCreatePinnedToCore(mqtt_init, "mqtt_init", 2048, NULL, 5, NULL, tskNO_AFFINITY);
 }
 

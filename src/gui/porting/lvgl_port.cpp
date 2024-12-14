@@ -113,7 +113,7 @@ void check_sleep() {
   if(ota_running_flag == false)
   {
     uint32_t current_time = millis();
-
+    M5.update();
     if (current_time - last_touch_time > sleep_timeout_2) {
       if(!is_light_sleeping)
       {
@@ -127,6 +127,20 @@ void check_sleep() {
         esp_light_sleep_start(); // Chuyển vào chế độ Light Sleep
       }
       
+    }
+    else if (M5.BtnPWR.wasClicked())
+    {
+      if(!is_light_sleeping)
+      {
+        print(PRINTLN,"Entering Light Sleep...");
+        is_light_sleeping = true;
+        enable_light_flag = false;
+        is_modem_sleeping = false;
+        set_brightness(0);
+        esp_sleep_enable_ext0_wakeup((gpio_num_t)TOUCH_WAKEUP_PIN, 0);
+        // Bắt đầu Light Sleep
+        esp_light_sleep_start(); // Chuyển vào chế độ Light Sleep
+      }
     }
     else {
       if (enable_light_flag == false) 

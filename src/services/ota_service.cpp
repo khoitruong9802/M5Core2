@@ -84,7 +84,7 @@ void ota_update(void *parameter)
             {
                 // Xử lý mất WiFi
                 print(PRINTLN, "OTA update aborted due to WiFi disconnection.");
-                lv_label_set_text(ui_Label90, "WiFi was disconnection...");
+                lv_label_set_text(ui_Label90, "WiFi disconnect. Try again...");
                 ota_running_flag = false;
                 vTaskDelete(NULL);
                 return; // Kết thúc
