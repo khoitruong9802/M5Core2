@@ -94,6 +94,7 @@ extern const char *str_topic_photpho3;
 extern int current_area_for_sensors_log;
 extern int current_area_for_sensors;
 extern int current_area_device;
+extern int current_area_threshold;
 
 // OTA Mode
 extern bool ota_running_flag;

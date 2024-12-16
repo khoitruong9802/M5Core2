@@ -42,7 +42,7 @@ void ota_update(void *parameter)
         bool canBegin = Update.begin(contentLength);
 
         if (canBegin)
-        {
+        { 
             print(PRINTLN, "Begin OTA update");
             ota_running_flag = true;
             lv_label_set_text(ui_Label90, "OTA update in progress...");

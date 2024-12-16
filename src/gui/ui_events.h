@@ -83,6 +83,10 @@ void checkwifiota(void *pvParameter);
 void ui_event_PanelArea1DevicesArea(lv_event_t * e);
 void ui_event_PanelArea2DevicesArea(lv_event_t * e);
 void ui_event_PanelArea3DevicesArea(lv_event_t * e);
+void ui_event_PanelArea1ThresholdArea(lv_event_t * e);
+void ui_event_PanelArea2ThresholdArea(lv_event_t * e);
+void ui_event_PanelArea3ThresholdArea(lv_event_t * e);
+void ui_event_ButtonThresHoldItem(lv_event_t * e);
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

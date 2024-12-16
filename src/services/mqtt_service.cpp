@@ -32,6 +32,12 @@ const char *topic_humi3 = "18faa0dd7a927906cb3e/feeds/area3/humi";
 const char *topic_kali3 = "18faa0dd7a927906cb3e/feeds/area3/kali";
 const char *topic_nito3 = "18faa0dd7a927906cb3e/feeds/area3/nito";
 const char *topic_photpho3 = "18faa0dd7a927906cb3e/feeds/area3/photpho";
+const char* topic_Area1_pump1 = "18faa0dd7a927906cb3e/feeds/area1/pump1";
+const char* topic_Area1_pump2 = "18faa0dd7a927906cb3e/feeds/area1/pump2";
+const char* topic_Area2_pump1 = "18faa0dd7a927906cb3e/feeds/area2/pump1";
+const char* topic_Area2_pump2 = "18faa0dd7a927906cb3e/feeds/area2/pump2";
+const char* topic_Area3_pump1 = "18faa0dd7a927906cb3e/feeds/area3/pump1";
+const char* topic_Area3_pump2 = "18faa0dd7a927906cb3e/feeds/area3/pump2";
 
 // Initialize the WiFi and MQTT clients
 WiFiClient espClient;

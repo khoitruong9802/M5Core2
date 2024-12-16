@@ -41,3 +41,4 @@ images/ui_img_device_png.c
 images/ui_img_process_png.c
 images/ui_img_bell_png.c
 images/ui_img_history_png.c
+images/ui_img_threshold_png.c

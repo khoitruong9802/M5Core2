@@ -526,8 +526,10 @@ lv_obj_t * ui_PanelHeaderNotification1Farm;
 void ui_event_ButtonCloseHeaderNotification1Farm(lv_event_t * e);
 lv_obj_t * ui_ButtonCloseHeaderNotification1Farm;
 lv_obj_t * ui_LabelCloseHeaderNotification1Farm;
-
-
+lv_obj_t * ui_PanelThreshHoldItemFarmScreen;
+lv_obj_t * ui_ImgThreshHoldItemFarmScreen;
+lv_obj_t * ui_LabelThreshHoldItemFarmScreen;
+void ui_event_ThreshHoldItemFarmScreen(lv_event_t * e);
 // SCREEN: ui_Notification
 void ui_Notification_screen_init(void);
 void ui_event_Notification(lv_event_t * e);
@@ -717,6 +719,186 @@ lv_chart_series_t * ui_ChartSoidHumiditySensor_series_1;
 lv_chart_series_t * ui_ChartSoidKali_series_1;
 lv_chart_series_t * ui_ChartSoidNitro_series_1;
 lv_chart_series_t * ui_ChartSoidPhotpho_series_1;
+
+//SCREEN: ui_thresholdAreaScreen
+void ui_ThresholdAreaScreen_screen_init(void);
+lv_obj_t *ui_ThresholdAreaScreen;
+lv_obj_t *ui_ThresholdAreaScreen_screen;
+lv_obj_t *ui_PanelThresholdAreaScreen_screen;
+lv_obj_t *ui_PanelArea1ThresholdArea;
+lv_obj_t *ui_LabelArea1ThresholdArea;
+lv_obj_t *ui_PanelArea2ThresholdArea;
+lv_obj_t *ui_LabelArea2ThresholdArea;
+lv_obj_t *ui_PanelArea3ThresholdArea;
+lv_obj_t *ui_LabelArea3ThresholdArea;
+void ui_event_ThresholdAreaScreen(lv_event_t * e);
+
+// SCREEN: ui_ThresHoldScreen
+void ui_ThresHoldScreen_screen_init(void);
+lv_obj_t * ui_ThresHoldScreen;
+lv_obj_t * ui_ThresHoldScreenScreen;
+lv_obj_t * ui_PanelScheduleItemScreen;
+lv_obj_t * ui_PanelContainerTemperature1;
+lv_obj_t * ui_LabelTitleTemperature1;
+void ui_event_PanelTemperature1(lv_event_t * e);
+lv_obj_t * ui_PanelTemperature1;
+lv_obj_t * ui_LabelTemperature1;
+lv_obj_t * ui_PanelContainerTemperature2;
+lv_obj_t * ui_LabelTitleTemperature2;
+void ui_event_PanelTemperature2(lv_event_t * e);
+lv_obj_t * ui_PanelTemperature2;
+lv_obj_t * ui_LabelTemperature2;
+lv_obj_t * ui_PanelContainerKali1;
+lv_obj_t * ui_LabelTitleKali1;
+void ui_event_PanelKali1(lv_event_t * e);
+lv_obj_t * ui_PanelKali1;
+lv_obj_t * ui_LabelKali1;
+lv_obj_t * ui_PanelContainerKali2;
+lv_obj_t * ui_LabelTitleKali2;
+void ui_event_PanelKali2(lv_event_t * e);
+lv_obj_t * ui_PanelKali2;
+lv_obj_t * ui_LabelKali2;
+lv_obj_t * ui_PanelContainerNito1;
+lv_obj_t * ui_LabelTitleNito1;
+void ui_event_PanelNito1(lv_event_t * e);
+lv_obj_t * ui_PanelNito1;
+lv_obj_t * ui_LabelNito1;
+lv_obj_t * ui_PanelContainerNito2;
+lv_obj_t * ui_LabelTitleNito2;
+void ui_event_PanelNito2(lv_event_t * e);
+lv_obj_t * ui_PanelNito2;
+lv_obj_t * ui_LabelNito2;
+lv_obj_t * ui_PanelContainerPhotpho1;
+lv_obj_t * ui_LabelTitlePhotpho1;
+void ui_event_PanelPhotpho1(lv_event_t * e);
+lv_obj_t * ui_PanelPhotpho1;
+lv_obj_t * ui_LabelPhotpho1;
+lv_obj_t * ui_PanelContainerPhotpho2;
+lv_obj_t * ui_LabelTitlePhotpho2;
+void ui_event_PanelPhotpho2(lv_event_t * e);
+lv_obj_t * ui_PanelPhotpho2;
+lv_obj_t * ui_LabelPhotpho2;
+void ui_event_ButtonCancelThresHoldItem(lv_event_t * e);
+lv_obj_t * ui_ButtonCancelThresHoldItem;
+lv_obj_t * ui_LabelCancelThresHoldItem;
+lv_obj_t * ui_ButtonThresHoldItem;
+lv_obj_t * ui_LabelOKThresHoldItem;
+lv_obj_t * ui_PanelContainer;
+lv_obj_t * ui_PanelLoadingThresHoldItem;
+lv_obj_t * ui_SpinnerLoadingThresHoldItem;
+lv_obj_t * ui_LabelLoadingThresHoldItem;
+
+// SCREEN: ui_ThresHoldItemScreen1
+void ui_ThresHoldItemScreen1_screen_init(void);
+lv_obj_t * ui_ThresHoldItemScreen1;
+lv_obj_t * ui_ThresHoldItemContainer1;
+lv_obj_t * ui_LabelTitleThresHoldItem1;
+void ui_event_PanelButtonXThresHoldItem1(lv_event_t * e);
+lv_obj_t * ui_PanelButtonXThresHoldItem1;
+lv_obj_t * ui_LabelButtonXThresHoldItem1;
+lv_obj_t * ui_KeyboardThresHoldItem1;
+lv_obj_t * ui_PanelThresHoldItemContainer1;
+lv_obj_t * ui_TextAreaThresHoldItem1;
+
+
+// SCREEN: ui_ThresHoldItemScreen2
+void ui_ThresHoldItemScreen2_screen_init(void);
+lv_obj_t * ui_ThresHoldItemScreen2;
+lv_obj_t * ui_ThresHoldItemContainer2;
+lv_obj_t * ui_LabelTitleThresHoldItem2;
+void ui_event_PanelButtonXThresHoldItem2(lv_event_t * e);
+lv_obj_t * ui_PanelButtonXThresHoldItem2;
+lv_obj_t * ui_LabelButtonXThresHoldItem2;
+lv_obj_t * ui_KeyboardThresHoldItem2;
+lv_obj_t * ui_PanelThresHoldItemContainer2;
+lv_obj_t * ui_TextAreaThresHoldItem2;
+
+
+// SCREEN: ui_ThresHoldItemScreen3
+void ui_ThresHoldItemScreen3_screen_init(void);
+lv_obj_t * ui_ThresHoldItemScreen3;
+lv_obj_t * ui_ThresHoldItemContainer3;
+lv_obj_t * ui_LabelTitleThresHoldItem3;
+void ui_event_PanelButtonXThresHoldItem3(lv_event_t * e);
+lv_obj_t * ui_PanelButtonXThresHoldItem3;
+lv_obj_t * ui_LabelButtonXThresHoldItem3;
+lv_obj_t * ui_KeyboardThresHoldItem3;
+lv_obj_t * ui_PanelThresHoldItemContainer3;
+lv_obj_t * ui_TextAreaThresHoldItem3;
+
+
+// SCREEN: ui_ThresHoldItemScreen4
+void ui_ThresHoldItemScreen4_screen_init(void);
+lv_obj_t * ui_ThresHoldItemScreen4;
+lv_obj_t * ui_ThresHoldItemContainer4;
+lv_obj_t * ui_LabelTitleThresHoldItem4;
+void ui_event_PanelButtonXThresHoldItem4(lv_event_t * e);
+lv_obj_t * ui_PanelButtonXThresHoldItem4;
+lv_obj_t * ui_LabelButtonXThresHoldItem4;
+lv_obj_t * ui_KeyboardThresHoldItem4;
+lv_obj_t * ui_PanelThresHoldItemContainer4;
+lv_obj_t * ui_TextAreaThresHoldItem4;
+
+
+// SCREEN: ui_ThresHoldItemScreen5
+void ui_ThresHoldItemScreen5_screen_init(void);
+lv_obj_t * ui_ThresHoldItemScreen5;
+lv_obj_t * ui_ThresHoldItemContainer5;
+lv_obj_t * ui_LabelTitleThresHoldItem5;
+void ui_event_PanelButtonXThresHoldItem5(lv_event_t * e);
+lv_obj_t * ui_PanelButtonXThresHoldItem5;
+lv_obj_t * ui_LabelButtonXThresHoldItem5;
+lv_obj_t * ui_KeyboardThresHoldItem5;
+lv_obj_t * ui_PanelThresHoldItemContainer5;
+lv_obj_t * ui_TextAreaThresHoldItem5;
+
+
+// SCREEN: ui_ThresHoldItemScreen6
+void ui_ThresHoldItemScreen6_screen_init(void);
+lv_obj_t * ui_ThresHoldItemScreen6;
+lv_obj_t * ui_ThresHoldItemContainer6;
+lv_obj_t * ui_LabelTitleThresHoldItem6;
+void ui_event_PanelButtonXThresHoldItem6(lv_event_t * e);
+lv_obj_t * ui_PanelButtonXThresHoldItem6;
+lv_obj_t * ui_LabelButtonXThresHoldItem6;
+lv_obj_t * ui_KeyboardThresHoldItem6;
+lv_obj_t * ui_PanelThresHoldItemContainer6;
+lv_obj_t * ui_TextAreaThresHoldItem6;
+
+
+// SCREEN: ui_ThresHoldItemScreen7
+void ui_ThresHoldItemScreen7_screen_init(void);
+lv_obj_t * ui_ThresHoldItemScreen7;
+lv_obj_t * ui_ThresHoldItemContainer7;
+lv_obj_t * ui_LabelTitleThresHoldItem7;
+void ui_event_PanelButtonXThresHoldItem7(lv_event_t * e);
+lv_obj_t * ui_PanelButtonXThresHoldItem7;
+lv_obj_t * ui_LabelButtonXThresHoldItem7;
+lv_obj_t * ui_KeyboardThresHoldItem7;
+lv_obj_t * ui_PanelThresHoldItemContainer7;
+lv_obj_t * ui_TextAreaThresHoldItem7;
+
+
+// SCREEN: ui_ThresHoldItemScreen8
+void ui_ThresHoldItemScreen8_screen_init(void);
+lv_obj_t * ui_ThresHoldItemScreen8;
+lv_obj_t * ui_ThresHoldItemContainer8;
+lv_obj_t * ui_LabelTitleThresHoldItem8;
+void ui_event_PanelButtonXThresHoldItem8(lv_event_t * e);
+lv_obj_t * ui_PanelButtonXThresHoldItem8;
+lv_obj_t * ui_LabelButtonXThresHoldItem8;
+lv_obj_t * ui_KeyboardThresHoldItem8;
+lv_obj_t * ui_PanelThresHoldItemContainer8;
+lv_obj_t * ui_TextAreaThresHoldItem8;
+
+void ui_event_TextAreaThresHoldItem1(lv_event_t * e);
+void ui_event_TextAreaThresHoldItem2(lv_event_t * e);
+void ui_event_TextAreaThresHoldItem3(lv_event_t * e);
+void ui_event_TextAreaThresHoldItem4(lv_event_t * e);
+void ui_event_TextAreaThresHoldItem5(lv_event_t * e);
+void ui_event_TextAreaThresHoldItem6(lv_event_t * e);
+void ui_event_TextAreaThresHoldItem7(lv_event_t * e);
+void ui_event_TextAreaThresHoldItem8(lv_event_t * e);
 ///////////////////// TEST LVGL SETTINGS ////////////////////
 #if LV_COLOR_DEPTH != 16
     #error "LV_COLOR_DEPTH should be 16bit to match SquareLine Studio's settings"
@@ -1676,5 +1858,293 @@ void ui_event_Button2(lv_event_t * e)
        lv_obj_add_flag(ui_Panel40, LV_OBJ_FLAG_HIDDEN);
     }
 }
+
+void ui_event_ThresholdAreaScreen(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) {
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_farmScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_farmScreen_screen_init);
+    }      
+}
+
+void ui_event_ThreshHoldItemFarmScreen(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) 
+    {
+        _ui_screen_change(&ui_ThresholdAreaScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresholdAreaScreen_screen_init);
+    }      
+}
+
+void ui_event_PanelTemperature1(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        const char * text = lv_label_get_text(ui_LabelTemperature1);
+        lv_textarea_set_text(ui_TextAreaThresHoldItem1, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_ThresHoldItemScreen1, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldItemScreen1_screen_init);
+    }
+}
+void ui_event_PanelTemperature2(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        const char * text = lv_label_get_text(ui_LabelTemperature2);
+        lv_textarea_set_text(ui_TextAreaThresHoldItem2, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_ThresHoldItemScreen2, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldItemScreen2_screen_init);
+    }
+}
+void ui_event_PanelKali1(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        const char * text = lv_label_get_text(ui_LabelKali1);
+        lv_textarea_set_text(ui_TextAreaThresHoldItem3, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_ThresHoldItemScreen3, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldItemScreen3_screen_init);
+    }
+}
+void ui_event_PanelKali2(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        const char * text = lv_label_get_text(ui_LabelKali2);
+        lv_textarea_set_text(ui_TextAreaThresHoldItem4, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_ThresHoldItemScreen4, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldItemScreen4_screen_init);
+    }
+}
+void ui_event_PanelNito1(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        const char * text = lv_label_get_text(ui_LabelNito1);
+        lv_textarea_set_text(ui_TextAreaThresHoldItem5, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_ThresHoldItemScreen5, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldItemScreen5_screen_init);
+    }
+}
+void ui_event_PanelNito2(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        const char * text = lv_label_get_text(ui_LabelNito2);
+        lv_textarea_set_text(ui_TextAreaThresHoldItem6, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_ThresHoldItemScreen6, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldItemScreen6_screen_init);
+    }
+}
+void ui_event_PanelPhotpho1(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        const char * text = lv_label_get_text(ui_LabelPhotpho1);
+        lv_textarea_set_text(ui_TextAreaThresHoldItem7, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_ThresHoldItemScreen7, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldItemScreen7_screen_init);
+    }
+}
+void ui_event_PanelPhotpho2(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        const char * text = lv_label_get_text(ui_LabelPhotpho2);
+        lv_textarea_set_text(ui_TextAreaThresHoldItem8, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_ThresHoldItemScreen8, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldItemScreen8_screen_init);
+    }
+}
+void ui_event_ButtonCancelThresHoldItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_ThresholdAreaScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresholdAreaScreen_screen_init);
+    }
+}
+
+void ui_event_PanelButtonXThresHoldItem1(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldScreen_screen_init);
+    }
+}
+void ui_event_PanelButtonXThresHoldItem2(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldScreen_screen_init);
+    }
+}
+void ui_event_PanelButtonXThresHoldItem3(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldScreen_screen_init);
+    }
+}
+void ui_event_PanelButtonXThresHoldItem4(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldScreen_screen_init);
+    }
+}
+void ui_event_PanelButtonXThresHoldItem5(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldScreen_screen_init);
+    }
+}
+void ui_event_PanelButtonXThresHoldItem6(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldScreen_screen_init);
+    }
+}
+void ui_event_PanelButtonXThresHoldItem7(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldScreen_screen_init);
+    }
+}
+void ui_event_PanelButtonXThresHoldItem8(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldScreen_screen_init);
+    }
+}
+
+void ui_event_TextAreaThresHoldItem1(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * obj = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY)
+    {
+        const char * text = lv_textarea_get_text(obj);
+        lv_label_set_text(ui_LabelTemperature1, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresholdAreaScreen_screen_init);
+    }
+}
+
+void ui_event_TextAreaThresHoldItem2(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * obj = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY)
+    {
+        const char * text = lv_textarea_get_text(obj);
+        lv_label_set_text(ui_LabelTemperature2, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresholdAreaScreen_screen_init);
+    }
+}
+
+void ui_event_TextAreaThresHoldItem3(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * obj = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY)
+    {
+        const char * text = lv_textarea_get_text(obj);
+        lv_label_set_text(ui_LabelKali1, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresholdAreaScreen_screen_init);
+    }
+}
+
+void ui_event_TextAreaThresHoldItem4(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * obj = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY)
+    {
+        const char * text = lv_textarea_get_text(obj);
+        lv_label_set_text(ui_LabelKali2, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresholdAreaScreen_screen_init);
+    }
+}
+
+void ui_event_TextAreaThresHoldItem5(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * obj = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY)
+    {
+        const char * text = lv_textarea_get_text(obj);
+        lv_label_set_text(ui_LabelNito1, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresholdAreaScreen_screen_init);
+    }
+}
+
+void ui_event_TextAreaThresHoldItem6(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * obj = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY)
+    {
+        const char * text = lv_textarea_get_text(obj);
+        lv_label_set_text(ui_LabelNito2, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresholdAreaScreen_screen_init);
+    }
+}
+
+void ui_event_TextAreaThresHoldItem7(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * obj = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY)
+    {
+        const char * text = lv_textarea_get_text(obj);
+        lv_label_set_text(ui_LabelPhotpho1, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresholdAreaScreen_screen_init);
+    }
+}
+
+void ui_event_TextAreaThresHoldItem8(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * obj = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY)
+    {
+        const char * text = lv_textarea_get_text(obj);
+        lv_label_set_text(ui_LabelPhotpho2, text);
+        lv_task_handler();
+        _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresholdAreaScreen_screen_init);
+    }
+}
+
+
 ///////////////////// SCREENS ////////////////////
 

@@ -148,6 +148,43 @@ void ui_farmScreen_screen_init(void)
     lv_obj_set_style_text_font(ui_LabelHistoryItemFarmScreen, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
 
 
+    ui_PanelThreshHoldItemFarmScreen = lv_obj_create(ui_PanelfarmScreen_screen);
+    lv_obj_set_width(ui_PanelThreshHoldItemFarmScreen, 250);
+    lv_obj_set_height(ui_PanelThreshHoldItemFarmScreen, 50);
+    lv_obj_set_x(ui_PanelThreshHoldItemFarmScreen, 0);
+    lv_obj_set_y(ui_PanelThreshHoldItemFarmScreen, 2);
+    lv_obj_set_align(ui_PanelThreshHoldItemFarmScreen, LV_ALIGN_CENTER);
+    lv_obj_set_flex_flow(ui_PanelThreshHoldItemFarmScreen, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(ui_PanelThreshHoldItemFarmScreen, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_PanelThreshHoldItemFarmScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_PanelThreshHoldItemFarmScreen, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_PanelThreshHoldItemFarmScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(ui_PanelThreshHoldItemFarmScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_opa(ui_PanelThreshHoldItemFarmScreen, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_outline_color(ui_PanelThreshHoldItemFarmScreen, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_outline_opa(ui_PanelThreshHoldItemFarmScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_outline_width(ui_PanelThreshHoldItemFarmScreen, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_outline_pad(ui_PanelThreshHoldItemFarmScreen, 1, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelThreshHoldItemFarmScreen, lv_color_hex(0x353535), LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_bg_opa(ui_PanelThreshHoldItemFarmScreen, 255, LV_PART_MAIN | LV_STATE_PRESSED);
+
+    ui_ImgThreshHoldItemFarmScreen = lv_img_create(ui_PanelThreshHoldItemFarmScreen);
+    lv_img_set_src(ui_ImgThreshHoldItemFarmScreen, &ui_img_threshold_png);
+    lv_obj_set_width(ui_ImgThreshHoldItemFarmScreen, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_ImgThreshHoldItemFarmScreen, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_ImgThreshHoldItemFarmScreen, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_ImgThreshHoldItemFarmScreen, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
+    lv_obj_clear_flag(ui_ImgThreshHoldItemFarmScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_LabelThreshHoldItemFarmScreen = lv_label_create(ui_PanelThreshHoldItemFarmScreen);
+    lv_obj_set_width(ui_LabelThreshHoldItemFarmScreen, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_LabelThreshHoldItemFarmScreen, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_LabelThreshHoldItemFarmScreen, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_LabelThreshHoldItemFarmScreen, "ThresHold");
+    lv_obj_set_style_text_color(ui_LabelThreshHoldItemFarmScreen, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_LabelThreshHoldItemFarmScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_LabelThreshHoldItemFarmScreen, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
+
     ui_PanelLoadingFarmScreen = lv_obj_create(ui_farmScreen);
     lv_obj_set_width(ui_PanelLoadingFarmScreen, 240);
     lv_obj_set_height(ui_PanelLoadingFarmScreen, 180);
@@ -245,6 +282,7 @@ void ui_farmScreen_screen_init(void)
     lv_obj_add_event_cb(ui_PanelDeviceItemFarmScreen, ui_event_PanelDeviceItemFarmScreen, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_PanelScheduleItemFarmScreen, ui_event_PanelScheduleItemFarmScreen, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_PanelHistoryItemFarmScreen, ui_event_PanelHistoryItemFarmScreen, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_PanelThreshHoldItemFarmScreen, ui_event_ThreshHoldItemFarmScreen, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_ButtonCloseHeaderNotification1Farm, ui_event_ButtonCloseHeaderNotification1Farm, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_farmScreen, ui_event_farmScreen, LV_EVENT_ALL, NULL);
 

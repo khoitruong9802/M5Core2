@@ -11,6 +11,7 @@
 #include "../services/schedule_history.h"
 #include "../services/notification_service.h"
 #include "../services/mqtt_service.h"
+#include "../services/threshold_service.h"
 #include "global.h"
 #include "services/ota_service.h"
 #include "ui.h"
@@ -60,6 +61,16 @@ void ui_init(void)
     ui_DevicesAreaScreen_screen_init();
     ui_Loading_screen_init();
     ui_SoidPhotpho_screen_init();
+    ui_ThresHoldScreen_screen_init();
+    ui_ThresHoldItemScreen1_screen_init();
+    ui_ThresHoldItemScreen2_screen_init();
+    ui_ThresHoldItemScreen3_screen_init();
+    ui_ThresHoldItemScreen4_screen_init();
+    ui_ThresHoldItemScreen5_screen_init();
+    ui_ThresHoldItemScreen6_screen_init();
+    ui_ThresHoldItemScreen7_screen_init();
+    ui_ThresHoldItemScreen8_screen_init();
+    ui_ThresholdAreaScreen_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
     lv_disp_load_scr(ui_MainScreen);
 }
@@ -1949,5 +1960,111 @@ void ui_event_PanelArea3DevicesArea(lv_event_t * e)
     if(event_code == LV_EVENT_CLICKED) {
         current_area_device = 3;
         _ui_screen_change(&ui_ManualScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_ManualScreen_screen_init);
+    }
+}
+
+void ui_event_PanelArea1ThresholdArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+   
+    if(event_code == LV_EVENT_CLICKED) {
+      current_area_threshold = 1;
+      lv_obj_clear_flag(ui_PanelLoadingThresHoldItem, LV_OBJ_FLAG_HIDDEN);
+      lv_task_handler();
+      _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldScreen_screen_init);
+      TaskHandle_t threshold_task = xTaskGetHandle("threshold");
+        if (threshold_task != NULL) {
+          print(PRINTLN, "scan_wifi has created");
+        } else {
+          xTaskCreatePinnedToCore(handleThresHold, "threshold", 8192, NULL, 5, NULL, 0);
+        }
+    }
+}
+void ui_event_PanelArea2ThresholdArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+      current_area_threshold = 2;
+      lv_obj_clear_flag(ui_PanelLoadingThresHoldItem, LV_OBJ_FLAG_HIDDEN);
+      lv_task_handler();
+      _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldScreen_screen_init);
+      TaskHandle_t threshold_task = xTaskGetHandle("threshold");
+      if (threshold_task != NULL) {
+        print(PRINTLN, "scan_wifi has created");
+      } else {
+        xTaskCreatePinnedToCore(handleThresHold, "threshold", 8192, NULL, 5, NULL, 0);
+      }
+    }
+}
+void ui_event_PanelArea3ThresholdArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+      current_area_threshold = 3;
+      lv_obj_clear_flag(ui_PanelLoadingThresHoldItem, LV_OBJ_FLAG_HIDDEN);
+      lv_task_handler();
+      _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldScreen_screen_init);
+      TaskHandle_t threshold_task = xTaskGetHandle("threshold");
+      if (threshold_task != NULL) {
+        print(PRINTLN, "scan_wifi has created");
+      } else {
+        xTaskCreatePinnedToCore(handleThresHold, "threshold", 8192, NULL, 5, NULL, 0);
+      }
+    }
+}
+
+void ui_event_ButtonThresHoldItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+      StaticJsonDocument<1024> jsonPayloadDoc;
+      jsonPayloadDoc["id"] = current_area_threshold;
+      if(current_area_threshold == 1)
+      {
+        jsonPayloadDoc["area"] = "1";
+      } else if(current_area_threshold == 2)
+      {
+        jsonPayloadDoc["area"] = "2";
+      } else if(current_area_threshold == 3)
+      {
+        jsonPayloadDoc["area"] = "3";
+      }
+      const char * LabelTemperature1 = lv_label_get_text(ui_LabelTemperature1);
+      int int_Temperature1 = convertStringToInt(LabelTemperature1);
+      jsonPayloadDoc["min_temperature"] = int_Temperature1;
+      const char * LabelTemperature2 = lv_label_get_text(ui_LabelTemperature2);
+      int int_Temperature2 = convertStringToInt(LabelTemperature2);
+      jsonPayloadDoc["max_temperature"] = int_Temperature2;
+      const char * LabelKali1 = lv_label_get_text(ui_LabelKali1);
+      int int_Kali1 = convertStringToInt(LabelKali1);
+      jsonPayloadDoc["min_kali"] = int_Kali1;
+      const char * LabelKali2 = lv_label_get_text(ui_LabelKali2);
+      int int_Kali2 = convertStringToInt(LabelKali2);
+      jsonPayloadDoc["max_kali"] = int_Kali2;
+      const char * LabelNito1 = lv_label_get_text(ui_LabelNito1);
+      int int_Nito1 = convertStringToInt(LabelNito1);
+      jsonPayloadDoc["min_nito"] = int_Nito1;
+      const char * LabelNito2 = lv_label_get_text(ui_LabelNito2);
+      int int_Nito2 = convertStringToInt(LabelNito2);
+      jsonPayloadDoc["max_nito"] = int_Nito2;
+      const char * LabelPhotpho1 = lv_label_get_text(ui_LabelPhotpho1);
+      int int_Photpho1 = convertStringToInt(LabelPhotpho1);
+      jsonPayloadDoc["min_photpho"] = int_Photpho1;
+      const char * LabelPhotpho2 = lv_label_get_text(ui_LabelPhotpho2);
+      int int_Photpho2 = convertStringToInt(LabelPhotpho2);
+      jsonPayloadDoc["max_photpho"] = int_Photpho2;
+      if (jsonPayloadDoc.size() > 0)
+      {
+        String jsonPayload;
+        serializeJson(jsonPayloadDoc, jsonPayload);
+        char serverURL[150]; // Adjust size if needed based on the URL length
+        snprintf(serverURL, sizeof(serverURL), "%s/api/v1/threshold/%d", web_server_official, current_area_threshold);
+        sendPutRequest(serverURL, jsonPayload.c_str());
+      }
+        _ui_screen_change(&ui_ThresholdAreaScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresholdAreaScreen_screen_init);
     }
 }
