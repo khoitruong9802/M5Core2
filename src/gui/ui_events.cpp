@@ -6,11 +6,77 @@
 #include <M5Unified.h>
 
 #include "../m5helper/brightness.h"
-#include "../services/mqtt_service.h"
 #include "../services/wifi_service.h"
+#include "../services/schedule_service.h"
+#include "../services/schedule_history.h"
+#include "../services/notification_service.h"
+#include "../services/mqtt_service.h"
+#include "../services/threshold_service.h"
 #include "global.h"
 #include "services/ota_service.h"
 #include "ui.h"
+#include "../utils/http.h"
+#include<stdio.h>
+
+TaskHandle_t check_wifi_ota = xTaskGetHandle("wifiOTA");
+
+void ui_init(void)
+{
+    lv_disp_t * dispp = lv_disp_get_default();
+    lv_theme_t * theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
+                                               false, LV_FONT_DEFAULT);
+    lv_disp_set_theme(dispp, theme);
+    ui_MainScreen_screen_init();
+    ui_AppScreen_screen_init();
+    ui_SettingsScreen_screen_init();
+    ui_AboutScreen_screen_init();
+    ui_InformationScreen_screen_init();
+    ui_SensorsScreen_screen_init();
+    ui_ManualScreen_screen_init();
+    ui_DisplayScreen_screen_init();
+    ui_WifiScreen_screen_init();
+    ui_OtaScreen_screen_init();
+    ui_ScheduleScreen_screen_init();
+    ui_ScheduleItemScreen_screen_init();
+    ui_name_screen_init();
+    ui_description_screen_init();
+    ui_Flow1_screen_init();
+    ui_Flow2_screen_init();
+    ui_Flow3_screen_init();
+    ui_startTime_screen_init();
+    ui_endTime_screen_init();
+    ui_startDate_screen_init();
+    ui_EndDate_screen_init();
+    ui_date_screen_init();
+    ui_farmScreen_screen_init();
+    ui_Notification_screen_init();
+    ui_wateringHistory_screen_init();
+    ui_SensorsAreaScreen_screen_init();
+    ui_SoilTemperatureSensor_screen_init();
+    ui_SoidHumiditySensor_screen_init();
+    ui_SoidNitro_screen_init();
+    ui_SoidKali_screen_init();
+    ui_SensorsLogAreaScreen_screen_init();
+    ui_SensorsLogListScreen_screen_init();
+    ui_DevicesAreaScreen_screen_init();
+    ui_Loading_screen_init();
+    ui_SoidPhotpho_screen_init();
+    ui_ThresHoldScreen_screen_init();
+    ui_ThresHoldItemScreen1_screen_init();
+    ui_ThresHoldItemScreen2_screen_init();
+    ui_ThresHoldItemScreen3_screen_init();
+    ui_ThresHoldItemScreen4_screen_init();
+    ui_ThresHoldItemScreen5_screen_init();
+    ui_ThresHoldItemScreen6_screen_init();
+    ui_ThresHoldItemScreen7_screen_init();
+    ui_ThresHoldItemScreen8_screen_init();
+    ui_ThresholdAreaScreen_screen_init();
+    ui____initial_actions0 = lv_obj_create(NULL);
+    lv_disp_load_scr(ui_MainScreen);
+}
+
+
+
 
 const char *get_json_device(uint8_t device1_status, uint8_t device2_status) {
   char *result = new char[256];
@@ -20,7 +86,19 @@ const char *get_json_device(uint8_t device1_status, uint8_t device2_status) {
 
 void button2_on(lv_event_t *e) {
   // Your code here
-  client.publish("khoitruong9802/feeds/nutnhan2", "1");
+  if(current_area_device == 1)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area1/pump2", "1", true);
+  }
+  else if(current_area_device == 2)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area2/pump2", "1", true);
+  }
+  else if(current_area_device == 3)
+  {
+client.publish("18faa0dd7a927906cb3e/feeds/area3/pump2", "1", true);
+  }
+  
 
   // const char *publish_data = get_json_device(0, 1);
   // print(PRINTLN,publish_data);
@@ -30,17 +108,53 @@ void button2_on(lv_event_t *e) {
 
 void button2_off(lv_event_t *e) {
   // Your code
-  client.publish("khoitruong9802/feeds/nutnhan2", "0");
+  if(current_area_device == 1)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area1/pump2", "0", true);
+  }
+  else if(current_area_device == 2)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area2/pump2", "0", true);
+  }
+  else if(current_area_device == 3)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area3/pump2", "0", true);
+  }
+  
 }
 
 void button1_on(lv_event_t *e) {
   // Your code here
-  client.publish("khoitruong9802/feeds/nutnhan1", "1");
+  if(current_area_device == 1)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area1/pump1", "1", true);
+  }
+  else if(current_area_device == 2)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area2/pump1", "1", true);
+  }
+  else if(current_area_device == 3)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area3/pump1", "1", true);
+  }
+  
 }
 
 void button1_off(lv_event_t *e) {
   // Your code here
-  client.publish("khoitruong9802/feeds/nutnhan1", "0");
+  if(current_area_device == 1)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area1/pump1", "0", true);
+  }
+  else if(current_area_device == 2)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area2/pump1", "0", true);
+  }
+  else if(current_area_device == 3)
+  {
+    client.publish("18faa0dd7a927906cb3e/feeds/area3/pump1", "0", true);
+  }
+  
 }
 
 void change_brightness(lv_event_t *e) {
@@ -50,23 +164,14 @@ void change_brightness(lv_event_t *e) {
   set_brightness(brightness);
 }
 
-void change_screen_mqtt(lv_event_t *e) {
+void change_screen_mannual_control(lv_event_t *e) {
   // Your code here
-  lv_event_code_t event_code = lv_event_get_code(e);
-  lv_obj_t *target = lv_event_get_target(e);
-  if (event_code == LV_EVENT_CLICKED) {
-    if (WiFi.status() != WL_CONNECTED) {
-      _ui_flag_modify(ui_Panel29, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-    } else {
-      TaskHandle_t mqtt_task = xTaskGetHandle("mqtt_service");
-      if (mqtt_task != NULL) {
-        print(PRINTLN, "Mqtt has created");
-        _ui_screen_change(&ui_MqttScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_MqttScreen_screen_init);
-      } else {
-        xTaskCreate(mqtt_service, "mqtt_service", 4096, NULL, 1, NULL);
-        _ui_flag_modify(ui_Panel40, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-      }
-    }
+  if (WiFi.status() != WL_CONNECTED) {
+    _ui_flag_modify(ui_PanelLoadingFarmScreen, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    delay(100);
+  } else {
+    _ui_screen_change(&ui_ManualScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ManualScreen_screen_init);
+    _ui_flag_modify(ui_PanelLoadingFarmScreen, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
   }
 }
 
@@ -75,7 +180,7 @@ void cancel_start_mqtt(lv_event_t *e) {
   lv_event_code_t event_code = lv_event_get_code(e);
   lv_obj_t *target = lv_event_get_target(e);
   if (event_code == LV_EVENT_CLICKED) {
-    _ui_flag_modify(ui_Panel40, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+    _ui_flag_modify(ui_PanelLoadingFarmScreen, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
     TaskHandle_t mqtt_task = xTaskGetHandle("mqtt_service");
     vTaskDelete(mqtt_task);
   }
@@ -86,6 +191,7 @@ void scan_network(lv_event_t *e) {
   lv_event_code_t event_code = lv_event_get_code(e);
   lv_obj_t *target = lv_event_get_target(e);
   if (event_code == LV_EVENT_CLICKED) {
+    lv_obj_clear_flag(wifiLoading, LV_OBJ_FLAG_HIDDEN);
     TaskHandle_t scan_wifi_task = xTaskGetHandle("scan_wifi");
     if (scan_wifi_task != NULL) {
       print(PRINTLN, "scan_wifi has created");
@@ -96,9 +202,20 @@ void scan_network(lv_event_t *e) {
   }
 }
 
-void change_screen_ota(lv_event_t *e) {
-  lv_event_code_t event_code = lv_event_get_code(e);
-  lv_obj_t *target = lv_event_get_target(e);
+void checkwifiota(void *pvParameter) {
+  for(;;)
+  {
+    if (WiFi.status() != WL_CONNECTED) {
+      lv_label_set_text(ui_Label34, "Please connect to \nwifi to use the app!");
+      lv_obj_clear_flag(ui_Panel40, LV_OBJ_FLAG_HIDDEN);
+      _ui_screen_change(&ui_AppScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_AppScreen_screen_init);
+      vTaskDelete(NULL);
+    }
+    vTaskDelay(1000);
+  }
+}
+
+void change_screen_ota() {
   _ui_screen_change(&ui_OtaScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_OtaScreen_screen_init);
   TaskHandle_t ota_task = xTaskGetHandle("ota_update");
   if (ota_task == NULL) {
@@ -131,6 +248,9 @@ void change_screen_ota(lv_event_t *e) {
           name_of_old_file += line[i];
         }
         if (name_of_new_file != name_of_old_file || name_of_old_file == NULL) {
+          if(check_wifi_ota == NULL) {
+            xTaskCreate(checkwifiota, "wifiOTA", 4096, NULL, 1, &check_wifi_ota);
+          }
           _ui_flag_modify(ui_Panel102, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         } else {
           _ui_flag_modify(ui_Panel104, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
@@ -139,12 +259,18 @@ void change_screen_ota(lv_event_t *e) {
       }
     }
   }
+  
 }
 
 void handle_out_ota_page() {
   TaskHandle_t ota_task = xTaskGetHandle("ota_update");
   if (ota_task != NULL) {
     vTaskDelete(ota_task);
+    ota_task = NULL;
+  }
+  if(check_wifi_ota != NULL) {
+    vTaskDelete(check_wifi_ota);
+    check_wifi_ota = NULL;
   }
   // Handle UI of OTA Page
   if (!lv_obj_has_flag(ui_Panel104, LV_OBJ_FLAG_HIDDEN)) {
@@ -165,4 +291,1780 @@ void handle_start_ota() {
   }
   TaskHandle_t ota_task = xTaskGetHandle("ota_update");
   xTaskCreate(ota_update, "ota_update", 8192, NULL, 1, &ota_task);
+}
+
+
+void schedule_screen_init(lv_event_t * e)
+{
+    // Check wifi connection
+    if(WiFi.status() != WL_CONNECTED)
+    {
+        // Pop-up alert table to inform user of wifi connection issue
+         _ui_flag_modify(ui_Panel29, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+    else
+    {
+        lv_obj_clear_flag(ui_PanelLoadingScheduleScreen, LV_OBJ_FLAG_HIDDEN);
+         _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
+         lv_task_handler();
+        TaskHandle_t schedule_task = xTaskGetHandle("schedule_task");
+        if(schedule_task == NULL)
+        {
+          void *taskStackMemory = heap_caps_malloc(8192, MALLOC_CAP_SPIRAM); // Allocating in PSRAM
+
+          if (taskStackMemory != nullptr) {
+              BaseType_t result = xTaskCreatePinnedToCore(
+                  handleScheduleUI,  // Function to execute
+                  "schedule_task",   // Task name
+                  8192,              // Stack size in bytes
+                  NULL,              // Task parameter
+                  1,                 // Priority
+                  &schedule_task,    // Task handle
+                  1                  // Core
+              );
+
+              if (result == pdPASS) {
+                  print(PRINTLN,"Task created successfully in PSRAM.");
+              } else {
+                  print(PRINTLN,"Failed to create task.");
+                  free(taskStackMemory); // Free memory if task creation failed
+              }
+          } else {
+              print(PRINTLN,"Failed to allocate memory for the task stack in PSRAM.");
+          }
+        }
+    }
+}
+
+void deleteObject(lv_obj_t * obj)
+{
+    if (lv_obj_is_valid(obj)) 
+    {
+        lv_obj_clean(obj);
+        lv_obj_remove_event_cb(obj, NULL);
+        print(PRINTLN, "All LVGL objects are cleared!");
+    }
+    else
+    {
+        print(PRINTLN, "No LVGL objects to clear!");
+    }
+}
+
+void clean_memory()
+{
+  lv_mem_monitor_t mon;
+  lv_mem_monitor(&mon);
+  Serial.printf("Used: %lu, Free: %lu, Fragmentation: %u%%\n",
+                mon.total_size - mon.free_size, mon.free_size, mon.frag_pct);
+}
+
+void ui_event_DropdownClickedScheduleRepeatScheduleItem(lv_event_t * e)
+{
+  lv_obj_t * dropdown = lv_event_get_target(e);
+  char buf[64];
+  lv_dropdown_get_selected_str(dropdown, buf, sizeof(buf));
+  if(strcmp(buf, "Once") == 0)
+  {
+    lv_obj_clear_flag(ui_PanelScheduleDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+    lv_obj_add_flag(ui_PanelScheduleStartDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+    lv_obj_add_flag(ui_PanelScheduleEndDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+    lv_obj_add_flag(ui_PanelScheduleWeekContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+  }
+  else if (strcmp(buf, "Daily") == 0)
+  {
+    lv_obj_add_flag(ui_PanelScheduleDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+    lv_obj_clear_flag(ui_PanelScheduleStartDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+    lv_obj_clear_flag(ui_PanelScheduleEndDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+    lv_obj_add_flag(ui_PanelScheduleWeekContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+  }
+  else if (strcmp(buf, "Weekly") == 0)
+  {
+    lv_obj_add_flag(ui_PanelScheduleDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+    lv_obj_clear_flag(ui_PanelScheduleStartDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+    lv_obj_clear_flag(ui_PanelScheduleEndDateContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+    lv_obj_clear_flag(ui_PanelScheduleWeekContainerScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+  }
+  lv_task_handler();
+}
+
+void ui_event_CheckboxScheduleEndDateScheduleItem(lv_event_t * e)
+{
+  lv_obj_t * checkbox = lv_event_get_target(e);
+  bool is_checked = lv_obj_has_state(checkbox, LV_STATE_CHECKED);
+  if (is_checked) {
+    print(PRINTLN,"checked!!!");
+    lv_obj_add_flag(ui_PanelScheduleEndDateScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+  }
+  else
+  {
+    print(PRINTLN,"uncheck!!");
+    lv_obj_clear_flag(ui_PanelScheduleEndDateScheduleItem, LV_OBJ_FLAG_HIDDEN); 
+  }
+  lv_task_handler();
+}
+
+void ui_event_PanelScheduleWeekItemMondayScheduleItem(lv_event_t * e)
+{
+  lv_color_t target_color = lv_color_hex(0x4264FF);   // Original color to check against
+  lv_color_t new_color = lv_color_hex(0xFFFFFF);      // New color to change to
+  lv_color_t bg_color = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemMondayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+  if (bg_color.full == target_color.full) {
+      // If it matches, set it to the new color
+      lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemMondayScheduleItem, new_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+      print(PRINTLN,"Color changed to 0xFFFFFF");
+  } else if (bg_color.full == new_color.full) {
+      // If the color is already the new color, change it back to the target color
+      lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemMondayScheduleItem, target_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+      print(PRINTLN,"Color changed back to 0x4264FF");
+  } else {
+      print(PRINTLN,"No color change was required.");
+  }
+  lv_task_handler();
+}
+
+void ui_event_PanelScheduleWeekItemTuesdayScheduleItem(lv_event_t * e)
+{
+    lv_color_t target_color = lv_color_hex(0x4264FF);   // Original color to check against
+    lv_color_t new_color = lv_color_hex(0xFFFFFF);      // New color to change to
+    lv_color_t bg_color = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemTuesdayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    if (bg_color.full == target_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemTuesdayScheduleItem, new_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        print(PRINTLN,"Color changed to 0xFFFFFF");
+    } else if (bg_color.full == new_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemTuesdayScheduleItem, target_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        print(PRINTLN,"Color changed back to 0x4264FF");
+    } else {
+        print(PRINTLN,"No color change was required.");
+    }
+    lv_task_handler();
+}
+
+void ui_event_PanelScheduleWeekItemWednesdayScheduleItem(lv_event_t * e)
+{
+    lv_color_t target_color = lv_color_hex(0x4264FF);   // Original color to check against
+    lv_color_t new_color = lv_color_hex(0xFFFFFF);      // New color to change to
+    lv_color_t bg_color = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemWednesdayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    if (bg_color.full == target_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemWednesdayScheduleItem, new_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        print(PRINTLN,"Color changed to 0xFFFFFF");
+    } else if (bg_color.full == new_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemWednesdayScheduleItem, target_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        print(PRINTLN,"Color changed back to 0x4264FF");
+    } else {
+        print(PRINTLN,"No color change was required.");
+    }
+    lv_task_handler();
+}
+
+void ui_event_PanelScheduleWeekItemThursdayScheduleItem(lv_event_t * e)
+{
+    lv_color_t target_color = lv_color_hex(0x4264FF);   // Original color to check against
+    lv_color_t new_color = lv_color_hex(0xFFFFFF);      // New color to change to
+    lv_color_t bg_color = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemThursdayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    if (bg_color.full == target_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemThursdayScheduleItem, new_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        print(PRINTLN,"Color changed to 0xFFFFFF");
+    } else if (bg_color.full == new_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemThursdayScheduleItem, target_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        print(PRINTLN,"Color changed back to 0x4264FF");
+    } else {
+        print(PRINTLN,"No color change was required.");
+    }
+    lv_task_handler();
+}
+
+void ui_event_PanelScheduleWeekItemFridayScheduleItem(lv_event_t * e)
+{
+    lv_color_t target_color = lv_color_hex(0x4264FF);   // Original color to check against
+    lv_color_t new_color = lv_color_hex(0xFFFFFF);      // New color to change to
+    lv_color_t bg_color = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemFridayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    if (bg_color.full == target_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemFridayScheduleItem, new_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        print(PRINTLN,"Color changed to 0xFFFFFF");
+    } else if (bg_color.full == new_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemFridayScheduleItem, target_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        print(PRINTLN,"Color changed back to 0x4264FF");
+    } else {
+        print(PRINTLN,"No color change was required.");
+    }
+    lv_task_handler();
+}
+
+void ui_event_PanelScheduleWeekItemSaturdayScheduleItem(lv_event_t * e)
+{
+    lv_color_t target_color = lv_color_hex(0x4264FF);   // Original color to check against
+    lv_color_t new_color = lv_color_hex(0xFFFFFF);      // New color to change to
+    lv_color_t bg_color = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemSaturdayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    if (bg_color.full == target_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemSaturdayScheduleItem, new_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        print(PRINTLN,"Color changed to 0xFFFFFF");
+    } else if (bg_color.full == new_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemSaturdayScheduleItem, target_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        print(PRINTLN,"Color changed back to 0x4264FF");
+    } else {
+        print(PRINTLN,"No color change was required.");
+    }
+    lv_task_handler();
+}
+
+void ui_event_PanelScheduleWeekItemSundayScheduleItem(lv_event_t * e)
+{
+    lv_color_t target_color = lv_color_hex(0x4264FF);   // Original color to check against
+    lv_color_t new_color = lv_color_hex(0xFFFFFF);      // New color to change to
+    lv_color_t bg_color = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemSundayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+    if (bg_color.full == target_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemSundayScheduleItem, new_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        print(PRINTLN,"Color changed to 0xFFFFFF");
+    } else if (bg_color.full == new_color.full) {
+        lv_obj_set_style_bg_color(ui_PanelScheduleWeekItemSundayScheduleItem, target_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        print(PRINTLN,"Color changed back to 0x4264FF");
+    } else {
+        print(PRINTLN,"No color change was required.");
+    }
+    lv_task_handler();
+}
+
+int convertStringToInt(const char* str) {
+    if (str == nullptr) {
+        return 0; 
+    }
+
+    char* end;
+    int value = strtol(str, &end, 10);
+
+    if (*end != '\0') {
+        // If *end is not '\0', it means that there were non-numeric characters
+        return 0; // You could also handle this case differently
+    }
+
+    return value;
+}
+
+
+void updatePageScheduleItem(int indexOfElement)
+{
+  updateItemforScheduleScreen(true, 0);
+  char serverURL[150]; // Adjust size if needed based on the URL length
+  snprintf(serverURL, sizeof(serverURL), "%s/api/v1/fertilizer-device/1/schedule?page=%d&limit=3", web_server_official, indexOfElement);
+  currentPage = indexOfElement;
+  print(PRINTLN,serverURL);
+  String response = http_get_data(serverURL);
+  jsonString = response;
+
+  using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
+  SpiRamJsonDocument jsonDocGlobal(1048576);
+
+  DeserializationError error = deserializeJson(jsonDocGlobal, response);
+  if (error) 
+  {
+  print(PRINTLN,error.c_str());
+  }
+
+  // Treat `jsonDocGlobal` as a JSON object since `total_pages` is at the top level
+  JsonObject jsonObject = jsonDocGlobal.as<JsonObject>();
+  numberOfElement = jsonObject["total_count"];
+  numberOfPage = jsonObject["total_pages"];
+  int i = 0;
+  JsonArray dataArray = jsonObject["data"].as<JsonArray>();
+  for(JsonObject obj : dataArray)
+  {
+      if(i < 3)
+      {
+          const char * name = obj["schedule_name"].as<const char *>();
+          int id = obj["id"].as<int>();
+          const char *time_draft = obj["start_time"].as<const char *>();
+          const char * time = convertTimeToHHMM(time_draft);
+          int priority = obj["priority"].as<int>();
+          const char * schedule_type = obj["schedule_type"].as<const char *>();
+          int schedule_status = obj["status"].as<int>();
+          // TO DO
+          lv_obj_clear_flag(jsonScheduleItemList[i].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
+          jsonScheduleItemList[i].schedule_id = id;
+          lv_label_set_text(jsonScheduleItemList[i].ui_LabelNameScheduleListItem, name);
+          lv_label_set_text(jsonScheduleItemList[i].ui_LabelScheduleItem, time);
+          const char * priority_ctr = convertPriorityToCstr(priority);  
+          lv_label_set_text(jsonScheduleItemList[i].ui_LabelScheduleItemPriority, priority_ctr);
+          lv_label_set_text(jsonScheduleItemList[i].ui_LabelScheduleItemTimer, schedule_type);
+          lv_obj_clear_flag(jsonScheduleItemList[i].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
+          if(schedule_status == 1)
+          {
+            lv_obj_add_state(jsonScheduleItemList[i].ui_SwitchScheduleItem, LV_STATE_CHECKED);
+          }
+          else
+          {
+            lv_obj_clear_state(jsonScheduleItemList[i].ui_SwitchScheduleItem, LV_STATE_CHECKED);
+          }
+      }
+      else
+      {
+          break;
+      }
+      i++;
+  }
+  jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
+  jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible
+  lv_task_handler();
+}
+
+
+void ui_event_ButtonOKHeaderScheduleItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) 
+    {
+        StaticJsonDocument<1024> jsonPayloadDoc;
+        // Get new data to compare with the old data
+        int new_status = 1;
+        const char * schedule_name_new = lv_label_get_text(ui_LabelNameScheduleItem);
+        const char * description_new = lv_label_get_text(ui_LabelDescriptionScheduleItem);
+        int area_new = (int)lv_dropdown_get_selected(ui_DropdownAreaScheduleItem) + 1;
+        int priority_new = lv_slider_get_value(ui_SliderPriorityScheduleItem) + 1;
+        const char * flow1_str = lv_label_get_text(ui_LabelFlow1ScheduleItem);
+        int flow1_new = convertStringToInt(flow1_str);
+        const char * flow2_str = lv_label_get_text(ui_LabelFlow2ScheduleItem);
+        int flow2_new = convertStringToInt(flow2_str);
+        const char * flow3_str = lv_label_get_text(ui_LabelFlow3ScheduleItem);
+        int flow3_new = convertStringToInt(flow3_str);
+        const char * start_time_new = lv_label_get_text(ui_LabelScheduleStartTimeScheduleItem);
+        const char * end_time_new = lv_label_get_text(ui_LabelScheduleEndTimeScheduleItem);
+        char repeat_new[64];
+        lv_dropdown_get_selected_str(ui_DropdownScheduleRepeatScheduleItem, repeat_new, sizeof(repeat_new));  
+        int weekday_new[7];
+        lv_color_t target_color = lv_color_hex(0x4264FF);   // Original color to check against
+        
+        int current_idx = 0;
+
+        lv_color_t bg_color_2 = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemMondayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+        if (bg_color_2.full == target_color.full)
+        {
+          weekday_new[current_idx] = 2;
+          current_idx++;
+        }
+        lv_color_t bg_color_3 = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemTuesdayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+        if (bg_color_3.full == target_color.full)
+        {
+          weekday_new[current_idx] = 3;
+          current_idx++;
+        }
+        lv_color_t bg_color_4 = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemWednesdayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+        if (bg_color_4.full == target_color.full)
+        {
+          weekday_new[current_idx] = 4;
+          current_idx++;
+        }
+        lv_color_t bg_color_5 = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemThursdayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+        if (bg_color_5.full == target_color.full)
+        {
+          weekday_new[current_idx] = 5;
+          current_idx++;
+        }
+        lv_color_t bg_color_6 = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemFridayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+        if (bg_color_6.full == target_color.full)
+        {
+          weekday_new[current_idx] = 6;
+          current_idx++;
+        }
+        lv_color_t bg_color_7 = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemSaturdayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+        if (bg_color_7.full == target_color.full)
+        {
+          weekday_new[current_idx] = 7;
+          current_idx++;
+        }
+        lv_color_t bg_color_8 = lv_obj_get_style_bg_color(ui_PanelScheduleWeekItemSundayScheduleItem, LV_PART_MAIN | LV_STATE_DEFAULT);
+        if (bg_color_8.full == target_color.full)
+        {
+          weekday_new[current_idx] = 8;
+          current_idx++;
+        }
+        const char * date_new = lv_label_get_text(ui_LabelScheduleDateScheduleItem);
+        const char * start_date_new = lv_label_get_text(ui_LabelScheduleStartDateScheduleItem);
+        const char * end_date_new = lv_label_get_text(ui_LabelScheduleEndDateScheduleItem);
+        int add_flag = 0;
+        if(current_schedule_id == -1)
+        {
+          add_flag = 1;
+          jsonPayloadDoc["schedule_name"] = schedule_name_new;
+          jsonPayloadDoc["description"] = description_new;
+          jsonPayloadDoc["area"] = area_new;
+          jsonPayloadDoc["priority"] = priority_new;
+          jsonPayloadDoc["flow1"] = flow1_new;
+          jsonPayloadDoc["flow2"] = flow2_new;
+          jsonPayloadDoc["flow3"] = flow3_new;
+          jsonPayloadDoc["status"] = new_status;
+          jsonPayloadDoc["start_time"] = start_time_new;
+          jsonPayloadDoc["stop_time"] = end_time_new;
+          jsonPayloadDoc["schedule_type"] = repeat_new;
+          jsonPayloadDoc["start_day"] = start_date_new;
+          jsonPayloadDoc["end_day"] = end_date_new;
+          JsonArray newDaysArray = jsonPayloadDoc.createNestedArray("days");
+          for (int i = 0; i < current_idx; i++) {
+              newDaysArray.add(weekday_new[i]);
+          }
+          jsonPayloadDoc["fertilizer_device_id"] = 1;
+        }
+        else
+        {
+          using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
+          SpiRamJsonDocument jsonDocGlobal(1048576);
+
+          DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
+          if (error) 
+          {
+          print(PRINTLN,error.c_str());
+          }
+          // Access the JSON array
+          JsonObject jsonObject = jsonDocGlobal.as<JsonObject>();
+          JsonArray dataArray = jsonObject["data"].as<JsonArray>();
+          for(JsonObject obj : dataArray)
+          {
+            int id = obj["id"];
+            if(current_schedule_id == id)
+            {
+              // Extracting other values as you did previously with null checks.
+              // Check if status is not null
+              if(obj["status"].is<int>())
+              {
+                int status = obj["status"];
+                if(status != new_status)
+                {
+                  //TODO
+                  jsonPayloadDoc["status"] = new_status;
+                }
+              }
+              // Check if schedule_name key is not null
+              if (obj["schedule_name"].is<const char*>()) 
+              {
+                const char* schedule_name = obj["schedule_name"].as<const char*>();
+                if(strcmp(schedule_name, schedule_name_new) != 0)
+                {
+                  //TODO
+                  jsonPayloadDoc["schedule_name"] = schedule_name_new;
+                }
+              } 
+
+              // Check if description key is not null
+              if (obj["description"].is<const char*>()) 
+              {
+                  const char * description = obj["description"].as<const char*>();
+                  if(strcmp(description, description_new) != 0)
+                  {
+                    //TODO
+                    jsonPayloadDoc["description"] = description_new;
+                  }
+              }
+
+              // Extract area
+              if (obj["area"].is<int>()) 
+              {
+                  int area = obj["area"].as<int>();
+                  if(area != area_new)
+                  {
+                    //TODO
+                    jsonPayloadDoc["area"] = area_new;
+                  }
+              } 
+
+              // Extract priority
+              if (obj["priority"].is<int>()) 
+              {
+                  int priority = obj["priority"].as<uint16_t>();
+                  if(priority != priority_new)
+                  {
+                    //TODO
+                    jsonPayloadDoc["priority"] = priority_new;
+                  }
+              }
+              // Extract flow 1
+              if (obj["flow1"].is<int>()) 
+              {
+                  int flow1_int = obj["flow1"].as<int>();
+                  if(flow1_int != flow1_new)
+                  {
+                    //TODO
+                    jsonPayloadDoc["flow1"] = flow1_new;
+                  }
+              }
+
+              // Extract flow 2
+              if (obj["flow2"].is<int>()) 
+              {
+                  int flow2_int = obj["flow2"].as<int>();
+                  if(flow2_int != flow2_new)
+                  {
+                    //TODO
+                    jsonPayloadDoc["flow2"] = flow2_new;
+                  }
+              }
+
+              // Extract flow 3
+              if (obj["flow3"].is<int>()) 
+              {
+                  int flow3_int = obj["flow3"].as<int>();
+                  if(flow3_int != flow3_new)
+                  {
+                    //TODO
+                    jsonPayloadDoc["flow3"] = flow3_new;
+                  }
+              }
+
+              // Check each element in the schedule to avoid null pointers
+              if (obj["start_time"].is<const char*>()) 
+              {
+                  const char * schedule_start_time = obj["start_time"].as<const char*>();
+                  if(strcmp(schedule_start_time, start_time_new) != 0)
+                  {
+                    //TODO
+                    jsonPayloadDoc["start_time"] = start_time_new;
+                  }
+              }
+              if (obj["stop_time"].is<const char*>()) 
+              {
+                  const char * schedule_end_time = obj["stop_time"].as<const char*>();
+                  if(strcmp(schedule_end_time, end_time_new) != 0)
+                  {
+                    //TODO
+                    jsonPayloadDoc["stop_time"] = end_time_new;
+                  }
+              }
+
+              if (obj["schedule_type"].is<const char*>()) 
+              {
+                  const char * schedule_type = obj["schedule_type"].as<const char*>();
+                  if(strcmp(schedule_type, repeat_new) != 0)
+                  {
+                    //TODO
+                    jsonPayloadDoc["schedule_type"] = repeat_new;
+                  }
+
+              }
+
+              if (obj["start_day"].is<const char*>()) 
+              {
+                  const char * schedule_start_day = obj["start_day"].as<const char*>();
+                  if(strcmp(schedule_start_day, start_date_new) != 0)
+                  {
+                    //TODO
+                    jsonPayloadDoc["start_day"] = start_date_new;
+                  }
+              }
+
+              if (obj["end_day"].is<const char*>()) 
+              {
+                  const char * schedule_end_day = obj["end_day"].as<const char*>();
+                  if(strcmp(schedule_end_day, end_date_new) != 0)
+                  {
+                    //TODO
+                    jsonPayloadDoc["end_day"] = end_date_new;
+                  }
+              }
+
+              // Extract the "days" array inside the "schedule" object, if it exists
+              if (obj["days"].is<JsonArray>()) 
+              {
+                JsonArray daysArray = obj["days"].as<JsonArray>();
+
+                // Compare each value in the "days" array with `weekday_new`
+                bool days_changed = false;
+                int days_count = 0;
+                for (int day : daysArray) 
+                {
+                    if (day != weekday_new[days_count]) {
+                        days_changed = true;
+                        break;
+                    }
+                    days_count++;
+                }
+
+                if (days_changed || days_count != current_idx) 
+                {
+                    JsonArray newDaysArray = jsonPayloadDoc.createNestedArray("days");
+                    for (int i = 0; i < current_idx; i++) {
+                        newDaysArray.add(weekday_new[i]);
+                    }
+                }
+              }
+              break;  // Exit the loop once the desired object is found.
+            }
+          }
+          jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
+          jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible
+            
+        }
+
+        if (jsonPayloadDoc.size() > 0) {
+            // Convert jsonPayloadDoc to a string and send the PUT request
+            String jsonPayload;
+            serializeJson(jsonPayloadDoc, jsonPayload);
+            if(add_flag == 1)
+            {
+              char serverURL[150]; // Adjust size if needed based on the URL length
+              snprintf(serverURL, sizeof(serverURL), "%s/api/v1/schedule", web_server_official);
+              addNewRequest(serverURL, jsonPayload.c_str());
+              lv_obj_clear_flag(ui_PanelLoadingScheduleScreen, LV_OBJ_FLAG_HIDDEN);
+              _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
+              lv_task_handler();
+              TaskHandle_t schedule_task = xTaskGetHandle("schedule_task");
+              if(schedule_task == NULL)
+              {
+                void *taskStackMemory = heap_caps_malloc(8192, MALLOC_CAP_SPIRAM); // Allocating in PSRAM
+
+                if (taskStackMemory != nullptr) {
+                    BaseType_t result = xTaskCreatePinnedToCore(
+                        handleScheduleUI,  // Function to execute
+                        "schedule_task",   // Task name
+                        8192,              // Stack size in bytes
+                        NULL,              // Task parameter
+                        1,                 // Priority
+                        &schedule_task,    // Task handle
+                        1                  // Core
+                    );
+
+                    if (result == pdPASS) {
+                        print(PRINTLN,"Task created successfully in PSRAM.");
+                    } else {
+                        print(PRINTLN,"Failed to create task.");
+                        free(taskStackMemory); // Free memory if task creation failed
+                    }
+                } else {
+                    print(PRINTLN,"Failed to allocate memory for the task stack in PSRAM.");
+                }
+              }
+              
+            }
+            else
+            {
+              char serverURL[150]; // Adjust size if needed based on the URL length
+              snprintf(serverURL, sizeof(serverURL), "%s/api/v1/schedule/%d", web_server_official, current_schedule_id);
+              sendPutRequest(serverURL, jsonPayload.c_str());
+              updatePageScheduleItem(currentPage);
+              lv_task_handler();
+              _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
+            }
+
+            
+          } else {
+              print(PRINTLN,"No changes detected. Skipping PUT request.");
+              _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
+          }
+    }
+}
+
+void ui_event_ButtonCancelHeaderScheduleItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_ScheduleScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleScreen_screen_init);
+    }
+}
+
+void ui_event_PanelPageItemTitleScheduleScreen0(lv_event_t * e)
+{
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t * target = lv_event_get_target(e);
+  if(event_code == LV_EVENT_CLICKED) 
+  {
+    const char * max_index_c_tr = lv_label_get_text(ui_LabelPageItemTitleScheduleScreen[0]);
+    currentPage = atoi(max_index_c_tr);
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[0], lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[1], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[2], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    updatePageScheduleItem(currentPage);
+    lv_task_handler();
+  }
+}
+void ui_event_PanelPageItemTitleScheduleScreen1(lv_event_t * e)
+{
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t * target = lv_event_get_target(e);
+  if(event_code == LV_EVENT_CLICKED) 
+  {
+    const char * max_index_c_tr = lv_label_get_text(ui_LabelPageItemTitleScheduleScreen[1]);
+    currentPage = atoi(max_index_c_tr);
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[0], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[1], lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[2], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    updatePageScheduleItem(currentPage);
+    lv_task_handler();    
+  }
+}
+void ui_event_PanelPageItemTitleScheduleScreen2(lv_event_t * e)
+{
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t * target = lv_event_get_target(e);
+  if(event_code == LV_EVENT_CLICKED) 
+  {
+    const char * max_index_c_tr = lv_label_get_text(ui_LabelPageItemTitleScheduleScreen[2]);
+    currentPage = atoi(max_index_c_tr);
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[0], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[1], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[2], lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    updatePageScheduleItem(currentPage);
+    lv_task_handler();    
+  }
+}
+
+
+
+void  ui_event_ButtonNextPageItemTitleScheduleScreen(lv_event_t *e)
+{
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t * target = lv_event_get_target(e);
+  if(event_code == LV_EVENT_CLICKED)
+  {
+    lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[0], LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[1], LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[2], LV_OBJ_FLAG_HIDDEN);
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[0], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[1], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[2], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    const char * max_index_c_tr = lv_label_get_text(ui_LabelPageItemTitleScheduleScreen[2]);
+    int index = atoi(max_index_c_tr) + 1;
+
+    for(int i = 0; i <= 2 && index <= numberOfPage; i++)
+    {
+      char buffer[20];           // Ensure buffer is large enough to hold the string representation
+      itoa(index, buffer, 10);     // Convert the int to a string (base 10)
+      const char *str = buffer;  // Now 'str' is a const char* pointing to the string
+      lv_label_set_text(ui_LabelPageItemTitleScheduleScreen[i], buffer);
+      if(index == currentPage)
+      {
+        lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[i], lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+      }
+      lv_obj_clear_flag(ui_PanelPageItemTitleScheduleScreen[i], LV_OBJ_FLAG_HIDDEN);
+      index = index + 1;
+    }  
+    lv_task_handler();
+  }
+}
+
+void ui_event_ButtonPreviousPageItemTitleScheduleScreen(lv_event_t *e)
+{
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t * target = lv_event_get_target(e);
+  if(event_code == LV_EVENT_CLICKED)
+  {
+    const char * max_index_c_tr = lv_label_get_text(ui_LabelPageItemTitleScheduleScreen[0]);
+    int index = atoi(max_index_c_tr);
+    if(index == 1)
+    {
+      return;
+    }
+    else
+    {
+      lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[0], LV_OBJ_FLAG_HIDDEN);
+      lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[1], LV_OBJ_FLAG_HIDDEN);
+      lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[2], LV_OBJ_FLAG_HIDDEN);
+      lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[0], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+      lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[1], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+      lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[2], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+      index = index - 1;
+      for(int i = 2; i >= 0; i--)
+      {
+        char buffer[20];           // Ensure buffer is large enough to hold the string representation
+        itoa(index, buffer, 10);     // Convert the int to a string (base 10)
+        const char *str = buffer;  // Now 'str' is a const char* pointing to the string
+        lv_label_set_text(ui_LabelPageItemTitleScheduleScreen[i], buffer);
+        if(index == currentPage)
+        {
+          lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[i], lv_color_hex(0x4264FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+        }
+        lv_obj_clear_flag(ui_PanelPageItemTitleScheduleScreen[i], LV_OBJ_FLAG_HIDDEN);
+        index = index - 1;
+      }  
+      lv_task_handler();
+    }
+    
+  }
+}
+
+void ui_event_ScheduleScreen(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT && lv_obj_has_flag(ui_Panel93, LV_OBJ_FLAG_HIDDEN)) 
+    {
+        jsonString.clear();
+        // deleteObject(ui_ScheduleContainer);
+        lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[0], LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[1], LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(ui_PanelPageItemTitleScheduleScreen[2], LV_OBJ_FLAG_HIDDEN);
+        lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[0], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[1], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_color(ui_PanelPageItemTitleScheduleScreen[2], lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);        
+        lv_task_handler();
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_farmScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_farmScreen_screen_init);
+    }
+
+}
+
+
+void printText(const char * text)
+{
+  print(PRINTLN,text);
+}
+
+uint16_t get_hour(const char *time_str) 
+{
+    char hour_str[3]; // A buffer for the hour portion (2 digits + null terminator)
+    strncpy(hour_str, time_str, 2); // Copy the first two characters
+    hour_str[2] = '\0'; // Null-terminate the string
+
+    return atoi(hour_str); // Convert to an integer and return
+}
+
+uint16_t get_minute(const char *time_str) 
+{
+    char minute_str[3]; // A buffer for the minute portion (2 digits + null terminator)
+    strncpy(minute_str, time_str + 3, 2); // Copy the two characters after the colon (offset by 3)
+    minute_str[2] = '\0'; // Null-terminate the string
+
+    return atoi(minute_str); // Convert to an integer and return
+}
+
+// Function to extract the year
+uint32_t get_year(const char * date_str) {
+    char year_str[5]; // Allocate space for "YYYY" + null terminator
+    strncpy(year_str, date_str, 4);  // Copy the first 4 characters (YYYY)
+    year_str[4] = '\0';              // Null-terminate the string
+    return (uint32_t)atoi(year_str); // Convert to uint32_t
+}
+
+// Function to extract the month
+uint32_t get_month(const char * date_str) {
+    char month_str[3];               // Allocate space for "MM" + null terminator
+    strncpy(month_str, date_str + 5, 2); // Copy 2 characters starting from index 5 (MM)
+    month_str[2] = '\0';             // Null-terminate the string
+    return (uint32_t)atoi(month_str); // Convert to uint32_t
+}
+
+// Function to extract the day
+uint32_t get_day(const char * date_str) {
+    char day_str[3];                 // Allocate space for "DD" + null terminator
+    strncpy(day_str, date_str + 8, 2); // Copy 2 characters starting from index 8 (DD)
+    day_str[2] = '\0';               // Null-terminate the string
+    return (uint32_t)atoi(day_str);  // Convert to uint32_t
+}
+
+uint32_t get_current_year()
+{
+  return (uint32_t)current_year;
+}
+uint32_t get_current_month()
+{
+  return (uint32_t)current_month;
+}
+uint32_t get_current_day()
+{
+  return (uint32_t)current_day;
+}
+
+const char* formatTime(uint16_t hour, uint16_t minute) {
+    static char buffer[6];  // Buffer to store the resulting string in "HH:MM" format
+    snprintf(buffer, sizeof(buffer), "%02d:%02d", hour, minute);
+    return buffer;  // Return the formatted time string as a const char*
+}
+
+const char* formatDate(uint16_t year, uint16_t month, uint16_t day) {
+    static char buffer[11];  // Buffer to store the resulting string in "YYYY-MM-DD" format
+    snprintf(buffer, sizeof(buffer), "%04d-%02d-%02d", year, month, day);
+    return buffer;  // Return the formatted date string as a const char*
+}
+
+const char* convertTimeToHHMM(const char* time) {
+    static char timeHHMM[6];  // Fixed-size buffer to hold "HH:MM" + null terminator
+    strncpy(timeHHMM, time, 5);
+    timeHHMM[5] = '\0';  // Ensure the string is null-terminated
+    return timeHHMM;
+}
+
+//Function to add a new element
+void addNewRequest(const char* serverURL, const char* jsonPayload) {
+  if (WiFi.status() == WL_CONNECTED) { // Check WiFi connection status
+
+    HTTPClient http;
+
+    http.begin(serverURL);  // Specify the URL for the POST request
+    http.addHeader("Content-Type", "application/json"); // Set content type to JSON
+
+    // Make the POST request
+    int httpResponseCode = http.POST(jsonPayload);
+
+    // Handle the response
+    if (httpResponseCode > 0) {
+      String response = http.getString(); // Get the response from the server
+      Serial.print("HTTP Response code: ");
+      Serial.println(httpResponseCode);
+      Serial.print("Response from server: ");
+      Serial.println(response);
+    } else {
+      Serial.print("Error on sending POST request: ");
+      Serial.println(http.errorToString(httpResponseCode).c_str());
+    }
+
+    http.end(); // End the HTTP connection
+  } else {
+    print(PRINTLN,"WiFi Disconnected");
+  }
+
+}
+
+// Function to make a PUT request
+void sendPutRequest(const char* serverURL, const char* jsonPayload) {
+  if (WiFi.status() == WL_CONNECTED) { // Check WiFi connection status
+
+    HTTPClient http;
+    http.begin(serverURL); // Specify the URL for the PUT request
+    http.addHeader("Content-Type", "application/json"); // Set content type to JSON
+
+    // Make the PUT request
+    int httpResponseCode = http.PUT(jsonPayload);
+
+    // Handle the response
+    if (httpResponseCode > 0) {
+      String response = http.getString();
+      Serial.print("HTTP Response code: ");
+      Serial.println(httpResponseCode);
+      Serial.print("Response from server: ");
+      Serial.println(response);
+      Serial.println(jsonPayload);
+      updateJsonGlobalArray();
+    } else {
+      Serial.print("Error on sending PUT request: ");
+      Serial.println(http.errorToString(httpResponseCode).c_str());
+    }
+
+    http.end(); // End the HTTP connection
+  } else {
+    print(PRINTLN,"WiFi Disconnected");
+  }
+}
+
+void sendDeleteRequest(int schedule_id) {
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+
+    // Construct the full URL for DELETE request
+    // get web server
+    char serverURL[150]; // Adjust size if needed based on the URL length
+    snprintf(serverURL, sizeof(serverURL), "%s/api/v1/schedule/%d", web_server_official, schedule_id);
+
+    Serial.print("Making DELETE request to: ");
+    print(PRINTLN,serverURL);
+
+    // Start the DELETE request
+    http.begin(serverURL);
+
+    // Send the DELETE request
+    int httpResponseCode = http.sendRequest("DELETE");
+
+    // Handle the response
+    if (httpResponseCode > 0) {
+      Serial.print("HTTP Response code: ");
+      Serial.println(httpResponseCode);
+      String response = http.getString();
+      Serial.println("Response:");
+      Serial.println(response);
+    } else {
+      Serial.print("Error on sending DELETE request: ");
+      Serial.println(http.errorToString(httpResponseCode).c_str());
+    }
+
+    // Close the connection
+    http.end();
+  } else {
+    print(PRINTLN,"WiFi is not connected");
+  }
+}
+
+
+void ui_event_PanelRemoveOptionHeaderScheduleScreen(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED)
+    {
+        // Get the current image source of the object
+        const void * current_src = lv_img_get_src(ui_ImageRemoveOptionHeaderScheduleScreen);
+
+        // Check if the current image is `ui_img_trash_png`
+        if (current_src == &ui_img_trash_png)
+        {
+            // Change the image to `ui_img_tick_png`
+            lv_img_set_src(ui_ImageRemoveOptionHeaderScheduleScreen, &ui_img_tick_png);
+        }
+        else if (current_src == &ui_img_tick_png)
+        {
+            // If the current image is `ui_img_tick_png`, change it back to `ui_img_trash_png`
+            lv_img_set_src(ui_ImageRemoveOptionHeaderScheduleScreen, &ui_img_trash_png);
+        }
+
+        // Handle focus event
+        for(int i = 0; i < 3; i++)
+        {
+          // Check if the first object is hidden
+          if (lv_obj_has_flag(jsonScheduleItemList[i].ui_SwitchScheduleItem, LV_OBJ_FLAG_HIDDEN)) {
+              // Clear the hidden flag for SwitchScheduleItem
+              lv_obj_clear_flag(jsonScheduleItemList[i].ui_SwitchScheduleItem, LV_OBJ_FLAG_HIDDEN);
+              
+              // Add the hidden flag to ButtonRemoveScheduleListItem
+              lv_obj_add_flag(jsonScheduleItemList[i].ui_ButtonRemoveScheduleListItem, LV_OBJ_FLAG_HIDDEN);
+          } 
+          // If ButtonRemoveScheduleListItem is hidden
+          else if (lv_obj_has_flag(jsonScheduleItemList[i].ui_ButtonRemoveScheduleListItem, LV_OBJ_FLAG_HIDDEN)) {
+              // Clear the hidden flag for ButtonRemoveScheduleListItem
+              lv_obj_clear_flag(jsonScheduleItemList[i].ui_ButtonRemoveScheduleListItem, LV_OBJ_FLAG_HIDDEN);
+              
+              // Add the hidden flag to SwitchScheduleItem
+              lv_obj_add_flag(jsonScheduleItemList[i].ui_SwitchScheduleItem, LV_OBJ_FLAG_HIDDEN);
+          }
+
+        }
+        // Let LVGL handle the changes
+        lv_task_handler();
+    }
+}
+
+void ui_event_AddOptionHeaderScheduleScreen(lv_event_t * e)
+{
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t * target = lv_event_get_target(e);
+  if(event_code == LV_EVENT_CLICKED)
+  {
+    int id_flag = -1; // Initialize id_flag to -1 to create a new item
+    // You could use the schedule ID to pull the detailed information from memory, 
+    // for example, fetching from an array or JSON data stored locally.
+
+    // Call a function to display the detailed information screen
+    lv_obj_clear_flag(ui_PanelLoadingScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_scroll_to_y(ui_PanelScheduleItemContainerScreen, 0, LV_ANIM_OFF);
+    _ui_screen_change(&ui_scheduleItemScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ScheduleItemScreen_screen_init);
+    lv_task_handler();
+    TaskHandle_t scheItem_task = xTaskGetHandle("scheItem_task");
+    if(scheItem_task == NULL)
+    {
+        xTaskCreate(handleScheduleItemUI, "scheItem_task", 8192, (void *)(uintptr_t)id_flag, 1, &scheItem_task);
+    }
+  }
+}
+
+const char * convertPriorityToCstr(int priority)
+{
+      if(priority == 1)
+    {
+        return "Very Low";
+    }
+    else if(priority == 2)
+    {
+        return "Low";
+    }
+    else if(priority == 3)
+    {
+        return "Medium";
+    }
+    else if(priority == 4)
+    {
+        return "High";
+    }
+    else if(priority == 5)
+    {
+        return "Very High";
+    }
+    else
+    {
+      return "";
+    }
+}
+void updateItemforScheduleScreen(int hidden_all_flag, int number_appear)
+{
+    // Validate number_appear to prevent out-of-bounds access
+    if (number_appear < 0 || number_appear > 3) {
+        return; // Exit early if number_appear is invalid
+    }
+
+    if (hidden_all_flag)
+    {
+        for (int i = 0; i < 3; i++) 
+        {
+            // Check if the pointer is not null before accessing it
+            if (jsonScheduleItemList[i].ui_PanelScheduleItemContainer != NULL)
+            {
+                if (!lv_obj_has_flag(jsonScheduleItemList[i].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN)) {
+                    lv_obj_add_flag(jsonScheduleItemList[i].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
+                }
+            }
+        }
+    }
+    else
+    {
+        for (int i = 0; i < number_appear; i++) 
+        {
+            // Check if the pointer is not null before accessing it
+            if (jsonScheduleItemList[i].ui_PanelScheduleItemContainer != NULL)
+            {
+                if (lv_obj_has_flag(jsonScheduleItemList[i].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN)) 
+                {
+                    lv_obj_clear_flag(jsonScheduleItemList[i].ui_PanelScheduleItemContainer, LV_OBJ_FLAG_HIDDEN);
+                }
+            }
+        }
+    }
+}
+
+void farmer_handle_start()
+{
+  if (WiFi.status() != WL_CONNECTED)
+  {
+    _ui_flag_modify(ui_Panel29, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+  }
+  else
+  {
+    _ui_screen_change(&ui_farmScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_farmScreen_screen_init);
+  }
+}
+
+void watering_history_screen_init(lv_event_t * e)
+{
+  lv_obj_add_flag(ui_PanelItem1HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(ui_PanelItem2HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(ui_PanelItem3HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_clear_flag(ui_PanelLoadingWateringHistoryScreen, LV_OBJ_FLAG_HIDDEN);
+  lv_task_handler();
+  _ui_screen_change(&ui_wateringHistory, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_wateringHistory_screen_init);    
+  TaskHandle_t history_task = xTaskGetHandle("waterhistory");
+  if(history_task == NULL)
+  {
+    void *taskStackMemory = heap_caps_malloc(8192, MALLOC_CAP_SPIRAM); // Allocating in PSRAM
+
+    if (taskStackMemory != nullptr) {
+        BaseType_t result = xTaskCreatePinnedToCore(
+            HistoryUI,  // Function to execute
+            "waterhistory",   // Task name
+            8192,              // Stack size in bytes
+            NULL,              // Task parameter
+            1,                 // Priority
+            &history_task,    // Task handle
+            1                  // Core
+        );
+
+        if (result == pdPASS) {
+            print(PRINTLN,"Task created successfully in PSRAM.");
+        } else {
+            print(PRINTLN,"Failed to create task.");
+            free(taskStackMemory); // Free memory if task creation failed
+        }
+    } else {
+        print(PRINTLN,"Failed to allocate memory for the task stack in PSRAM.");
+    }
+  }
+}
+
+void updatePageWateringHistoryItem(int currentHistoryPage)
+{
+    //TODO
+
+    char serverURL[150]; // Adjust size if needed based on the URL length
+    currentWateringHistoryPage = currentHistoryPage;
+    snprintf(serverURL, sizeof(serverURL), "%s/api/v1/schedule-history?page=%d&limit=3", web_server_official, currentWateringHistoryPage);
+    print(PRINTLN,serverURL); 
+    String response = http_get_data(serverURL);
+    jsonString = response;
+    Serial.println(response); 
+    using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
+    SpiRamJsonDocument jsonDocGlobal(1048576);
+
+    DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
+    if (error) 
+    {
+        Serial.println(error.c_str());
+    }
+
+    // Treat `jsonDocGlobal` as a JSON object since `total_pages` is at the top level
+    JsonObject jsonObject = jsonDocGlobal.as<JsonObject>();
+    JsonArray dataArray = jsonObject["data"].as<JsonArray>();
+    int i = 0;
+    for(JsonObject obj:dataArray)
+    {
+        const char * schedule_name = obj["schedule_name"].as<const char *>();
+        const char *start_time = obj["start_time"].as<const char *>();
+        const char *stop_time = obj["stop_time"].as<const char *>();
+        int result = obj["result"].as<int>();
+        const char * Area = obj["area"].as<const char *>();
+        if(i == 0)
+        {
+            updateItem0(schedule_name, result, Area, start_time, stop_time);
+            lv_obj_clear_flag(ui_PanelWateringHistoryItem1, LV_OBJ_FLAG_HIDDEN);
+        }
+        else if(i == 1)
+        {
+            updateItem1(schedule_name, result, Area, start_time, stop_time);
+            lv_obj_clear_flag(ui_PanelWateringHistoryItem2, LV_OBJ_FLAG_HIDDEN);
+        }
+        else if(i == 2)
+        {
+            updateItem2(schedule_name, result, Area, start_time, stop_time);
+            lv_obj_clear_flag(ui_PanelWateringHistoryItem3, LV_OBJ_FLAG_HIDDEN);
+        }
+        i++;
+    }
+    lv_task_handler();
+
+    jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
+    jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible     
+
+}
+
+void ui_event_ButtonPreviousHeaderWateringHistory(lv_event_t * e)
+{
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t * target = lv_event_get_target(e);
+  if(event_code == LV_EVENT_CLICKED)
+  {
+    lv_obj_add_flag(ui_PanelItem1HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(ui_PanelItem2HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(ui_PanelItem3HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_set_style_bg_color(ui_PanelItem1HeaderWateringHistory, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelItem2HeaderWateringHistory, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelItem3HeaderWateringHistory, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    const char * min_index_c_tr = lv_label_get_text(ui_LabelItem1HeaderWateringHistory);
+    int index = atoi(min_index_c_tr) - 1;
+
+    for(int i = 0; i <= 2 && index > 0; i++)
+    {
+      char buffer[20];           // Ensure buffer is large enough to hold the string representation
+      itoa(index, buffer, 10);     // Convert the int to a string (base 10)
+      const char *str = buffer;  // Now 'str' is a const char* pointing to the string
+      if( i == 0)
+      {
+        lv_label_set_text(ui_LabelItem3HeaderWateringHistory, buffer);
+        lv_obj_clear_flag(ui_PanelItem3HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+      }
+      else if(i == 1)
+      {
+        lv_label_set_text(ui_LabelItem2HeaderWateringHistory, buffer);
+        lv_obj_clear_flag(ui_PanelItem2HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+      }
+      else if(i == 2)
+      {
+        lv_label_set_text(ui_LabelItem1HeaderWateringHistory, buffer);
+        lv_obj_clear_flag(ui_PanelItem1HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+      }
+      index = index - 1;
+    }  
+    lv_task_handler();
+  }
+}
+void ui_event_ButtonNextHeaderWateringHistory(lv_event_t * e)
+{
+  lv_event_code_t event_code = lv_event_get_code(e);
+  lv_obj_t * target = lv_event_get_target(e);
+  if(event_code == LV_EVENT_CLICKED)
+  {
+    lv_obj_add_flag(ui_PanelItem1HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(ui_PanelItem2HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(ui_PanelItem3HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_set_style_bg_color(ui_PanelItem1HeaderWateringHistory, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelItem2HeaderWateringHistory, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_PanelItem3HeaderWateringHistory, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    const char * max_index_c_tr = lv_label_get_text(ui_LabelItem3HeaderWateringHistory);
+    int index = atoi(max_index_c_tr) + 1;
+
+    for(int i = 0; i < 3 && index <= totalWateringHistoryPage; i++)
+    {
+      char buffer[20];           // Ensure buffer is large enough to hold the string representation
+      itoa(index, buffer, 10);     // Convert the int to a string (base 10)
+      const char *str = buffer;  // Now 'str' is a const char* pointing to the string
+      if( i == 0)
+      {
+        lv_label_set_text(ui_LabelItem1HeaderWateringHistory, buffer);
+        lv_obj_clear_flag(ui_PanelItem1HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+      }
+      else if(i == 1)
+      {
+        lv_label_set_text(ui_LabelItem2HeaderWateringHistory, buffer);
+        lv_obj_clear_flag(ui_PanelItem2HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+      }
+      else if(i == 2)
+      {
+        lv_label_set_text(ui_LabelItem3HeaderWateringHistory, buffer);
+        lv_obj_clear_flag(ui_PanelItem3HeaderWateringHistory, LV_OBJ_FLAG_HIDDEN);
+      }
+      index = index + 1;
+    }  
+    lv_task_handler();
+  }
+}
+
+void ui_event_InformationScreen(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) {
+        lv_indev_wait_release(lv_indev_get_act());
+        jsonString.clear();
+        _ui_screen_change(&ui_farmScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_farmScreen_screen_init);
+    }
+}
+
+void notification_task(lv_event_t * e)
+{
+  lv_obj_clear_flag(ui_PanelLoadingNotificationScreen, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(ui_PanelNotificationItem1, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(ui_PanelNotificationItem2, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(ui_PanelNotificationItem3, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(ui_PanelNotificationItem4, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(ui_PanelNotificationItem5, LV_OBJ_FLAG_HIDDEN);
+  lv_task_handler();
+  _ui_screen_change(&ui_Notification, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_Notification_screen_init);    
+  TaskHandle_t notification = xTaskGetHandle("notification");
+  if(notification == NULL)
+  {
+    void *taskStackMemory = heap_caps_malloc(8192, MALLOC_CAP_SPIRAM); // Allocating in PSRAM
+
+    if (taskStackMemory != nullptr) {
+        BaseType_t result = xTaskCreatePinnedToCore(
+            notification_service_init,  // Function to execute
+            "notification",   // Task name
+            8192,              // Stack size in bytes
+            NULL,              // Task parameter
+            1,                 // Priority
+            &notification,    // Task handle
+            1                  // Core
+        );
+
+        if (result == pdPASS) {
+            print(PRINTLN,"Task created successfully in PSRAM.");
+        } else {
+            print(PRINTLN,"Failed to create task.");
+            free(taskStackMemory); // Free memory if task creation failed
+        }
+    } else {
+        print(PRINTLN,"Failed to allocate memory for the task stack in PSRAM.");
+    }
+  }
+}
+
+void handlerUIForSensorsLog(int current_area_for_sensors_log, int type)
+{
+  char serverURL[150]; // Adjust size if needed based on the URL length
+  const char * type_cstr;
+  if(type == 1)
+  {
+    type_cstr = "temp";
+    
+  }
+  else if(type == 2)
+  {
+    type_cstr = "humi";
+
+  }
+  else if(type == 3)
+  {
+    type_cstr = "nito";
+
+  }
+  else if(type == 4)
+  {
+    type_cstr = "kali";
+
+  }
+  else if(type == 5)
+  {
+    type_cstr = "photpho";
+    
+  }
+
+  snprintf(serverURL, sizeof(serverURL), "%s/api/v1/sensor-data/%s/%d", web_server_official, type_cstr, current_area_for_sensors_log);
+  // Serial.println(serverURL); 
+  String response = http_get_data(serverURL);
+  jsonString = response;
+  using SpiRamJsonDocument = BasicJsonDocument<SpiRamAllocator>;
+  SpiRamJsonDocument jsonDocGlobal(1048576);
+  
+  DeserializationError error = deserializeJson(jsonDocGlobal, jsonString);
+  if (error) 
+  {
+      Serial.println(error.c_str());
+  }
+  if (jsonDocGlobal.is<JsonArray>()) 
+  {
+      JsonArray dataArray = jsonDocGlobal.as<JsonArray>();
+
+      // Create a C++ array to hold the data
+      const size_t arraySize = dataArray.size(); // Determine array size
+      float values[arraySize]; // Define the C++ array
+
+      // Fill the C++ array with values from the JSON array
+      size_t index = 0;
+      for (float value : dataArray) 
+      {
+          values[index++] = value;
+      }
+      // Convert float values to `lv_coord_t` type
+      lv_coord_t* chartData = new lv_coord_t[arraySize]; // Allocate array dynamically
+      for (size_t i = 0; i < arraySize; i++) {
+          chartData[i] = static_cast<lv_coord_t>(values[i]); // Scale if necessary
+      }
+
+      if(type == 1)
+      {
+        lv_chart_set_ext_y_array(ui_ChartSoilTemperatureSensor, ui_ChartSoilTemperatureSensor_series_1, chartData);
+        lv_task_handler();
+        _ui_screen_change(&ui_SoilTemperatureSensor, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_SoilTemperatureSensor_screen_init);
+      }
+      else if(type == 2)
+      {
+        lv_chart_set_ext_y_array(ui_ChartSoidHumiditySensor, ui_ChartSoidHumiditySensor_series_1, chartData);
+        lv_task_handler();
+        _ui_screen_change(&ui_SoidHumiditySensor, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_SoidHumiditySensor_screen_init);
+      }
+      else if(type == 3)
+      {
+        lv_chart_set_ext_y_array(ui_ChartSoidNitro, ui_ChartSoidNitro_series_1, chartData);
+        lv_task_handler();
+        _ui_screen_change(&ui_SoidNitro, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_SoidNitro_screen_init);
+      }
+      else if(type == 4)
+      {
+        lv_chart_set_ext_y_array(ui_ChartSoidKali, ui_ChartSoidKali_series_1, chartData);
+        lv_task_handler();
+        _ui_screen_change(&ui_SoidKali, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_SoidKali_screen_init);
+      }
+      else if(type == 5)
+      {
+        lv_chart_set_ext_y_array(ui_ChartSoidPhotpho, ui_ChartSoidPhotpho_series_1, chartData);
+        lv_task_handler();
+        _ui_screen_change(&ui_SoidPhotpho, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_SoidPhotpho_screen_init);
+      }
+
+  } 
+  else 
+  {
+      Serial.println("JSON data is not an array!");
+  }
+
+  // Cleanup and free resources manually when you're done
+  jsonDocGlobal.clear();  // Clear the JsonDocument to free memory
+  jsonDocGlobal.shrinkToFit();  // Reduces the capacity to zero, if possible
+  lv_obj_add_flag(ui_PanelSensorsLogScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
+  lv_task_handler();
+}
+
+void ui_event_PanelArea1SensorArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) 
+    {
+        current_area_for_sensors = 1;
+        lv_label_set_text(ui_Label22, str_topic_temp1);
+        lv_label_set_text(ui_Label27, str_topic_humi1);
+        lv_label_set_text(ui_Label166, str_topic_kali1);
+        lv_label_set_text(ui_Label26, str_topic_nito1);
+        lv_label_set_text(ui_Label16, str_topic_photpho1);
+        _ui_screen_change(&ui_SensorsScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_SensorsScreen_screen_init);
+    }
+
+}
+void ui_event_PanelArea2SensorArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) 
+    {
+        current_area_for_sensors = 2;
+        lv_label_set_text(ui_Label22, str_topic_temp2);
+        lv_label_set_text(ui_Label27, str_topic_humi2);
+        lv_label_set_text(ui_Label166, str_topic_kali2);
+        lv_label_set_text(ui_Label26, str_topic_nito2);
+        lv_label_set_text(ui_Label16, str_topic_photpho2);
+        _ui_screen_change(&ui_SensorsScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_SensorsScreen_screen_init);
+    }
+
+}
+void ui_event_PanelArea3SensorArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) 
+    {
+        current_area_for_sensors = 3;
+        lv_label_set_text(ui_Label22, str_topic_temp3);
+        lv_label_set_text(ui_Label27, str_topic_humi3);
+        lv_label_set_text(ui_Label166, str_topic_kali3);
+        lv_label_set_text(ui_Label26, str_topic_nito3);
+        lv_label_set_text(ui_Label16, str_topic_photpho3);
+        _ui_screen_change(&ui_SensorsScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_SensorsScreen_screen_init);
+    }
+}
+
+void ui_event_SensorsScreen(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) {
+        current_area_for_sensors = 0;
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_screen_change(&ui_SensorsAreaScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_SensorsAreaScreen_screen_init);
+    }
+}
+
+void ui_event_PanelArea1SensorsLogArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED)
+    {
+        current_area_for_sensors_log = 1;
+        _ui_screen_change(&ui_SensorsLogListScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_SensorsLogListScreen_screen_init);
+    }
+}
+void ui_event_PanelArea2SensorsLogArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED)
+    {
+        current_area_for_sensors_log = 2;
+        _ui_screen_change(&ui_SensorsLogListScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_SensorsLogListScreen_screen_init);
+    }
+}
+void ui_event_PanelArea3SensorsLogArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED)
+    {
+        current_area_for_sensors_log = 3;
+        _ui_screen_change(&ui_SensorsLogListScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_SensorsLogListScreen_screen_init);
+    }
+}
+
+void ui_event_PanelItem1SensorItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_obj_clear_flag(ui_PanelSensorsLogScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
+        lv_task_handler();
+        handlerUIForSensorsLog(current_area_for_sensors_log, 1);
+        
+    }
+}
+void ui_event_PanelItem2SensorItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_obj_clear_flag(ui_PanelSensorsLogScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
+        lv_task_handler();
+        handlerUIForSensorsLog(current_area_for_sensors_log, 2);
+        
+    }
+}
+void ui_event_PanelItem3SensorItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_obj_clear_flag(ui_PanelSensorsLogScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
+        lv_task_handler();
+        handlerUIForSensorsLog(current_area_for_sensors_log, 3);
+        
+    }
+}
+void ui_event_PanelItem4SensorItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_obj_clear_flag(ui_PanelSensorsLogScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
+        lv_task_handler();
+        handlerUIForSensorsLog(current_area_for_sensors_log, 4);
+    }
+}
+
+void ui_event_PanelItem5SensorItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_obj_clear_flag(ui_PanelSensorsLogScheduleItemScreen, LV_OBJ_FLAG_HIDDEN);
+        lv_task_handler();
+        handlerUIForSensorsLog(current_area_for_sensors_log, 5);
+    }    
+}
+
+void checkConditionOTA(void * parameter)
+{
+  vTaskDelay(1000);
+  float batteryLevel = M5.Power.getBatteryLevel();
+  if (batteryLevel < 35) 
+  {
+    lv_label_set_text(ui_Label34, "Your battery is\n lower than 35%");
+  } else if (!WiFi.isConnected())
+  {
+    lv_label_set_text(ui_Label34, "Please connect to \nwifi to use the app!");
+  }
+  else
+  {
+    change_screen_ota();
+    lv_obj_add_flag(ui_Panel40, LV_OBJ_FLAG_HIDDEN);
+  }
+  vTaskDelete(NULL);
+  lv_task_handler();
+}
+
+void ui_event_Panel90(lv_event_t * e
+){
+    lv_event_code_t  event_code = lv_event_get_code(e);
+    lv_obj_t * target =  lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        lv_obj_clear_flag(ui_Panel40, LV_OBJ_FLAG_HIDDEN);
+        lv_task_handler();
+        TaskHandle_t checkOTA = xTaskGetHandle("checkOTA");
+        if (checkOTA != NULL) {
+          print(PRINTLN, "checkOTA has created");
+        } else {
+          xTaskCreate(checkConditionOTA, "checkOTA", 4096, NULL, 1, &checkOTA);
+        }
+    }
+}
+
+void ui_event_PanelArea1DevicesArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        current_area_device = 1;
+        _ui_screen_change(&ui_ManualScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_ManualScreen_screen_init);
+    }
+}
+void ui_event_PanelArea2DevicesArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        current_area_device = 2;
+        _ui_screen_change(&ui_ManualScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_ManualScreen_screen_init);
+    }
+}
+void ui_event_PanelArea3DevicesArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        current_area_device = 3;
+        _ui_screen_change(&ui_ManualScreen, LV_SCR_LOAD_ANIM_FADE_ON, 250, 0, &ui_ManualScreen_screen_init);
+    }
+}
+
+void ui_event_PanelArea1ThresholdArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+   
+    if(event_code == LV_EVENT_CLICKED) {
+      current_area_threshold = 1;
+      lv_obj_clear_flag(ui_PanelLoadingThresHoldItem, LV_OBJ_FLAG_HIDDEN);
+      lv_task_handler();
+      _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldScreen_screen_init);
+      TaskHandle_t threshold_task = xTaskGetHandle("threshold");
+        if (threshold_task != NULL) {
+          print(PRINTLN, "scan_wifi has created");
+        } else {
+          xTaskCreatePinnedToCore(handleThresHold, "threshold", 8192, NULL, 5, NULL, 0);
+        }
+    }
+}
+void ui_event_PanelArea2ThresholdArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+      current_area_threshold = 2;
+      lv_obj_clear_flag(ui_PanelLoadingThresHoldItem, LV_OBJ_FLAG_HIDDEN);
+      lv_task_handler();
+      _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldScreen_screen_init);
+      TaskHandle_t threshold_task = xTaskGetHandle("threshold");
+      if (threshold_task != NULL) {
+        print(PRINTLN, "scan_wifi has created");
+      } else {
+        xTaskCreatePinnedToCore(handleThresHold, "threshold", 8192, NULL, 5, NULL, 0);
+      }
+    }
+}
+void ui_event_PanelArea3ThresholdArea(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+      current_area_threshold = 3;
+      lv_obj_clear_flag(ui_PanelLoadingThresHoldItem, LV_OBJ_FLAG_HIDDEN);
+      lv_task_handler();
+      _ui_screen_change(&ui_ThresHoldScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresHoldScreen_screen_init);
+      TaskHandle_t threshold_task = xTaskGetHandle("threshold");
+      if (threshold_task != NULL) {
+        print(PRINTLN, "scan_wifi has created");
+      } else {
+        xTaskCreatePinnedToCore(handleThresHold, "threshold", 8192, NULL, 5, NULL, 0);
+      }
+    }
+}
+
+void ui_event_ButtonThresHoldItem(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+      StaticJsonDocument<1024> jsonPayloadDoc;
+      jsonPayloadDoc["id"] = current_area_threshold;
+      if(current_area_threshold == 1)
+      {
+        jsonPayloadDoc["area"] = "1";
+      } else if(current_area_threshold == 2)
+      {
+        jsonPayloadDoc["area"] = "2";
+      } else if(current_area_threshold == 3)
+      {
+        jsonPayloadDoc["area"] = "3";
+      }
+      const char * LabelTemperature1 = lv_label_get_text(ui_LabelTemperature1);
+      int int_Temperature1 = convertStringToInt(LabelTemperature1);
+      jsonPayloadDoc["min_temperature"] = int_Temperature1;
+      const char * LabelTemperature2 = lv_label_get_text(ui_LabelTemperature2);
+      int int_Temperature2 = convertStringToInt(LabelTemperature2);
+      jsonPayloadDoc["max_temperature"] = int_Temperature2;
+      const char * LabelKali1 = lv_label_get_text(ui_LabelKali1);
+      int int_Kali1 = convertStringToInt(LabelKali1);
+      jsonPayloadDoc["min_kali"] = int_Kali1;
+      const char * LabelKali2 = lv_label_get_text(ui_LabelKali2);
+      int int_Kali2 = convertStringToInt(LabelKali2);
+      jsonPayloadDoc["max_kali"] = int_Kali2;
+      const char * LabelNito1 = lv_label_get_text(ui_LabelNito1);
+      int int_Nito1 = convertStringToInt(LabelNito1);
+      jsonPayloadDoc["min_nito"] = int_Nito1;
+      const char * LabelNito2 = lv_label_get_text(ui_LabelNito2);
+      int int_Nito2 = convertStringToInt(LabelNito2);
+      jsonPayloadDoc["max_nito"] = int_Nito2;
+      const char * LabelPhotpho1 = lv_label_get_text(ui_LabelPhotpho1);
+      int int_Photpho1 = convertStringToInt(LabelPhotpho1);
+      jsonPayloadDoc["min_photpho"] = int_Photpho1;
+      const char * LabelPhotpho2 = lv_label_get_text(ui_LabelPhotpho2);
+      int int_Photpho2 = convertStringToInt(LabelPhotpho2);
+      jsonPayloadDoc["max_photpho"] = int_Photpho2;
+      if (jsonPayloadDoc.size() > 0)
+      {
+        String jsonPayload;
+        serializeJson(jsonPayloadDoc, jsonPayload);
+        char serverURL[150]; // Adjust size if needed based on the URL length
+        snprintf(serverURL, sizeof(serverURL), "%s/api/v1/threshold/%d", web_server_official, current_area_threshold);
+        sendPutRequest(serverURL, jsonPayload.c_str());
+      }
+        _ui_screen_change(&ui_ThresholdAreaScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ThresholdAreaScreen_screen_init);
+    }
 }

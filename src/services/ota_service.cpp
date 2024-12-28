@@ -1,6 +1,6 @@
 #include "ota_service.h"
 #include <lvgl.h>
-const char* web_server = "";
+
 
 // Function to check for the latest firmware file
 String getLatestFirmwareFileName(const char* Url) 
@@ -8,44 +8,13 @@ String getLatestFirmwareFileName(const char* Url)
     HTTPClient http;
     String latestFirmwareFileName = "";
 
-    http.begin(String(Url) + "/upload");
+    http.begin(String(Url) + "/api/v1/OTA/");
     int httpCode = http.GET();
 
     if (httpCode == HTTP_CODE_OK) 
     {
         String payload = http.getString();
-
-        // Find all occurrences of firmware file links in the HTML payload
-        int startIndex = 0;
-        String latestTimestamp = "";
-
-        while ((startIndex = payload.indexOf("<a href=\"/uploads/", startIndex)) != -1) 
-        {
-            startIndex += 18; // Move to the start of the file name
-            int endIndex = payload.indexOf("\">", startIndex); // Find the end of the file link
-
-            if (endIndex != -1) 
-            {
-                // Extract the file name
-                String filePath = payload.substring(startIndex, endIndex);
-                
-                // Extract the timestamp part from the file name
-                String timestamp = filePath.substring(0, filePath.indexOf('_'));
-                
-                // Compare with the current latest timestamp
-                if (latestTimestamp == "" || timestamp > latestTimestamp) 
-                {
-                    latestTimestamp = timestamp;
-                    latestFirmwareFileName = filePath;  // Update the latest firmware file name
-                }
-                
-                startIndex = endIndex; // Move to the next link
-            } 
-            else 
-            {
-                break; // Break if no more links found
-            }
-        }
+        latestFirmwareFileName = payload;
     } 
     else 
     {
@@ -55,64 +24,128 @@ String getLatestFirmwareFileName(const char* Url)
     http.end();
     return latestFirmwareFileName;
 }
-
 void ota_update(void *parameter)
 {
-    print(PRINTLN,"Start OTA");
-    String filename = getLatestFirmwareFileName(web_server);
-    write_new_ota_version(filename);
-    print(PRINTF,"Start installing: %s\n", filename.c_str());
+    lv_label_set_text(ui_Label90, "Starting OTA update...");
+    print(PRINTLN, "Start OTA");
+    String filename = getLatestFirmwareFileName(ota_server);
+    print(PRINTF, "Start installing: %s\n", filename.c_str());
 
-    String firmwareURL = web_server + String("/uploads/") + filename;
+    String firmwareURL = ota_server + String("/uploads/") + filename;
     HTTPClient http;
     http.begin(firmwareURL);
     int httpCode = http.GET();
-    
-    if (httpCode == HTTP_CODE_OK) 
+
+    if (httpCode == HTTP_CODE_OK)
     {
         int contentLength = http.getSize();
         bool canBegin = Update.begin(contentLength);
 
-        if (canBegin) 
-        {
-            print(PRINTLN,"Begin OTA update");
-            WiFiClient* client = http.getStreamPtr();
-            size_t written = Update.writeStream(*client);
+        if (canBegin)
+        { 
+            print(PRINTLN, "Begin OTA update");
+            ota_running_flag = true;
+            lv_label_set_text(ui_Label90, "OTA update in progress...");
+            WiFiClient *client = http.getStreamPtr();
 
-            if (written == contentLength) 
-            {
-                print(PRINTLN,"OTA update successful!");
-            } else 
-            {
-                print(PRINTF,"OTA update failed. Written %d / %d bytes\n", written, contentLength);
-            }
+            bool wifiLost = false; // Theo dõi trạng thái WiFi
+            size_t written = 0;
 
-            if (Update.end()) 
+            while (written < contentLength)
             {
-                if (Update.isFinished()) 
+                if (WiFi.status() != WL_CONNECTED)
                 {
-                    print(PRINTLN,"Update completed. Rebooting...");
-                    ESP.restart();
-                } else 
-                {
-                    print(PRINTLN,"Update not finished. Something went wrong.");
+                    ota_running_flag = false;
+                    wifiLost = true;
+                    print(PRINTLN, "WiFi lost during OTA update!");
+                    lv_label_set_text(ui_Label90, "WiFi lost. Aborting OTA...");
+                    Update.abort(); // Hủy OTA ngay lập tức
+                    break;
                 }
-            } else 
-            {
-                print(PRINTF,"Update failed. Error #: %d\n", Update.getError());
+
+                size_t chunkSize = client->available();
+                if (chunkSize)
+                {
+                    uint8_t buffer[512]; // Buffer tạm
+                    size_t bytesToRead = (chunkSize > sizeof(buffer)) ? sizeof(buffer) : chunkSize;
+                    int bytesRead = client->read(buffer, bytesToRead);
+                    written += Update.write(buffer, bytesRead);
+
+                    int percentage = (written * 100) / contentLength;
+                    // print(PRINTF, "Progress: %d%%\n", percentage);
+                    lv_label_set_text_fmt(ui_Label90, "Uploading new version... %d%%", percentage);
+                }
+
+                delay(1); // Cho phép các task khác chạy
             }
-        } else 
-        {
-            print(PRINTLN,"Not enough space to start OTA update");
+
+            if (wifiLost)
+            {
+                // Xử lý mất WiFi
+                print(PRINTLN, "OTA update aborted due to WiFi disconnection.");
+                lv_label_set_text(ui_Label90, "WiFi disconnect. Try again...");
+                ota_running_flag = false;
+                vTaskDelete(NULL);
+                return; // Kết thúc
+            }
+
+            if (written == contentLength)
+            {
+                print(PRINTLN, "OTA update successful!");
+                lv_label_set_text(ui_Label90, "OTA update successful!");
+                write_new_ota_version(filename);
+            }
+            else
+            {
+                // print(PRINTF, "OTA update failed. Written %d / %d bytes\n", written, contentLength);
+                ota_running_flag = false;
+                lv_label_set_text(ui_Label90, "OTA update failed!");
+            }
+
+            if (Update.end())
+            {
+                if (Update.isFinished())
+                {
+                    print(PRINTLN, "Update completed. Rebooting...");
+                    lv_label_set_text(ui_Label90, "Update completed. Rebooting...");
+                    ESP.restart();
+                }
+                else
+                {
+                    print(PRINTLN, "Update not finished. Something went wrong.");
+                    ota_running_flag = false;
+                    lv_label_set_text(ui_Label90, "Update not finished. Something went wrong.");
+                }
+            }
+            else
+            {
+                print(PRINTF, "Update failed. Error #: %d\n", Update.getError());
+                ota_running_flag = false;
+                lv_label_set_text_fmt(ui_Label90, "Update failed. Error #: %d", Update.getError());
+            }
         }
-    } else 
+        else
+        {
+            print(PRINTLN, "Not enough space to start OTA update");
+            ota_running_flag = false;
+            lv_label_set_text(ui_Label90, "Not enough space for OTA update.");
+        }
+    }
+    else
     {
-        print(PRINTF,"Failed to download firmware, error code: %d\n", httpCode);
+        print(PRINTF, "Failed to download firmware, error code: %d\n", httpCode);
+        ota_running_flag = false;
+        lv_label_set_text_fmt(ui_Label90, "Failed to download firmware. Error: %d", httpCode);
     }
 
     http.end();
-    print(PRINTLN,"End OTA");
+    ota_running_flag = false;
+    print(PRINTLN, "End OTA");
+    lv_label_set_text(ui_Label90, "End OTA update.");
 }
+
+
+
 
 void ota_checking_update(void *paramter)
 {
@@ -135,7 +168,7 @@ void ota_checking_update(void *paramter)
     String line = file.readStringUntil('\n');
     for(;;)
     {
-        String filename = getLatestFirmwareFileName(web_server);
+        String filename = getLatestFirmwareFileName(ota_server);
         print(PRINTLN,"The original:");
         print(PRINTLN,line.c_str());
         print(PRINTLN,"The new:");
@@ -165,7 +198,7 @@ void ota_checking_update(void *paramter)
             }
             print(PRINTLN,"changed!");
         }
-        delay(3000);
+        vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
 

@@ -8,21 +8,19 @@
 #include "../gui/update/ui_update.h"
 #define WIFI_TIMEOUT 4000  // ms
 
-// WiFi credentials
-const char *ssid = "Mi tom thanh long";
-const char *password = "87654321";
 lv_obj_t *btn[9];
 bool btn_flag = false;
 uint8_t connect_wifi(const char *ssid, const char *password) {
   unsigned long startTime = millis();  // Get the current time
 
-  print(PRINTF, "Connecting to %s", ssid);
+  print(PRINTF, "Connecting to %s with password %s...", ssid, password);
   WiFi.begin(ssid, password);
   while (millis() - startTime < WIFI_TIMEOUT && WiFi.status() != WL_CONNECTED) {
     delay(500);
     print(PRINT, ".");
   }
   if (WiFi.status() != WL_CONNECTED) {
+    WiFi.disconnect();
     return 0;
   }
   print(PRINTF, "\nWiFi connected");
@@ -38,12 +36,14 @@ void wifi_service(void *parameter) {
       // Connect to wifi
 
       ui_update_wifi_status(0);
+      save_wifi_credentials(wifiCredentials->username, wifiCredentials->password);
       uint8_t connect_ok = connect_wifi(wifiCredentials->username, wifiCredentials->password);
-      if (connect_ok == 0) {
-        vTaskDelete(NULL);
-      }
+      vTaskDelete(NULL);
     }
-    delay(1000);
+    else {
+      WiFi.disconnect();
+    }
+    vTaskDelay(pdMS_TO_TICKS(1000));
   }
 }
 
@@ -61,7 +61,6 @@ void init_scan_wifi_list_element() {
   /*Add 9 list item*/
   if (btn_flag == false) {
     for (int i = 0; i < 9; i++) {
-      print(PRINTLN, "test");
       btn[i] = lv_list_add_btn(custom_ui_ListOfWifi, NULL, "");
       lv_obj_add_event_cb(btn[i], click_wifi_handler, LV_EVENT_CLICKED, NULL);
     }
@@ -90,9 +89,24 @@ void scan_wifi(void *parameter) {
   // {
   //   print(PRINTF,"%s\n", list_of_wifi->name_of_wifi[i]);
   // }
-  print(PRINTLN, "Begin send event!");
-  // lv_event_send(ui_WifiScreen, (lv_event_code_t)MY_LV_EVENT_SCAN_WIFI, (void *)list_of_wifi);
-  print(PRINTLN, "End send event!");
-
+  lv_obj_add_flag(wifiLoading, LV_OBJ_FLAG_HIDDEN);
   vTaskDelete(NULL);
+}
+void save_wifi_credentials(const char* username, const char* password) {
+  preferences.begin("wifi-config", false); // Mở namespace "wifi-config" ở chế độ ghi
+  preferences.putString("wifi_user", username); // Lưu username
+  preferences.putString("wifi_pass", password); // Lưu password
+  preferences.end();
+}
+
+void check_wifi_icon()
+{
+  if(WiFi.isConnected())
+  {
+    _ui_flag_modify(ui_Image2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+  }
+  else
+  {
+    _ui_flag_modify(ui_Image2, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+  }
 }

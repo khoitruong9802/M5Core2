@@ -2,7 +2,7 @@ SET(SOURCES screens/ui_MainScreen.c
     screens/ui_AppScreen.c
     screens/ui_SettingsScreen.c
     screens/ui_AboutScreen.c
-    screens/ui_MqttScreen.c
+    screens/ui_InformationScreen.c
     screens/ui_SensorsScreen.c
     screens/ui_ManualScreen.c
     screens/ui_DisplayScreen.c
@@ -32,6 +32,15 @@ SET(SOURCES screens/ui_MainScreen.c
     images/ui_img_656191529.c
     images/ui_img_scheduler_icon_png.c
     images/ui_img_pump_icon_png.c
-    images/ui_img_brightness_bar_icon_png.c)
+    images/ui_img_brightness_bar_icon_png.c
+    images/ui_img_farm_icon_png.c
+    images/ui_img_trash_png.c
+    images/ui_img_tick_png.c
+    images/ui_img_chart_png.c
+    images/ui_img_device_png.c
+    img/ui_img_process_png.c
+    img/ui_img_bell_png.c
+    img/ui_img_history_png.c
+    img/)
 
 add_library(ui ${SOURCES})

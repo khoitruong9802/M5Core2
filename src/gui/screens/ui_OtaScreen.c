@@ -48,7 +48,7 @@ void ui_OtaScreen_screen_init(void)
 
     ui_Button11 = lv_btn_create(ui_Panel94);
     lv_obj_set_width(ui_Button11, 40);
-    lv_obj_set_height(ui_Button2, 35);
+    lv_obj_set_height(ui_Button11, 35);
     lv_obj_set_x(ui_Button11, 97);
     lv_obj_set_y(ui_Button11, 0);
     lv_obj_set_align(ui_Button11, LV_ALIGN_CENTER);
@@ -68,7 +68,7 @@ void ui_OtaScreen_screen_init(void)
     lv_obj_set_x(ui_Label90, 0);
     lv_obj_set_y(ui_Label90, 65);
     lv_obj_set_align(ui_Label90, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Label90, "Uploading new version...");
+    lv_label_set_text(ui_Label90, "");
     lv_obj_set_style_text_font(ui_Label90, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Panel102 = lv_obj_create(ui_Panel92);
@@ -203,6 +203,31 @@ void ui_OtaScreen_screen_init(void)
     lv_obj_set_height(ui_Label110, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_Label110, LV_ALIGN_CENTER);
     lv_label_set_text(ui_Label110, "OK");
+
+    ui_PanelLoadingLoadingScreen = lv_obj_create(ui_OtaScreen);
+    lv_obj_set_width(ui_PanelLoadingLoadingScreen, 320);
+    lv_obj_set_height(ui_PanelLoadingLoadingScreen, 240);
+    lv_obj_set_align(ui_PanelLoadingLoadingScreen, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_PanelLoadingLoadingScreen, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_clear_flag(ui_PanelLoadingLoadingScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_PanelLoadingLoadingScreen, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_PanelLoadingLoadingScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_SpinnerLoadingLoadingScreen = lv_spinner_create(ui_PanelLoadingLoadingScreen, 1000, 90);
+    lv_obj_set_width(ui_SpinnerLoadingLoadingScreen, 80);
+    lv_obj_set_height(ui_SpinnerLoadingLoadingScreen, 80);
+    lv_obj_set_align(ui_SpinnerLoadingLoadingScreen, LV_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_SpinnerLoadingLoadingScreen, LV_OBJ_FLAG_CLICKABLE);      /// Flags
+
+    ui_LabelLoadingLoadingScreen = lv_label_create(ui_PanelLoadingLoadingScreen);
+    lv_obj_set_width(ui_LabelLoadingLoadingScreen, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_LabelLoadingLoadingScreen, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_LabelLoadingLoadingScreen, 0);
+    lv_obj_set_y(ui_LabelLoadingLoadingScreen, 75);
+    lv_obj_set_align(ui_LabelLoadingLoadingScreen, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_LabelLoadingLoadingScreen, "");
+    lv_obj_set_style_text_color(ui_LabelLoadingLoadingScreen, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_LabelLoadingLoadingScreen, 255, LV_PART_MAIN | LV_STATE_DEFAULT);  
 
     lv_obj_add_event_cb(ui_OtaScreen, ui_event_OtaScreen,  LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Button11, ui_event_Button11, LV_EVENT_ALL, NULL);

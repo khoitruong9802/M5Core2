@@ -8,15 +8,17 @@
 void bottom_button_service(void *parameter) {
   for (;;) {
     M5.update();
-    delay(20);
+    vTaskDelay(pdMS_TO_TICKS(1000));
 
     if (M5.BtnPWR.wasClicked()) {
       print(PRINTLN, "Btn PWR");
-      // print(PRINTLN,m5brightness);
+     Serial.println(m5brightness);
       if (m5brightness == 0) {
         set_brightness(prev_m5brightness);
+        touch_enabled = true;
       } else {
         set_brightness(0);
+        touch_enabled = false;
       }
     }
   }

@@ -7,21 +7,25 @@ String http_get_data(const String &server_url) {
   HTTPClient http;
   String payload = "";
 
-  http.begin(server_url);      // Specify the URL
-  int http_code = http.GET();  // Make the GET request
+  http.begin(server_url); // Specify the URL
+
+  unsigned long start_time = millis(); // Bắt đầu đo thời gian
+  int http_code = http.GET();          // Thực hiện yêu cầu GET
+  unsigned long end_time = millis();   // Kết thúc đo thời gian
+
+  unsigned long latency = end_time - start_time; // Tính toán độ trễ
+  Serial.printf("%lu\n", latency);
 
   if (http_code > 0) {
-    // If the request was successful, get the payload
+    // Nếu yêu cầu thành công, lấy payload
     payload = http.getString();
-    Serial.println("Response: " + payload);
   } else {
     Serial.printf("GET request failed: %s\n", http.errorToString(http_code).c_str());
   }
 
-  http.end();  // Free resources
+  http.end(); // Giải phóng tài nguyên
   return payload;
 }
-
 // Function to send data to the server using POST request
 String http_post_data(const String &server_url, const String &data) {
   HTTPClient http;

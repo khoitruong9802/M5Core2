@@ -23,6 +23,31 @@ void ui_WifiScreen_screen_init(void)
     lv_obj_set_style_bg_color(ui_Panel26, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_Panel26, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    wifiLoading = lv_obj_create(ui_WifiScreen);
+    lv_obj_set_width(wifiLoading, 320);
+    lv_obj_set_height(wifiLoading, 240);
+    lv_obj_set_align(wifiLoading, LV_ALIGN_CENTER);
+    lv_obj_add_flag(wifiLoading, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_clear_flag(wifiLoading, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(wifiLoading, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(wifiLoading, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    wifiSpinnerLoading = lv_spinner_create(wifiLoading, 1000, 90);
+    lv_obj_set_width(wifiSpinnerLoading, 80);
+    lv_obj_set_height(wifiSpinnerLoading, 80);
+    lv_obj_set_align(wifiSpinnerLoading, LV_ALIGN_CENTER);
+    lv_obj_clear_flag(wifiSpinnerLoading, LV_OBJ_FLAG_CLICKABLE);      /// Flags
+
+    wifiLabelLoading = lv_label_create(wifiLoading);
+    lv_obj_set_width(wifiLabelLoading, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(wifiLabelLoading, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(wifiLabelLoading, 0);
+    lv_obj_set_y(wifiLabelLoading, 75);
+    lv_obj_set_align(wifiLabelLoading, LV_ALIGN_CENTER);
+    lv_label_set_text(wifiLabelLoading, "Loading...");
+    lv_obj_set_style_text_color(wifiLabelLoading, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(wifiLabelLoading, 255, LV_PART_MAIN | LV_STATE_DEFAULT);  
+
     lv_obj_add_event_cb(ui_WifiScreen, ui_event_WifiScreen, LV_EVENT_ALL, NULL);
 
 }

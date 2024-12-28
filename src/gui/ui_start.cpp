@@ -23,11 +23,11 @@ void ui_start(void *parameter) {
 
   for (;;) {
     if (count == 100) {
-      print(PRINTF, "ui handler run on core: %d\n", xPortGetCoreID());
+      // print(PRINTF, "ui handler run on core: %d\n", xPortGetCoreID());
       count = 0;
     }
     count++;
-    if (xSemaphoreTake(lvgl_mutex, 0) == pdTRUE) {
+    if (xSemaphoreTake(lvgl_mutex, pdMS_TO_TICKS(10)) == pdTRUE) {
       // Critical section (access shared resource here)
       lv_timer_handler();
 
@@ -36,7 +36,7 @@ void ui_start(void *parameter) {
     } else {
       print(PRINTLN, "ui handler can not require semaphore");
     }
-    delay(10);
+    vTaskDelay(pdMS_TO_TICKS(10));
 
     // lv_timer_handler();
     // delay(5);

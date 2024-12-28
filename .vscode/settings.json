@@ -63,6 +63,24 @@
         "streambuf": "cpp",
         "thread": "cpp",
         "cinttypes": "cpp",
-        "typeinfo": "cpp"
-    }
+        "typeinfo": "cpp",
+        "spiffs.h": "c",
+        "stdarg.h": "c",
+        "queue.h": "c",
+        "semphr.h": "c",
+        "lvgl_malloc.h": "c",
+        "esp_heap_caps.h": "c",
+        "esp_log.h": "c",
+        "lv_calendar.h": "c",
+        "lv_calendar_header_arrow.h": "c",
+        "custom_widget.h": "c",
+        "arduinojson.h": "c",
+        "profiler.h": "c",
+        "timeprofiler.h": "c",
+        "arxcontainer.h": "c",
+        "lvgl_port.h": "c",
+        "preferences.h": "c",
+        "*.tpp": "cpp"
+    },
+    "window.zoomLevel": -1
 }
